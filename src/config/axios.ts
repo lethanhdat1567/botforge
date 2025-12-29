@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosHeaders } from "axios";
 import envConfig from "@/config/envConfig";
+import { redirect } from "next/navigation";
 
 interface ApiRequestConfig extends AxiosRequestConfig {
     isFetchClientToServerNext?: boolean;
@@ -32,7 +33,7 @@ api.interceptors.request.use(
         else {
             const { cookies } = await import("next/headers");
             const cookieStore = await cookies();
-            const accessToken = cookieStore.get("accessToken")?.value;
+            const accessToken = cookieStore.get("access_token")?.value;
 
             if (accessToken) {
                 config.headers = {
@@ -44,12 +45,27 @@ api.interceptors.request.use(
 
         // ------ Fetch Client To Server Check  ------
         if (config.isFetchClientToServerNext) {
-            config.url = envConfig.BASE_URL;
+            config.url = `${envConfig.BASE_URL}${config.url}`;
         }
 
         return config as any;
     },
     (error) => Promise.reject(error),
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.response?.data?.data?.code === "UNAUTHORIZED") {
+            if (typeof window !== "undefined") {
+                window.location.href = "/logout";
+            } else {
+                redirect("/logout" as any);
+            }
+        }
+
+        return Promise.reject(error);
+    },
 );
 
 export default api;

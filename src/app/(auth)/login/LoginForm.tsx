@@ -19,8 +19,13 @@ import { authService } from "@/services/authService";
 import { toast } from "sonner";
 import { setFormErrors } from "@/app/(auth)/helpers";
 import { LoginFormValues, loginSchema } from "@/validation/authSchema";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({ className }: { className?: string }) {
+    const setUser = useAuthStore((state) => state.setUser);
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -32,10 +37,30 @@ export function LoginForm({ className }: { className?: string }) {
 
     const onSubmit = async (data: LoginFormValues) => {
         try {
-            await authService.login(data);
+            const res = await authService.login(data);
+            const user = res.data.user;
+            const token = res.data.token;
+            setUser(
+                user,
+                token.access_token,
+                token.refresh_token,
+                token.expired_in,
+            );
+
+            await authService.setTokenFromClientToServer({
+                accessToken: token.access_token,
+                expiredIn: token.expired_in,
+                role: user.role,
+            });
             toast.success("Đăng nhập thành công!");
-            // Redirect nếu cần: router.push("/dashboard");
+            if (user.role === "admin") {
+                router.push("/admin/dashboard" as any);
+            } else if (user.role === "user") {
+                router.push("/dashboard" as any);
+            }
         } catch (err: any) {
+            console.log(err);
+
             const backendErrors = err.response?.data?.data?.errors;
 
             if (backendErrors && Array.isArray(backendErrors)) {

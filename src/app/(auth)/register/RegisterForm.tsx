@@ -19,8 +19,13 @@ import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
 import { authService } from "@/services/authService";
 import { toast } from "sonner";
 import { setFormErrors } from "@/app/(auth)/helpers";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export function SignupForm({ className }: { className?: string }) {
+    const setUser = useAuthStore((state) => state.setUser);
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -32,8 +37,27 @@ export function SignupForm({ className }: { className?: string }) {
 
     const onSubmit = async (data: SignupFormValues) => {
         try {
-            await authService.register(data);
+            const res = await authService.register(data);
+            const user = res.data.user;
+            const token = res.data.token;
+            setUser(
+                user,
+                token.access_token,
+                token.refresh_token,
+                token.expired_in,
+            );
+
+            await authService.setTokenFromClientToServer({
+                accessToken: token.access_token,
+                expiredIn: token.expired_in,
+                role: user.role,
+            });
             toast.success("Đăng ký tài khoản thành công!");
+            if (user.role === "admin") {
+                router.push("/admin/dashboard" as any);
+            } else if (user.role === "user") {
+                router.push("/dashboard" as any);
+            }
         } catch (err: any) {
             const backendErrors = err.response?.data?.data?.errors;
 

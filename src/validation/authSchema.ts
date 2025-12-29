@@ -30,3 +30,17 @@ export const forgotPasswordSchema = z.object({
 });
 
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+    .object({
+        newPassword: z
+            .string()
+            .min(6, "Password must be at least 6 characters"),
+        confirmPassword: z.string().min(6, "Please confirm your password"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        path: ["confirmPassword"],
+        message: "Passwords do not match",
+    });
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

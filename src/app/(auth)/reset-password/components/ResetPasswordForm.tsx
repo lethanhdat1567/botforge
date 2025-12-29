@@ -1,3 +1,5 @@
+"use client";
+
 import { GalleryVerticalEnd } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,14 +10,48 @@ import {
     FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+    ResetPasswordFormValues,
+    resetPasswordSchema,
+} from "@/validation/authSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
+import { authService } from "@/services/authService";
+import { toast } from "sonner";
+import { setFormErrors } from "@/app/(auth)/helpers";
+import { useSearchParams } from "next/navigation";
 
-export function ResetPasswordForm({
-    className,
-    ...props
-}: React.ComponentProps<"div">) {
+export function ResetPasswordForm({ className }: { className?: string }) {
+    const searchParams = useSearchParams();
+    const token = searchParams.get("token");
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors, isSubmitting },
+    } = useForm<ResetPasswordFormValues>({
+        resolver: zodResolver(resetPasswordSchema),
+    });
+
+    const onSubmit = async (data: ResetPasswordFormValues) => {
+        try {
+            await authService.resetPassword({ ...data, token: token || "" });
+            toast.success("Password has been reset successfully!");
+        } catch (err: any) {
+            const backendErrors = err.response?.data?.data?.errors;
+            if (backendErrors && Array.isArray(backendErrors)) {
+                setFormErrors<ResetPasswordFormValues>(backendErrors, setError);
+            } else {
+                toast.error("An error occurred. Please try again!");
+            }
+        }
+    };
+
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <form>
+        <div className={cn("flex flex-col gap-6", className)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <FieldGroup>
                     <div className="flex flex-col items-center gap-2 text-center">
                         <a
@@ -34,6 +70,7 @@ export function ResetPasswordForm({
                         </FieldDescription>
                     </div>
 
+                    {/* New Password */}
                     <Field>
                         <FieldLabel htmlFor="newPassword">
                             New Password
@@ -41,12 +78,13 @@ export function ResetPasswordForm({
                         <Input
                             type="password"
                             id="newPassword"
-                            name="newPassword"
                             placeholder="Enter new password"
-                            required
+                            {...register("newPassword")}
                         />
+                        <ErrorText message={errors.newPassword?.message} />
                     </Field>
 
+                    {/* Confirm Password */}
                     <Field>
                         <FieldLabel htmlFor="confirmPassword">
                             Confirm Password
@@ -54,14 +92,17 @@ export function ResetPasswordForm({
                         <Input
                             type="password"
                             id="confirmPassword"
-                            name="confirmPassword"
                             placeholder="Confirm new password"
-                            required
+                            {...register("confirmPassword")}
                         />
+                        <ErrorText message={errors.confirmPassword?.message} />
                     </Field>
 
+                    {/* Submit */}
                     <Field>
-                        <Button type="submit">Change Password</Button>
+                        <Button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Changing..." : "Change Password"}
+                        </Button>
                     </Field>
                 </FieldGroup>
             </form>
