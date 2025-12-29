@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
     subsets: ["latin", "vietnamese"],
@@ -32,6 +33,7 @@ export default async function RootLayout({
                 >
                     <NextIntlClientProvider>{children}</NextIntlClientProvider>
                 </ThemeProvider>
+                <Toaster />
             </body>
         </html>
     );

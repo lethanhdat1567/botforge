@@ -1,0 +1,58 @@
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+
+function SocialLogin() {
+    return (
+        <Field className="flex flex-col gap-3">
+            {/* Google Signup */}
+            <Button
+                variant="outline"
+                type="button"
+                className="flex items-center justify-center gap-2"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 533.5 544.3"
+                    className="h-5 w-5"
+                >
+                    <path
+                        d="M533.5 278.4c0-18.9-1.5-37-4.3-54.6H272v103.4h147.1c-6.4 34.8-25.8 64.4-54.8 84v69.9h88.5c51.7-47.6 81.7-117.9 81.7-203.7z"
+                        fill="#4285F4"
+                    />
+                    <path
+                        d="M272 544.3c73.6 0 135.3-24.4 180.5-66.1l-88.5-69.9c-24.5 16.5-55.7 26.3-92 26.3-70.8 0-130.8-47.7-152.3-111.8H29.9v70.3C74.9 482.2 167 544.3 272 544.3z"
+                        fill="#34A853"
+                    />
+                    <path
+                        d="M119.7 321.8c-11.9-35.8-11.9-74.6 0-110.4V141.1H29.9c-40.9 81.6-40.9 179.4 0 261L119.7 321.8z"
+                        fill="#FBBC05"
+                    />
+                    <path
+                        d="M272 107.7c39.9 0 75.7 13.7 104 40.6l78.2-78.2C406.9 24.2 344.2 0 272 0 167 0 74.9 62.1 29.9 151.1l89.8 70.3c21.5-64.1 81.5-111.8 152.3-111.8z"
+                        fill="#EA4335"
+                    />
+                </svg>
+                Sign up with Google
+            </Button>
+
+            {/* Facebook Signup */}
+            <Button
+                variant="outline"
+                type="button"
+                className="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    fill="currentColor"
+                >
+                    <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.406.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.657-4.788 1.325 0 2.464.099 2.797.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.406 24 22.674V1.326C24 .593 23.406 0 22.675 0z" />
+                </svg>
+                Sign up with Facebook
+            </Button>
+        </Field>
+    );
+}
+
+export default SocialLogin;

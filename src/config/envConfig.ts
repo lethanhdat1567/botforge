@@ -1,0 +1,6 @@
+const envConfig = {
+    API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api",
+    BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+};
+
+export default envConfig;
