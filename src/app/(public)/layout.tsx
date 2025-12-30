@@ -1,3 +1,4 @@
+import PublicFooter from "@/layouts/public/PublicFooter/PublicFooter";
 import PublicHeader from "@/layouts/public/PublicHeader/PublicHeader";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -5,6 +6,7 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
         <div>
             <PublicHeader />
             {children}
+            <PublicFooter />
         </div>
     );
 }

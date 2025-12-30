@@ -41,7 +41,7 @@ const jobs = [
 
 function Features() {
     return (
-        <div className="bg-[#0e0d0d] pt-20 pb-30">
+        <div className="bg-[#0e0d0d] pt-20">
             <div className="app-container text-center">
                 <h2 className="mb-4 text-4xl font-bold">Featured Jobs</h2>
                 <p className="mb-10 text-xl text-neutral-400">
