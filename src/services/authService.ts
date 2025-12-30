@@ -79,4 +79,14 @@ export const authService = {
         });
         return res.data;
     },
+
+    socialGoogleLogin: async (code: string) => {
+        const res = await api.post("/auth/social/google", { code });
+        return res.data;
+    },
+
+    socialFacebookLogin: async (code: string) => {
+        const res = await api.post("/auth/social/facebook", { code });
+        return res.data;
+    },
 };

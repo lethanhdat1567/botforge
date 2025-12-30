@@ -58,16 +58,27 @@ export function LoginForm({ className }: { className?: string }) {
             } else if (user.role === "user") {
                 router.push("/dashboard" as any);
             }
-        } catch (err: any) {
-            console.log(err);
+        } catch (error: any) {
+            const code = error?.response?.data?.data?.code;
 
-            const backendErrors = err.response?.data?.data?.errors;
-
-            if (backendErrors && Array.isArray(backendErrors)) {
-                setFormErrors<LoginFormValues>(backendErrors, setError);
-            } else {
-                toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
+            if (code === "LOCAL_ACCOUNT_ONLY") {
+                toast.error(
+                    "Tài khoản này đã đăng ký bằng email & mật khẩu. Vui lòng đăng nhập thủ công.",
+                );
+                router.replace("/login" as any);
+                return;
             }
+
+            if (code === "GOOGLE_ACCOUNT_MISMATCH") {
+                toast.error(
+                    "Email này đã được đăng ký với một tài khoản Google khác.",
+                );
+                router.replace("/login" as any);
+                return;
+            }
+
+            toast.error("Đăng nhập Google thất bại. Vui lòng thử lại.");
+            router.replace("/login" as any);
         }
     };
 
