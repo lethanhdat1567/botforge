@@ -1,0 +1,18 @@
+.item {
+    position: relative;
+}
+
+.item::after {
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    content: "";
+    bottom: -4px;
+    left: 0;
+    transition: width 0.3s ease-in-out;
+}
+
+.item:hover:after {
+    width: 100%;
+}

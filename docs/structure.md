@@ -12,8 +12,8 @@ Public:
 
 - Home
 - about
-- how it work
 - guides
+- contact me
 
 Authenticate:
 

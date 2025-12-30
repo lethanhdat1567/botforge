@@ -1,4 +1,4 @@
-import { facebookIcon, googleIcon } from "@/app/assets/icons";
+import { facebookIcon, googleIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import envConfig from "@/config/envConfig";

@@ -47,6 +47,9 @@
 }
 
 :root {
+    --header-h: 65px;
+    --primary-color: #d50274;
+
     --radius: 0.625rem;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -115,12 +118,18 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+.app-container {
+    @apply mx-auto w-full px-3 sm:px-4;
+    @apply md:max-w-180 lg:max-w-240 xl:max-w-2xl 2xl:max-w-320;
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
     }
     body {
         @apply bg-background text-foreground;
+        overflow: hidden;
     }
 
     html,

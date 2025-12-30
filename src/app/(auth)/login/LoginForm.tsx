@@ -17,7 +17,6 @@ import Link from "next/link";
 import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
 import { authService } from "@/services/authService";
 import { toast } from "sonner";
-import { setFormErrors } from "@/app/(auth)/helpers";
 import { LoginFormValues, loginSchema } from "@/validation/authSchema";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
