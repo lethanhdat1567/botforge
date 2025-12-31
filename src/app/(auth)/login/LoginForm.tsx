@@ -28,7 +28,6 @@ export function LoginForm({ className }: { className?: string }) {
     const {
         register,
         handleSubmit,
-        setError,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),

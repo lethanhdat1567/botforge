@@ -41,8 +41,8 @@ const jobs = [
 
 function Features() {
     return (
-        <div className="bg-[#0e0d0d] pt-20">
-            <div className="app-container text-center">
+        <div className="relative bg-[#0e0d0d] pt-30">
+            <div className="app-container relative z-10 text-center">
                 <h2 className="mb-4 text-4xl font-bold">Featured Jobs</h2>
                 <p className="mb-10 text-xl text-neutral-400">
                     Top AI companies are now recruiting with JobHub
@@ -66,6 +66,11 @@ function Features() {
                     ))}
                 </div>
             </div>
+            {/* Layer hồng chủ đạo */}
+            <div className="pointer-events-none absolute -top-20 -left-40 z-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#d50274]/30 via-[#ff66a1]/20 to-[#ffffff]/10 blur-[150px]" />
+
+            {/* Layer highlight phụ */}
+            <div className="pointer-events-none absolute -right-40 -bottom-20 z-0 h-[400px] w-[400px] rounded-full bg-gradient-to-tl from-[#ff66a1]/20 via-[#d50274]/10 to-[#ffffff]/5 blur-[120px]" />
         </div>
     );
 }

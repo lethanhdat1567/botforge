@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function FounderNote() {
     return (
-        <div className="bg-[#0e0d0d] pt-30">
+        <div className="relative bg-[#0e0d0d] pt-30">
             <div className="app-container text-center">
                 <h2 className="mb-10 text-4xl font-bold">Featured Jobs</h2>
                 <div className="mx-auto px-40 text-center text-3xl font-medium text-neutral-400">

@@ -30,11 +30,16 @@ interface AuthState {
     logout: () => void;
 }
 
+const isClient = typeof window !== "undefined";
+
 export const useAuthStore = create<AuthState>((set) => ({
-    user: null,
-    accessToken: null,
-    refreshToken: null,
-    expiredIn: null,
+    user: isClient ? JSON.parse(localStorage.getItem("user") || "null") : null,
+
+    accessToken: isClient ? localStorage.getItem("accessToken") : null,
+
+    refreshToken: isClient ? localStorage.getItem("refreshToken") : null,
+
+    expiredIn: isClient ? Number(localStorage.getItem("expiredIn")) : null,
 
     setUser: (user, accessToken, refreshToken, expiredIn) => {
         if (typeof window !== "undefined") {

@@ -1,6 +1,5 @@
 "use client";
 
-import LogoutBtn from "@/components/LogoutBtn";
 import api from "@/config/axios";
 import { useEffect } from "react";
 
@@ -17,12 +16,7 @@ function Dashboard() {
         getProfile();
     }, []);
 
-    return (
-        <div>
-            Dashboard Page
-            <LogoutBtn />
-        </div>
-    );
+    return <div>Dashboard Page</div>;
 }
 
 export default Dashboard;
