@@ -3,7 +3,7 @@ import PublicHeader from "@/layouts/public/PublicHeader/PublicHeader";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div>
+        <div className="text-white">
             <PublicHeader />
             {children}
             <PublicFooter />
