@@ -4,14 +4,21 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { FolderPlus, Plus } from "lucide-react";
 
-function AddFolderBtn() {
+function AddFolderBtn({ onCreateFolder }: { onCreateFolder: any }) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button variant={"ghost"} size={"icon"}>
-                    <Plus />
+                <Button
+                    variant={"outline"}
+                    size={"icon-sm"}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onCreateFolder();
+                    }}
+                >
+                    <FolderPlus />
                 </Button>
             </TooltipTrigger>
             <TooltipContent>

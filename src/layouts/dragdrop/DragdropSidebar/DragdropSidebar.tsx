@@ -1,6 +1,5 @@
 "use client";
 
-import AddFolderBtn from "@/layouts/dragdrop/DragdropSidebar/components/AddFolderBtn/AddFolderBtn";
 import FolderList from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/FolderList";
 import Heading from "@/layouts/dragdrop/DragdropSidebar/components/Heading/Heading";
 import SearchFolder from "@/layouts/dragdrop/DragdropSidebar/components/SearchFolder/SearchFolder";
@@ -17,13 +16,15 @@ function DragdropSidebar() {
             } border-r transition-all duration-300`}
         >
             {/* CONTENT */}
-            <div className={expand ? "block" : "hidden"}>
+            <div className={`${expand ? "block" : "hidden"}`}>
                 <Heading setExpand={setExpand} />
-                <div className="my-2 flex items-center gap-2">
-                    <AddFolderBtn />
+                <div className="my-4 flex items-center gap-2">
                     <SearchFolder />
                 </div>
-                <FolderList />
+                {/* FolderList */}
+                <div className="h-[calc(100vh-160px)] overflow-y-auto">
+                    <FolderList />
+                </div>
             </div>
 
             {/* EXPAND BUTTON */}
