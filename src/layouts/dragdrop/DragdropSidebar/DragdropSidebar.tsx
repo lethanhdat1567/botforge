@@ -8,6 +8,7 @@ import { useState } from "react";
 
 function DragdropSidebar() {
     const [expand, setExpand] = useState(true);
+    const [searchValue, setSearchValue] = useState("");
 
     return (
         <div
@@ -19,11 +20,14 @@ function DragdropSidebar() {
             <div className={`${expand ? "block" : "hidden"}`}>
                 <Heading setExpand={setExpand} />
                 <div className="my-4 flex items-center gap-2">
-                    <SearchFolder />
+                    <SearchFolder
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                    />
                 </div>
                 {/* FolderList */}
                 <div className="h-[calc(100vh-160px)] overflow-y-auto">
-                    <FolderList />
+                    <FolderList searchValue={searchValue} />
                 </div>
             </div>
 

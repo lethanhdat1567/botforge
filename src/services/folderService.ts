@@ -1,8 +1,8 @@
 import api from "@/config/axios";
 
 export const folderService = {
-    getFolders: async () => {
-        const response = await api.get("/folders/me");
+    getFolders: async (q?: string) => {
+        const response = await api.get("/folders/me", { params: { q } });
         return response.data;
     },
 

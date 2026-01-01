@@ -4,7 +4,7 @@ function DragdropLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex items-start">
             <DragdropSidebar />
-            <div>{children}</div>
+            <div className="flex-1">{children}</div>
         </div>
     );
 }

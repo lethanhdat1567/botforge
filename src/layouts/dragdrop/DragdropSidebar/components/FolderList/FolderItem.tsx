@@ -66,7 +66,7 @@ function FolderItem({ folderData, fetchFolders }: Props) {
     return (
         <div className="flex w-full flex-col">
             <div
-                className="group hover:bg-muted flex h-8 w-full cursor-pointer items-center justify-between rounded-sm px-2 py-5 transition"
+                className={`group hover:bg-muted flex h-8 w-full cursor-pointer items-center justify-between rounded-sm px-2 py-5 transition ${isCreateFlow ? "bg-muted" : ""} `}
                 onClick={() => setOpen(!open)}
             >
                 {/* Folder name */}

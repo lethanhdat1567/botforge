@@ -29,6 +29,8 @@ function CreateFlow({ folderId, platform, onRefresh, setIsCreateFlow }: Props) {
                 onRefresh();
                 setIsCreateFlow(false);
                 toast.success("Tạo folder thành công!");
+            } else {
+                setIsCreateFlow(false);
             }
         } catch (error: any) {
             console.log(error);

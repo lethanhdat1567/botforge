@@ -7,6 +7,8 @@ import Options from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/Op
 import RenameFlow from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/RenameFlow";
 import { flowService } from "@/services/flowService";
 import { Activity, PencilRuler } from "lucide-react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +21,14 @@ type Props = {
 
 function FlowItem({ id, name, status, onRefresh }: Props) {
     const [isRename, setIsRename] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    function handleClickItem() {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("flowId", id);
+        router.push(`${window.location.pathname}?${params.toString()}` as any);
+    }
 
     function handleRename() {
         setIsRename(true);
@@ -45,7 +55,10 @@ function FlowItem({ id, name, status, onRefresh }: Props) {
     }
 
     return (
-        <div className="group hover:bg-muted group flex h-8 w-full items-center gap-2 rounded-sm px-2 py-5">
+        <div
+            className="group hover:bg-muted group flex h-8 w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-5"
+            onClick={handleClickItem}
+        >
             {/* LEFT */}
             <div className="flex min-w-0 flex-1 items-center gap-2">
                 {status === "published" && (

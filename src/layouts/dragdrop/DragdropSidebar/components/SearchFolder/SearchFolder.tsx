@@ -5,10 +5,19 @@ import {
 } from "@/components/ui/input-group";
 import { SearchIcon } from "lucide-react";
 
-function SearchFolder() {
+type Props = {
+    searchValue: string;
+    setSearchValue: (value: string) => void;
+};
+
+function SearchFolder({ searchValue, setSearchValue }: Props) {
     return (
         <InputGroup>
-            <InputGroupInput placeholder="Tìm kiếm thư mục..." />
+            <InputGroupInput
+                placeholder="Tìm kiếm thư mục..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+            />
             <InputGroupAddon>
                 <SearchIcon />
             </InputGroupAddon>

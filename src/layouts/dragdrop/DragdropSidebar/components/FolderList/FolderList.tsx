@@ -9,8 +9,10 @@ import Image from "next/image";
 import { images } from "@/assets/images";
 import { platformNames } from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/data";
 import { folderService } from "@/services/folderService";
+import useDebounce from "@/hooks/use-debounce";
 
-function FolderList() {
+function FolderList({ searchValue }: { searchValue: string }) {
+    const debounceValue = useDebounce(searchValue, 300);
     const [folderLists, setFolderLists] = useState<Record<string, any>>({});
     const [newFolderPlatform, setNewFolderPlatform] = useState<string | null>(
         null,
@@ -30,16 +32,30 @@ function FolderList() {
     };
     const fetchFolders = async () => {
         try {
-            const res = await folderService.getFolders();
+            const res = await folderService.getFolders(debounceValue);
             setFolderLists(res.data || {});
         } catch (error) {
             console.log(error);
         }
     };
     useEffect(() => {
+        if (debounceValue) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setOpenPlatforms({
+                facebook: true,
+                instagram: true,
+                zalo: true,
+            });
+        } else {
+            setOpenPlatforms({
+                facebook: true,
+                instagram: false,
+                zalo: false,
+            });
+        }
         // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchFolders();
-    }, []);
+    }, [debounceValue]);
 
     return (
         <div>
