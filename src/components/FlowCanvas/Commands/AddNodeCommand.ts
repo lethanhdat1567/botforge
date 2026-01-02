@@ -3,7 +3,7 @@ import type { FlowNodeType } from "../types/node/node.type";
 import { useNodeStore } from "@/store/nodeStore";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import { CollectionData } from "@/components/FlowCanvas/types/node/collection.type";
+import { CollectionVariableType } from "@/components/FlowCanvas/types/node/collection.type";
 
 export class AddNodeCommand {
     private newNode: any;
@@ -12,13 +12,14 @@ export class AddNodeCommand {
         private messageType:
             | MessageData["type"]
             | ActionData["type"]
-            | CollectionData["type"],
+            | CollectionVariableType,
+        private position: { x: number; y: number },
     ) {}
 
     execute() {
         const registry = NodeRegistryMap[this.nodeType];
 
-        this.newNode = registry.create(this.messageType);
+        this.newNode = registry.create(this.messageType, this.position);
 
         useNodeStore.getState().addNode(this.newNode);
     }

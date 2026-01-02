@@ -9,6 +9,7 @@ export type ActionData =
 
 // Condition node
 export interface ConditionActionData {
+    id: string;
     type: "condition";
     fields: {
         items: {
@@ -17,13 +18,13 @@ export interface ConditionActionData {
                 operator: "equals" | "not_equals" | "contains" | "regex";
                 value: any;
             }[];
-            next: string; // nodeId nếu tất cả điều kiện trong item thỏa
         }[];
     };
 }
 
 // Delay node
 export interface DelayActionData {
+    id: string;
     type: "delay";
     fields: {
         duration: string; // ms
@@ -32,6 +33,7 @@ export interface DelayActionData {
 
 // Set Variable node
 export interface SetVariableActionData {
+    id: string;
     type: "set_variable";
     fields: {
         key: string;

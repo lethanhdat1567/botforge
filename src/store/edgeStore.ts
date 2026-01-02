@@ -5,6 +5,7 @@ import {
     type Edge,
     type EdgeChange,
     type Connection,
+    MarkerType,
 } from "@xyflow/react";
 import { initialEdges } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
 
@@ -36,8 +37,13 @@ export const useEdgeStore = create<EdgeState>((set, get) => ({
 
     // Khi connect node → node
     onConnect: (connection) => {
+        const newEdge = {
+            ...connection,
+            markerEnd: { type: MarkerType.Arrow },
+        };
+
         set({
-            edges: addEdge(connection, get().edges),
+            edges: addEdge(newEdge, get().edges),
         });
     },
 

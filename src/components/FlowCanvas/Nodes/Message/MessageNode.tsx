@@ -14,14 +14,10 @@ import {
 import { useState } from "react";
 import { handleSortableDragEnd } from "@/lib/dnd";
 import FilterMessageNode from "@/components/FlowCanvas/Nodes/Message/components/FilterMessageNode/FilterMessageNode";
+import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 
 function MessageNode(props: any) {
-    const [items, setItems] = useState([
-        { id: "a", content: "Text 1", type: "text" },
-        { id: "b", content: "Text 2", type: "text" },
-        { id: "c", content: "Attachment 1", type: "attachment" },
-        { id: "d", content: "Attachment 2", type: "attachment" },
-    ]);
+    const [items, setItems] = useState(props.data.messages || []);
     const [isDragging, setIsDragging] = useState(false);
 
     return (
@@ -36,12 +32,12 @@ function MessageNode(props: any) {
                 onDragCancel={() => setIsDragging(false)}
             >
                 <SortableContext
-                    items={items.map((i) => i.id)}
+                    items={items.map((i: MessageData) => i.id)}
                     strategy={verticalListSortingStrategy}
                 >
                     {/* Base Content List */}
                     <div className="space-y-2">
-                        {items.map((item) => (
+                        {items.map((item: MessageData) => (
                             <FilterMessageNode node={item} key={item.id} />
                         ))}
                     </div>

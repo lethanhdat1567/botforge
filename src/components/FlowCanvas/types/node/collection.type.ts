@@ -10,12 +10,13 @@ export type CollectionVariableType =
     | "custom";
 
 export interface CollectionData {
+    id: string;
     type: CollectionType;
     fields: {
         text: string;
         buttons: ButtonNode[];
+        type: CollectionVariableType;
         variable: {
-            type: CollectionVariableType;
             key: string;
             value?: any;
             regex?: string;

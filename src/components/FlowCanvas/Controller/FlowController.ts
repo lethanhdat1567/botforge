@@ -5,7 +5,10 @@ import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdge
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import { CollectionData } from "@/components/FlowCanvas/types/node/collection.type";
+import {
+    CollectionData,
+    CollectionVariableType,
+} from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { FlowNodeType } from "@/components/FlowCanvas/types/node/node.type";
 import { useEdgeStore } from "@/store/edgeStore";
@@ -18,9 +21,10 @@ export const FlowController = {
         messageType:
             | MessageData["type"]
             | ActionData["type"]
-            | CollectionData["type"],
+            | CollectionVariableType,
+        position: { x: number; y: number },
     ) {
-        commandManager.execute(new AddNodeCommand(type, messageType));
+        commandManager.execute(new AddNodeCommand(type, messageType, position));
     },
 
     updateNode(nodeId: string, patch: any) {

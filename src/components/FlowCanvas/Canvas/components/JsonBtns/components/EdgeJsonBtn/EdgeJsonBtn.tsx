@@ -19,7 +19,7 @@ function EdgeJsonBtn() {
             <DialogTrigger asChild>
                 <Button variant={"outline"}>
                     <Square />
-                    View Node Json
+                    View Edge Json
                 </Button>
             </DialogTrigger>
             <DialogContent className="min-h-[50vh] max-w-[70vw]!">

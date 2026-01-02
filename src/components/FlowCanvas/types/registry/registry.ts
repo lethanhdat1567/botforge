@@ -1,5 +1,8 @@
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import { CollectionData } from "@/components/FlowCanvas/types/node/collection.type";
+import {
+    CollectionData,
+    CollectionVariableType,
+} from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import {
     FlowNodeType,
@@ -16,7 +19,8 @@ export interface NodeRegistry<
         messageType:
             | MessageData["type"]
             | ActionData["type"]
-            | CollectionData["type"],
+            | CollectionVariableType,
+        position: { x: number; y: number },
     ): NodeOf<TType, TData>;
 
     update(

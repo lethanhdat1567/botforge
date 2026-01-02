@@ -18,6 +18,7 @@ export type MessageData =
 
 // Message types
 export interface TextMessageData {
+    id: string;
     type: "text";
     fields: {
         text: string;
@@ -25,6 +26,7 @@ export interface TextMessageData {
 }
 
 export interface ButtonMessageData {
+    id: string;
     type: "button";
     fields: {
         text: string;
@@ -33,6 +35,7 @@ export interface ButtonMessageData {
 }
 
 export interface AttachmentMessageData {
+    id: string;
     type: "attachment";
     fields: {
         attachmentType: "image" | "video" | "audio" | "file";
@@ -41,6 +44,7 @@ export interface AttachmentMessageData {
 }
 
 export interface QuickRepliesData {
+    id: string;
     type: "quick_replies";
     fields: {
         text: string;
@@ -49,6 +53,7 @@ export interface QuickRepliesData {
 }
 
 export interface SenderActionsData {
+    id: string;
     type: "sender_actions";
     fields: {
         action: "typing_on" | "typing_off" | "mark_seen";
@@ -56,6 +61,7 @@ export interface SenderActionsData {
 }
 
 export interface WelcomeScreenData {
+    id: string;
     type: "welcome_screen";
     fields: {
         text: string;
@@ -65,6 +71,7 @@ export interface WelcomeScreenData {
 }
 
 export interface PersistentMenuData {
+    id: string;
     type: "persistent_menu";
     fields: {
         text: string;
@@ -73,6 +80,7 @@ export interface PersistentMenuData {
 }
 
 export interface GenericTemplateElement {
+    id: string;
     title: string;
     subtitle?: string;
     image_url?: string;
@@ -84,6 +92,7 @@ export interface GenericTemplateElement {
     buttons?: ButtonNode[];
 }
 export interface GenericTemplateData {
+    id: string;
     type: "generic_template";
     fields: {
         elements: GenericTemplateElement[];
@@ -91,6 +100,7 @@ export interface GenericTemplateData {
 }
 
 export interface CouponTemplateElement {
+    id: string;
     title: string;
     coupon_code?: string;
     coupon_pre_message?: string;
@@ -102,12 +112,14 @@ export interface CouponTemplateElement {
 }
 
 export interface CouponTemplateData {
+    id: string;
     type: "coupon_template";
     fields: CouponTemplateElement;
 }
 
 // 2️⃣ Data/Node của Media Template
 export interface MediaTemplateData {
+    id: string;
     type: "media_template";
     fields: {
         media_type: "image" | "video";
@@ -116,6 +128,7 @@ export interface MediaTemplateData {
     };
 }
 export interface ReceiptTemplateElement {
+    id: string;
     recipient_name: string;
     order_number: string;
     currency: string;
@@ -151,6 +164,7 @@ export interface ReceiptTemplateElement {
 
 // Receipt template data kiểu MessageNode
 export interface ReceiptTemplateData {
+    id: string;
     type: "receipt_template";
     fields: ReceiptTemplateElement;
 }

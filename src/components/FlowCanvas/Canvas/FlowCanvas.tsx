@@ -3,10 +3,10 @@
 import { ReactFlow, Background, Controls, Panel } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
-import ContextMenuWrapper from "@/components/FlowCanvas/Canvas/components/ContextMenu/ContextMenuWrapper";
 import { useNodeStore } from "@/store/nodeStore";
 import { useEdgeStore } from "@/store/edgeStore";
 import JsonBtns from "@/components/FlowCanvas/Canvas/components/JsonBtns/JsonBtns";
+import ContextMenu from "@/components/FlowCanvas/Canvas/components/ContextMenu/ContextMenu";
 
 function FlowCanvas() {
     const nodes = useNodeStore((s) => s.nodes);
@@ -17,25 +17,24 @@ function FlowCanvas() {
     const onConnect = useEdgeStore((s) => s.onConnect);
 
     return (
-        <ContextMenuWrapper>
-            <div className="flow_canvas h-screen w-full">
-                <ReactFlow
-                    nodes={nodes}
-                    edges={edges}
-                    nodeTypes={nodeTypes}
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
-                    onConnect={onConnect}
-                    fitView
-                >
-                    <Background />
-                    <Controls />
-                    <Panel position="top-center">
-                        <JsonBtns />
-                    </Panel>
-                </ReactFlow>
-            </div>
-        </ContextMenuWrapper>
+        <div className="flow_canvas h-screen w-full">
+            <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={nodeTypes}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                fitView
+            >
+                <Background />
+                <Controls />
+                <Panel position="top-center">
+                    <JsonBtns />
+                </Panel>
+                <ContextMenu />
+            </ReactFlow>
+        </div>
     );
 }
 
