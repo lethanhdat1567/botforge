@@ -1,3 +1,6 @@
+"use client";
+
+import { useHydrated } from "@/hooks/use-hydrated";
 import { GripVertical, Plus, Trash } from "lucide-react";
 
 type Props = {
@@ -6,6 +9,10 @@ type Props = {
 };
 
 function ContentToolbar({ dragListeners, dragAttributes }: Props) {
+    const hydrated = useHydrated();
+
+    if (!hydrated) return null;
+
     return (
         <div className="bg-background absolute top-1/2 -left-3 z-9999 hidden w-10 -translate-x-full -translate-y-1/2 flex-col items-center gap-1 rounded-sm border p-1 shadow-md group-hover:flex">
             {/* DRAG HANDLE */}

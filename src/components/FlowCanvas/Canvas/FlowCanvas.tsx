@@ -1,58 +1,41 @@
 "use client";
 
-import {
-    ReactFlow,
-    applyNodeChanges,
-    applyEdgeChanges,
-    addEdge,
-    Background,
-    Controls,
-    OnNodesChange,
-    OnConnect,
-    OnEdgesChange,
-    Node,
-    Edge,
-} from "@xyflow/react";
-import { useCallback, useState } from "react";
+import { ReactFlow, Background, Controls, Panel } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import {
-    initialEdges,
-    initialNodes,
-    nodeTypes,
-} from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
+import { nodeTypes } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
+import ContextMenuWrapper from "@/components/FlowCanvas/Canvas/components/ContextMenu/ContextMenuWrapper";
+import { useNodeStore } from "@/store/nodeStore";
+import { useEdgeStore } from "@/store/edgeStore";
+import JsonBtns from "@/components/FlowCanvas/Canvas/components/JsonBtns/JsonBtns";
 
 function FlowCanvas() {
-    const [nodes, setNodes] = useState<Node[]>(initialNodes);
-    const [edges, setEdges] = useState<Edge[]>(initialEdges);
+    const nodes = useNodeStore((s) => s.nodes);
+    const edges = useEdgeStore((s) => s.edges);
 
-    const onNodesChange: OnNodesChange = useCallback(
-        (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-        [setNodes],
-    );
-    const onEdgesChange: OnEdgesChange = useCallback(
-        (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-        [setEdges],
-    );
-    const onConnect: OnConnect = useCallback(
-        (connection) => setEdges((eds) => addEdge(connection, eds)),
-        [setEdges],
-    );
+    const onNodesChange = useNodeStore((s) => s.onNodesChange);
+    const onEdgesChange = useEdgeStore((s) => s.onEdgesChange);
+    const onConnect = useEdgeStore((s) => s.onConnect);
 
     return (
-        <div className="h-screen w-full">
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                nodeTypes={nodeTypes}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                fitView
-            >
-                <Background />
-                <Controls />
-            </ReactFlow>
-        </div>
+        <ContextMenuWrapper>
+            <div className="flow_canvas h-screen w-full">
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    nodeTypes={nodeTypes}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    fitView
+                >
+                    <Background />
+                    <Controls />
+                    <Panel position="top-center">
+                        <JsonBtns />
+                    </Panel>
+                </ReactFlow>
+            </div>
+        </ContextMenuWrapper>
     );
 }
 

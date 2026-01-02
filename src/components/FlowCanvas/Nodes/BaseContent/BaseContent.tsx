@@ -35,7 +35,7 @@ function BaseContent({ id, children, error, isContentDragging }: Props) {
         >
             {/* Content Wrapper */}
             <div
-                className={`bg-muted overflow-hidden rounded-sm border border-transparent hover:border-blue-500 ${
+                className={`bg-muted rounded-sm border border-transparent hover:border-blue-500 ${
                     error ? "border-red-500!" : ""
                 }`}
             >

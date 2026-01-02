@@ -1,20 +1,26 @@
-import { MessageCircle } from "lucide-react";
+"use client";
 
-function Heading({ color, name }: { color: string; name: string }) {
+type Props = {
+    nodeTypeData: { color: string; icon: any };
+    name: string;
+};
+
+function Heading({ nodeTypeData, name }: Props) {
+    const Icon = nodeTypeData.icon;
+
     return (
         <div className="flex items-center gap-1">
             <span
-                className={`bg-background flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-${color}`}
+                className={`bg-background flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border`}
+                style={{ borderColor: nodeTypeData.color }}
             >
-                <MessageCircle
+                <Icon
                     size={14}
-                    className={`text-${color} bg-${color} `}
+                    color={nodeTypeData.color}
+                    fill={nodeTypeData.color}
                 />
             </span>
-            <input
-                className="focus:border-foreground flex-1 border border-transparent outline-none"
-                value={name}
-            />
+            <input className="focus:border-foreground flex-1 border border-transparent outline-none" />
         </div>
     );
 }

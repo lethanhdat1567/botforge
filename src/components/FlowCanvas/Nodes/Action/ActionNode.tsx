@@ -1,5 +1,6 @@
 "use client";
 
+import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
 import BaseNode from "@/components/FlowCanvas/Nodes/BaseNode/BaseNode";
 import { DndContext } from "@dnd-kit/core";
 import {
@@ -13,14 +14,14 @@ import {
 
 import { useState } from "react";
 import { handleSortableDragEnd } from "@/lib/dnd";
-import FilterMessageNode from "@/components/FlowCanvas/Nodes/Message/components/FilterMessageNode/FilterMessageNode";
+import FilterActionNode from "@/components/FlowCanvas/Nodes/Action/components/FilterActionNode/FilterActionNode";
 
-function MessageNode(props: any) {
+function ActionNode(props: any) {
     const [items, setItems] = useState([
-        { id: "a", content: "Text 1", type: "text" },
-        { id: "b", content: "Text 2", type: "text" },
-        { id: "c", content: "Attachment 1", type: "attachment" },
-        { id: "d", content: "Attachment 2", type: "attachment" },
+        { id: "a", content: "Delay 1", type: "delay" },
+        { id: "b", content: "Delay 2", type: "delay" },
+        { id: "c", content: "Delay 3", type: "delay" },
+        { id: "d", content: "Delay 4", type: "delay" },
     ]);
     const [isDragging, setIsDragging] = useState(false);
 
@@ -40,15 +41,13 @@ function MessageNode(props: any) {
                     strategy={verticalListSortingStrategy}
                 >
                     {/* Base Content List */}
-                    <div className="space-y-2">
-                        {items.map((item) => (
-                            <FilterMessageNode node={item} key={item.id} />
-                        ))}
-                    </div>
+                    {items.map((item) => (
+                        <FilterActionNode node={item} key={item.id} />
+                    ))}
                 </SortableContext>
             </DndContext>
         </BaseNode>
     );
 }
 
-export default MessageNode;
+export default ActionNode;

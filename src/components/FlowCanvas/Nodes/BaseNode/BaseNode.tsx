@@ -1,6 +1,7 @@
 import AddFieldFooter from "@/components/FlowCanvas/Nodes/BaseNode/components/AddFieldFooter/AddFieldFooter";
 import Handler from "@/components/FlowCanvas/Nodes/BaseNode/components/Handler/Handler";
 import Heading from "@/components/FlowCanvas/Nodes/BaseNode/components/Heading/Heading";
+import Toolbar from "@/components/FlowCanvas/Nodes/BaseNode/components/Toolbar/Toolbar";
 import {
     NodeType,
     typeNodeData,
@@ -17,10 +18,11 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
 
     return (
         <div
-            className={`${isContentDragging ? "nodrag" : ""} bg-background w-70 space-y-4 rounded-md border p-3 pb-0 text-[14px] hover:border-${nodeTypeData.color} ${childProps.selected ? `border-${nodeTypeData.color}` : ""} `}
+            style={{ "--c": nodeTypeData.color } as React.CSSProperties}
+            className={` ${isContentDragging ? "nodrag" : ""} group/base bg-background w-70 space-y-4 rounded-md border p-3 pb-0 text-[14px] hover:border-(--c) ${childProps.selected ? "border-(--c)" : ""} `}
         >
             {/* Heading */}
-            <Heading color={nodeTypeData.color} name={childProps.data.label} />
+            <Heading nodeTypeData={nodeTypeData} name={childProps.data.label} />
 
             {/* Content */}
             <div>{children}</div>
@@ -30,6 +32,9 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
 
             {/* Handler */}
             <Handler />
+
+            {/* Toolbar */}
+            <Toolbar />
         </div>
     );
 }
