@@ -1,9 +1,75 @@
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
+import ButtonList from "@/components/FlowCanvas/Nodes/BasicComp/Button/ButtonList";
+import UploadBtn from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/UploadBtn";
+import View from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/View/View";
+import { MediaTemplateData } from "@/components/FlowCanvas/types/node/message.type";
+import { uploadService } from "@/services/uploadService";
+import { useState } from "react";
 
-function MediaNode({ node }: { node: any }) {
+type Props = {
+    nodeId: string;
+    payload: MediaTemplateData;
+};
+
+function MediaNode({ nodeId, payload }: Props) {
+    const [errors, setErrors] = useState([]);
+    const { media_url, buttons } = payload.fields;
+
+    async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const res = await uploadService.uploadFile(file);
+            FlowController.updateNodePayload(nodeId, payload.id, {
+                media_url: res.data.data.path,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function handleDestroy() {
+        try {
+            await uploadService.deleteFile(media_url);
+            FlowController.updateNodePayload(nodeId, payload.id, {
+                media_url: "",
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function handleUpdateBtnList(buttons: any) {
+        FlowController.updateNodePayload(nodeId, payload.id, {
+            buttons,
+        });
+    }
+
     return (
-        <BaseContent id={node.id}>
-            <div className="p-2">Media Node</div>
+        <BaseContent id={nodeId} errors={errors}>
+            <div className="space-y-4 p-2">
+                {media_url ? (
+                    <View
+                        type={"image"}
+                        src={media_url}
+                        onDestroy={handleDestroy}
+                    />
+                ) : (
+                    <UploadBtn
+                        payloadId={payload.id}
+                        attachmentType={"image"}
+                        onUpload={handleUpload}
+                    />
+                )}
+
+                <ButtonList
+                    buttonLists={buttons || []}
+                    setButtonList={handleUpdateBtnList}
+                    setErrors={setErrors}
+                />
+            </div>
         </BaseContent>
     );
 }

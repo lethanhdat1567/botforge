@@ -17,11 +17,29 @@ export function getDefaultMessageData(type: MessageData["type"]): MessageData {
                 type: "button",
                 fields: { text: "", buttons: [] as ButtonNode[] },
             };
-        case "attachment":
+        case "image":
             return {
                 id,
-                type: "attachment",
-                fields: { attachmentType: "image", url: "" },
+                type: "image",
+                fields: {
+                    url: "",
+                },
+            };
+        case "audio":
+            return {
+                id,
+                type: "audio",
+                fields: {
+                    url: "",
+                },
+            };
+        case "video":
+            return {
+                id,
+                type: "video",
+                fields: {
+                    url: "",
+                },
             };
         case "sender_actions":
             return {
@@ -49,12 +67,36 @@ export function getDefaultMessageData(type: MessageData["type"]): MessageData {
                     elements: [
                         {
                             id: uuid(),
-                            title: "Tiêu đề mẫu",
-                            subtitle: "Mô tả mẫu",
+                            title: "",
+                            subtitle: "",
                             image_url: "",
                             default_action: {
                                 type: "web_url",
-                                url: "https://example.com",
+                                url: "",
+                                webview_height_ratio: "full",
+                            },
+                            buttons: [],
+                        } as GenericTemplateElement,
+                        {
+                            id: uuid(),
+                            title: "",
+                            subtitle: "",
+                            image_url: "",
+                            default_action: {
+                                type: "web_url",
+                                url: "",
+                                webview_height_ratio: "full",
+                            },
+                            buttons: [],
+                        } as GenericTemplateElement,
+                        {
+                            id: uuid(),
+                            title: "",
+                            subtitle: "",
+                            image_url: "",
+                            default_action: {
+                                type: "web_url",
+                                url: "",
                                 webview_height_ratio: "full",
                             },
                             buttons: [],

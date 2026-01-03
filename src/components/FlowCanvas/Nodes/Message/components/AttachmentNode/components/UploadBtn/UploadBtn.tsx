@@ -1,23 +1,27 @@
-import { filterAttachemnt } from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/helpers";
+import { filterAttachment } from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/helpers";
 import { Plus } from "lucide-react";
 
-type Props = { attachmentType: string; onUpload: any };
+type Props = {
+    attachmentType: "image" | "audio" | "video";
+    onUpload: any;
+    payloadId: string;
+};
 
-function UploadBtn({ attachmentType, onUpload }: Props) {
+function UploadBtn({ attachmentType, onUpload, payloadId }: Props) {
     return (
         <div className="flex h-10 w-full items-center justify-center">
             <label
-                htmlFor="upload"
+                htmlFor={payloadId}
                 className="flex w-full items-center justify-center gap-2"
             >
                 <Plus size={16} />
-                Upload image
+                Upload {attachmentType}
             </label>
             <input
-                id="upload"
+                id={payloadId}
                 className="hidden"
                 type="file"
-                accept={filterAttachemnt(attachmentType)}
+                accept={filterAttachment(attachmentType)}
                 onChange={onUpload}
             />
         </div>

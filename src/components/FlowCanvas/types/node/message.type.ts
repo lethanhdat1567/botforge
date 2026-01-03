@@ -3,8 +3,9 @@ import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 export type MessageData =
     | TextMessageData
     | ButtonMessageData
-    | AttachmentMessageData
-    // | QuickRepliesData
+    | ImageAttachmentData
+    | AudioAttachmentData
+    | VideoAttachmentData
     | SenderActionsData
     | WelcomeScreenData
     | PersistentMenuData
@@ -31,12 +32,28 @@ export interface ButtonMessageData {
     };
 }
 
-export interface AttachmentMessageData {
+export interface ImageAttachmentData {
     id: string;
-    type: "attachment";
+    type: "image";
     fields: {
-        attachmentType: "image" | "video" | "audio" | "file";
         url: string;
+    };
+}
+
+export interface AudioAttachmentData {
+    id: string;
+    type: "audio";
+    fields: {
+        url: string;
+    };
+}
+
+export interface VideoAttachmentData {
+    id: string;
+    type: "video";
+    fields: {
+        url: string;
+        poster?: string; // thumbnail nếu cần
     };
 }
 
@@ -81,7 +98,7 @@ export interface GenericTemplateElement {
     title: string;
     subtitle?: string;
     image_url?: string;
-    default_action?: {
+    default_action: {
         type: "web_url";
         url: string;
         webview_height_ratio?: "compact" | "tall" | "full";

@@ -2,12 +2,20 @@ import api from "@/config/axios";
 
 export const uploadService = {
     uploadFile: async (file: File) => {
-        await api.post("/api/upload/image", file);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return api.post("/upload/image", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     },
+
     uploadMutipleFiles: async (files: File[]) => {
-        await api.post("/api/upload/images", files);
+        await api.post("/upload/images", files);
     },
     deleteFile: async (path: string) => {
-        await api.delete(`/api/upload/${path}`);
+        await api.delete(`/upload/`, { params: { path } });
     },
 };

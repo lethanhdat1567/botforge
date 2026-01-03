@@ -9,19 +9,20 @@ type Props = {
     className?: string;
     value: string;
     onChange: (value: string) => void;
-    setErrors: any;
+    setErrors?: any;
 };
 
 function TextArea({ className, value, onChange, setErrors }: Props) {
     const [inputValue, setInputValue] = useState(value);
     const debouceValue = useDebounce(inputValue, 300);
-    const isError = !inputValue.trim();
+    const isError = setErrors && !inputValue.trim();
 
     useEffect(() => {
         onChange(debouceValue);
     }, [debouceValue]);
 
     useEffect(() => {
+        if (!setErrors) return;
         if (inputValue.trim() === "") {
             setErrors((prev: any[]) => {
                 const hasTextError = prev.some(

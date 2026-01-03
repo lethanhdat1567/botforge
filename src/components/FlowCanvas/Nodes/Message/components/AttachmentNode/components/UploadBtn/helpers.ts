@@ -1,5 +1,14 @@
-export function filterAttachemnt(attachmentType: string) {
-    if (attachmentType === "image") return "image/*";
-    if (attachmentType === "video") return "video/*";
-    if (attachmentType === "audio") return "audio/*";
+export type MediaType = "image" | "audio" | "video";
+
+export function filterAttachment(type: MediaType): string {
+    switch (type) {
+        case "image":
+            return "image/*";
+        case "audio":
+            return "audio/*";
+        case "video":
+            return "video/*";
+        default:
+            return "";
+    }
 }

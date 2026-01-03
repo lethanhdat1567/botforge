@@ -1,4 +1,12 @@
-import { MessageCircle, Zap, Type, Folder } from "lucide-react";
+import {
+    MessageCircle,
+    Zap,
+    Type,
+    Folder,
+    ImageIcon,
+    Volume2,
+    Video,
+} from "lucide-react";
 
 export const menuData = [
     {
@@ -16,12 +24,28 @@ export const menuData = [
                 color: "#4988C4",
             },
             {
-                id: "attachment",
-                type: "attachment",
-                title: "Attachment",
-                icon: Type,
-                color: "#4988C4",
+                id: "image",
+                type: "image",
+                title: "Image",
+                icon: ImageIcon, // ví dụ: Image, ImagePlus
+                color: "#4F8EF7",
             },
+            {
+                id: "audio",
+                type: "audio",
+                title: "Audio",
+                icon: Volume2, // lucide-react
+                color: "#22C55E",
+            },
+
+            {
+                id: "video",
+                type: "video",
+                title: "Video",
+                icon: Video, // lucide-react
+                color: "#A855F7",
+            },
+
             {
                 id: "quick_replies",
                 type: "quick_replies",
