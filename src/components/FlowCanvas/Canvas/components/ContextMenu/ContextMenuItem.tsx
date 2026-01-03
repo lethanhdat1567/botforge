@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 
 type MenuItem = {
@@ -23,10 +24,10 @@ function ContextMenuItem({
     parentCategory,
     isChild = false,
 }: Props) {
+    const [open, setOpen] = useState(false); // state để mở submenu
     const Icon = item.icon;
 
     const handleClick = () => {
-        // Nếu item là child (có type) thì gọi callback với { category, type }
         if (item.type && onSelectNode) {
             onSelectNode({
                 category: parentCategory || "",
@@ -36,14 +37,16 @@ function ContextMenuItem({
     };
 
     return (
-        <div className="group relative">
+        <div
+            className="relative"
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+        >
             {/* Item */}
             <div
                 onClick={handleClick}
-                className="flex cursor-pointer items-center justify-between px-3 py-2.5 hover:bg-gray-100"
-                style={{
-                    color: isChild ? "#000" : item.color,
-                }}
+                className="flex cursor-pointer items-center justify-between px-3 py-2.5 transition-colors hover:bg-gray-100"
+                style={{ color: isChild ? "#000" : item.color }}
             >
                 <div className="flex items-center gap-2">
                     {Icon && (
@@ -58,14 +61,14 @@ function ContextMenuItem({
             </div>
 
             {/* Sub menu */}
-            {item.children && (
-                <div className="bg-background absolute top-0 right-0 w-60 translate-x-full border opacity-0 shadow group-hover:pointer-events-auto group-hover:opacity-100">
-                    {item.children.map((child) => (
+            {item.children && open && (
+                <div className="bg-background absolute top-0 right-0 z-50 w-60 translate-x-full border shadow-md">
+                    {item.children.map((child: MenuItem) => (
                         <ContextMenuItem
                             key={child.id}
                             item={child}
                             onSelectNode={onSelectNode}
-                            parentCategory={item.category} // truyền category parent xuống child
+                            parentCategory={item.category || parentCategory} // truyền đúng category
                             isChild={true}
                         />
                     ))}

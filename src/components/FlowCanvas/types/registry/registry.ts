@@ -28,5 +28,11 @@ export interface NodeRegistry<
         patch: Partial<TData>,
     ): NodeOf<TType, TData>;
 
+    updatePayload?(
+        node: NodeOf<TType, TData>,
+        payloadId: string,
+        patch: any,
+    ): NodeOf<TType, TData>;
+
     onDelete?(node: NodeOf<TType, TData>): void;
 }

@@ -28,4 +28,23 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
             data: { ...node.data, ...patch },
         };
     },
+    updatePayload(node, payloadId, patch) {
+        return {
+            ...node,
+            data: {
+                ...node.data,
+                messages: node.data.messages.map((msg) =>
+                    msg.id === payloadId
+                        ? {
+                              ...msg,
+                              fields: {
+                                  ...msg.fields,
+                                  ...patch,
+                              },
+                          }
+                        : msg,
+                ),
+            },
+        };
+    },
 };

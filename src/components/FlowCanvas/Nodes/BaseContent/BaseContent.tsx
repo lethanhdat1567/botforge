@@ -6,11 +6,11 @@ import { CSS } from "@dnd-kit/utilities";
 type Props = {
     id: string;
     children?: React.ReactNode;
-    error?: string;
+    errors?: Array<{ field: string; message: string }>;
     isContentDragging?: boolean;
 };
 
-function BaseContent({ id, children, error, isContentDragging }: Props) {
+function BaseContent({ id, children, errors, isContentDragging }: Props) {
     const {
         setNodeRef,
         listeners,
@@ -25,6 +25,8 @@ function BaseContent({ id, children, error, isContentDragging }: Props) {
         transition,
     };
 
+    const isError = errors && errors.length > 0;
+
     return (
         <div
             ref={setNodeRef}
@@ -36,14 +38,14 @@ function BaseContent({ id, children, error, isContentDragging }: Props) {
             {/* Content Wrapper */}
             <div
                 className={`bg-muted rounded-sm border border-transparent hover:border-blue-500 ${
-                    error ? "border-red-500!" : ""
+                    isError ? "border-red-500!" : ""
                 }`}
             >
                 {children}
             </div>
 
             {/* Alert Badge */}
-            {error && <AlertBagde message={error} />}
+            {isError && <AlertBagde errors={errors} />}
 
             {/* Toolbar = drag handle */}
             {!isContentDragging && (

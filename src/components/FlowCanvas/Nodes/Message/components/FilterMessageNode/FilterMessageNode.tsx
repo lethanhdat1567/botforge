@@ -1,26 +1,24 @@
 import AttachmentNode from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/AttachmentNode";
-import ButtonNode from "@/components/FlowCanvas/Nodes/Message/components/ButtonNode/ButtonNode";
 import GenericNode from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/GenericNode";
 import MediaNode from "@/components/FlowCanvas/Nodes/Message/components/MediaNode/MediaNode";
 import TextNode from "@/components/FlowCanvas/Nodes/Message/components/TextNode/TextNode";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 
 type Props = {
-    node: MessageData;
+    nodeId: string;
+    payload: MessageData;
 };
 
-function FilterMessageNode({ node }: Props) {
-    switch (node.type) {
-        case "text":
-            return <TextNode node={node} />;
+function FilterMessageNode({ payload, nodeId }: Props) {
+    switch (payload.type) {
         case "button":
-            return <ButtonNode node={node} />;
+            return <TextNode payload={payload} nodeId={nodeId} />;
         case "attachment":
-            return <AttachmentNode node={node} />;
+            return <AttachmentNode payload={payload} nodeId={nodeId} />;
         case "media_template":
-            return <MediaNode node={node} />;
+            return <MediaNode payload={payload} nodeId={nodeId} />;
         case "generic_template":
-            return <GenericNode node={node} />;
+            return <GenericNode payload={payload} nodeId={nodeId} />;
         default:
             return <div>Unknown Node Type</div>;
     }

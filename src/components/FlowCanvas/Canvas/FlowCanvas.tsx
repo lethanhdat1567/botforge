@@ -2,11 +2,11 @@
 
 import { ReactFlow, Background, Controls, Panel } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { nodeTypes } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
 import { useNodeStore } from "@/store/nodeStore";
 import { useEdgeStore } from "@/store/edgeStore";
 import JsonBtns from "@/components/FlowCanvas/Canvas/components/JsonBtns/JsonBtns";
 import ContextMenu from "@/components/FlowCanvas/Canvas/components/ContextMenu/ContextMenu";
+import { nodeTypes } from "@/components/FlowCanvas/Canvas/components/nodeType";
 
 function FlowCanvas() {
     const nodes = useNodeStore((s) => s.nodes);

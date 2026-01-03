@@ -1,7 +1,10 @@
-type ButtonPayload = {
-    key?: string;
-    value?: string;
-    next?: string;
+type PostbackPayload = {
+    variable: string;
+    value: string;
+};
+
+type URLPayLoad = {
+    url: string;
 };
 
 // Kiểu cho button riêng lẻ
@@ -10,16 +13,16 @@ export type ButtonNode =
           id: string;
           type: "postback";
           title: string;
-          payload: ButtonPayload;
+          payload: PostbackPayload;
       }
     | {
           id: string;
           type: "url";
           title: string;
-          url: string;
+          payload: URLPayLoad;
+      }
+    | {
+          id: string;
+          type: "continue";
+          title: string;
       };
-
-export type QuickReply = {
-    title: string;
-    payload: ButtonPayload;
-};

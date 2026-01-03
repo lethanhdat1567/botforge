@@ -4,11 +4,9 @@ import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager"
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
+import { UpdatePayloadCommand } from "@/components/FlowCanvas/Commands/UpdateNodePayloadCommand";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import {
-    CollectionData,
-    CollectionVariableType,
-} from "@/components/FlowCanvas/types/node/collection.type";
+import { CollectionVariableType } from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { FlowNodeType } from "@/components/FlowCanvas/types/node/node.type";
 import { useEdgeStore } from "@/store/edgeStore";
@@ -29,6 +27,12 @@ export const FlowController = {
 
     updateNode(nodeId: string, patch: any) {
         commandManager.execute(new UpdateNodeCommand(nodeId, patch));
+    },
+
+    updateNodePayload(nodeId: string, payloadId: string, patch: any) {
+        commandManager.execute(
+            new UpdatePayloadCommand(nodeId, payloadId, patch),
+        );
     },
 
     connect(connection: Connection) {

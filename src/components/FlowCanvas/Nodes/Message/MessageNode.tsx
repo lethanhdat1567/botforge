@@ -11,7 +11,7 @@ import {
     restrictToParentElement,
 } from "@dnd-kit/modifiers";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleSortableDragEnd } from "@/lib/dnd";
 import FilterMessageNode from "@/components/FlowCanvas/Nodes/Message/components/FilterMessageNode/FilterMessageNode";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
@@ -19,6 +19,10 @@ import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 function MessageNode(props: any) {
     const [items, setItems] = useState(props.data.messages || []);
     const [isDragging, setIsDragging] = useState(false);
+
+    useEffect(() => {
+        setItems(props.data.messages || []);
+    }, [props]);
 
     return (
         <BaseNode childProps={props} isContentDragging={isDragging}>
@@ -38,7 +42,11 @@ function MessageNode(props: any) {
                     {/* Base Content List */}
                     <div className="space-y-2">
                         {items.map((item: MessageData) => (
-                            <FilterMessageNode node={item} key={item.id} />
+                            <FilterMessageNode
+                                nodeId={props.id}
+                                payload={item}
+                                key={item.id}
+                            />
                         ))}
                     </div>
                 </SortableContext>

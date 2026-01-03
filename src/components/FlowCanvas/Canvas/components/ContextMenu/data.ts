@@ -16,13 +16,6 @@ export const menuData = [
                 color: "#4988C4",
             },
             {
-                id: "button",
-                type: "button",
-                title: "Button",
-                icon: Type,
-                color: "#4988C4",
-            },
-            {
                 id: "attachment",
                 type: "attachment",
                 title: "Attachment",

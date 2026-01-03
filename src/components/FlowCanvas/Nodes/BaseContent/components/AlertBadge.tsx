@@ -5,7 +5,14 @@ import {
 } from "@/components/ui/tooltip";
 import { TriangleAlert } from "lucide-react";
 
-function AlertBagde({ message }: { message: string }) {
+type Props = {
+    errors: {
+        field: string;
+        message: string;
+    }[];
+};
+
+function AlertBagde({ errors }: Props) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
@@ -13,8 +20,10 @@ function AlertBagde({ message }: { message: string }) {
                     <TriangleAlert fill="red" color="background" size={16} />
                 </div>
             </TooltipTrigger>
-            <TooltipContent side="right">
-                <p>{message}</p>
+            <TooltipContent side="right" className="space-y-2">
+                {errors.map((error, index) => (
+                    <p key={index}>- {error.message}</p>
+                ))}
             </TooltipContent>
         </Tooltip>
     );

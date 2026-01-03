@@ -1,7 +1,4 @@
-import {
-    ButtonNode,
-    QuickReply,
-} from "@/components/FlowCanvas/types/node/button.type";
+import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 import {
     MessageData,
     GenericTemplateElement,
@@ -15,8 +12,6 @@ export function getDefaultMessageData(type: MessageData["type"]): MessageData {
 
     switch (type) {
         case "text":
-            return { id, type: "text", fields: { text: "" } };
-        case "button":
             return {
                 id,
                 type: "button",
@@ -27,12 +22,6 @@ export function getDefaultMessageData(type: MessageData["type"]): MessageData {
                 id,
                 type: "attachment",
                 fields: { attachmentType: "image", url: "" },
-            };
-        case "quick_replies":
-            return {
-                id,
-                type: "quick_replies",
-                fields: { text: "", quickReplies: [] as QuickReply[] },
             };
         case "sender_actions":
             return {

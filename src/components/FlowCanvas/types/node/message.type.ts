@@ -1,13 +1,10 @@
-import {
-    ButtonNode,
-    QuickReply,
-} from "@/components/FlowCanvas/types/node/button.type";
+import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 
 export type MessageData =
     | TextMessageData
     | ButtonMessageData
     | AttachmentMessageData
-    | QuickRepliesData
+    // | QuickRepliesData
     | SenderActionsData
     | WelcomeScreenData
     | PersistentMenuData
@@ -43,14 +40,14 @@ export interface AttachmentMessageData {
     };
 }
 
-export interface QuickRepliesData {
-    id: string;
-    type: "quick_replies";
-    fields: {
-        text: string;
-        quickReplies: QuickReply[];
-    };
-}
+// export interface QuickRepliesData {
+//     id: string;
+//     type: "quick_replies";
+//     fields: {
+//         text: string;
+//         quickReplies: QuickReply[];
+//     };
+// }
 
 export interface SenderActionsData {
     id: string;

@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import { applyNodeChanges, type NodeChange } from "@xyflow/react";
-import {
-    FlowNode,
-    FlowNodeType,
-} from "@/components/FlowCanvas/types/node/node.type";
+import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { NodeRegistryMap } from "@/components/FlowCanvas/Registry";
 import { initialNodes } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
 
@@ -17,6 +14,7 @@ interface NodeState {
     setNodes: (nodes: FlowNode[]) => void;
     addNode: (node: FlowNode) => void;
     updateNode: (id: string, patch: any) => void;
+    updateNodePayload: (nodeId: string, payloadId: string, patch: any) => void;
     removeNode: (id: string) => void;
 
     resetNodes: () => void;
@@ -47,6 +45,19 @@ export const useNodeStore = create<NodeState>((set, get) => ({
 
                 const registry = NodeRegistryMap[node.type];
                 return registry.update(node as any, patch);
+            }),
+        });
+    },
+
+    updateNodePayload: (nodeId: string, payloadId: string, patch: any) => {
+        set({
+            nodes: get().nodes.map((node) => {
+                if (node.id !== nodeId) return node;
+
+                const registry = NodeRegistryMap[node.type];
+                if (!registry.updatePayload) return node;
+
+                return registry.updatePayload(node as any, payloadId, patch);
             }),
         });
     },
