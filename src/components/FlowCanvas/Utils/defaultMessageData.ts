@@ -77,30 +77,6 @@ export function getDefaultMessageData(type: MessageData["type"]): MessageData {
                             },
                             buttons: [],
                         } as GenericTemplateElement,
-                        {
-                            id: uuid(),
-                            title: "",
-                            subtitle: "",
-                            image_url: "",
-                            default_action: {
-                                type: "web_url",
-                                url: "",
-                                webview_height_ratio: "full",
-                            },
-                            buttons: [],
-                        } as GenericTemplateElement,
-                        {
-                            id: uuid(),
-                            title: "",
-                            subtitle: "",
-                            image_url: "",
-                            default_action: {
-                                type: "web_url",
-                                url: "",
-                                webview_height_ratio: "full",
-                            },
-                            buttons: [],
-                        } as GenericTemplateElement,
                     ],
                 },
             };

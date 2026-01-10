@@ -16,6 +16,7 @@ interface NodeState {
     updateNode: (id: string, patch: any) => void;
     updateNodePayload: (nodeId: string, payloadId: string, patch: any) => void;
     removeNode: (id: string) => void;
+    markStartNode: (nodeId: string) => void;
 
     resetNodes: () => void;
 }
@@ -55,6 +56,7 @@ export const useNodeStore = create<NodeState>((set, get) => ({
                 if (node.id !== nodeId) return node;
 
                 const registry = NodeRegistryMap[node.type];
+
                 if (!registry.updatePayload) return node;
 
                 return registry.updatePayload(node as any, payloadId, patch);
@@ -71,6 +73,28 @@ export const useNodeStore = create<NodeState>((set, get) => ({
 
         set({
             nodes: get().nodes.filter((n) => n.id !== id),
+        });
+    },
+
+    markStartNode: (nodeId: string) => {
+        set({
+            nodes: get().nodes.map((node) => {
+                const registry = NodeRegistryMap[node.type];
+
+                if (!registry) return node;
+
+                // node được chọn
+                if (node.id === nodeId) {
+                    return registry.update(node as any, { markStart: true });
+                }
+
+                // các node khác => false
+                if (node.data?.markStart) {
+                    return registry.update(node as any, { markStart: false });
+                }
+
+                return node;
+            }),
         });
     },
 

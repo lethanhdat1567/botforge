@@ -1,12 +1,29 @@
 "use client";
 
+import useDebounce from "@/hooks/use-debounce";
+import { useNodeStore } from "@/store/nodeStore";
+import { useEffect, useState } from "react";
+
 type Props = {
     nodeTypeData: { color: string; icon: any };
     name: string;
+    nodeId: string;
 };
 
-function Heading({ nodeTypeData, name }: Props) {
+function Heading({ nodeTypeData, name, nodeId }: Props) {
+    const updateNode = useNodeStore((state) => state.updateNode);
+    const [nameInput, setNameInput] = useState(name);
+    const debounceValue = useDebounce(nameInput, 500);
+
     const Icon = nodeTypeData.icon;
+
+    useEffect(() => {
+        setNameInput(name);
+    }, [name]);
+
+    useEffect(() => {
+        updateNode(nodeId, { label: debounceValue });
+    }, [debounceValue]);
 
     return (
         <div className="flex items-center gap-1">
@@ -20,7 +37,11 @@ function Heading({ nodeTypeData, name }: Props) {
                     fill={nodeTypeData.color}
                 />
             </span>
-            <input className="focus:border-foreground flex-1 border border-transparent outline-none" />
+            <input
+                className="focus:border-foreground flex-1 border border-transparent outline-none"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+            />
         </div>
     );
 }

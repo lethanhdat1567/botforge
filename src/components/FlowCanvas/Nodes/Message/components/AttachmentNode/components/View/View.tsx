@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { resolveImageSrc } from "@/lib/image";
+import { resolveMediaSrc } from "@/lib/image";
 import Image from "next/image";
 
 type Props = {
@@ -9,13 +9,11 @@ type Props = {
 };
 
 function View({ type, src, onDestroy }: Props) {
-    console.log(resolveImageSrc(src));
-
     return (
         <div className="group/attachment relative">
             {type === "image" && (
                 <Image
-                    src={resolveImageSrc(src)}
+                    src={resolveMediaSrc(src)}
                     alt="image"
                     className="h-auto w-full object-cover"
                     width={500}
@@ -27,12 +25,20 @@ function View({ type, src, onDestroy }: Props) {
                     controls
                     className="bg-background w-full rounded-md shadow-sm"
                 >
-                    <source src={resolveImageSrc(src) as string} />
+                    <source src={resolveMediaSrc(src) as string} />
                 </audio>
+            )}
+            {type === "video" && (
+                <video
+                    controls
+                    className="bg-background w-full rounded-md shadow-sm"
+                >
+                    <source src={resolveMediaSrc(src) as string} />
+                </video>
             )}
 
             <div
-                className={`absolute inset-0 hidden items-center justify-center bg-black/50 transition ${type !== "audio" ? "group-hover/attachment:flex" : ""}`}
+                className={`absolute inset-0 hidden items-center justify-center bg-black/50 transition ${type !== "audio" && type !== "video" ? "group-hover/attachment:flex" : ""}`}
             >
                 <Button variant={"destructive"} onClick={onDestroy}>
                     Xoa

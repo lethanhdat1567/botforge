@@ -10,16 +10,22 @@ export type NodeOf<
 > = Node<TData, TType>;
 export type MessageNodeData = {
     label: string;
+    note?: string;
+    markStart?: boolean;
     messages: MessageData[];
 };
 
 export type ActionNodeData = {
     label: string;
+    note?: string;
+    markStart?: boolean;
     messages: ActionData[];
 };
 
 export type CollectionNodeData = {
     label: string;
+    note?: string;
+    markStart?: boolean;
     messages: CollectionData;
 };
 

@@ -1,5 +1,6 @@
 import AudioNode from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/AudioNode/AudioNode";
 import ImageNode from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/ImageNode/ImageNode";
+import VideoNode from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/VideoNode/VideoNode";
 import GenericNode from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/GenericNode";
 import MediaNode from "@/components/FlowCanvas/Nodes/Message/components/MediaNode/MediaNode";
 import TextNode from "@/components/FlowCanvas/Nodes/Message/components/TextNode/TextNode";
@@ -16,8 +17,8 @@ function FilterMessageNode({ payload, nodeId }: Props) {
             return <TextNode payload={payload} nodeId={nodeId} />;
         case "image":
             return <ImageNode payload={payload} nodeId={nodeId} />;
-        // case "video":
-        //     return <AttachmentNode payload={payload} nodeId={nodeId} />;
+        case "video":
+            return <VideoNode payload={payload} nodeId={nodeId} />;
         case "audio":
             return <AudioNode payload={payload} nodeId={nodeId} />;
         case "media_template":

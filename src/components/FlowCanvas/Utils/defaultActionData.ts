@@ -28,7 +28,8 @@ export function getDefaultActionData(
                 id: uuid(),
                 type: "delay",
                 fields: {
-                    duration: "1s",
+                    duration: 1,
+                    unit: "second",
                 },
             };
         case "set_variable":
@@ -44,7 +45,7 @@ export function getDefaultActionData(
             return {
                 id: uuid(),
                 type: "delay",
-                fields: { duration: "1s" },
+                fields: { duration: 1, unit: "second" },
             };
     }
 }

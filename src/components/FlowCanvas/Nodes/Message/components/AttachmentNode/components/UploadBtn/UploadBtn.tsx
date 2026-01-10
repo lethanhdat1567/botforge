@@ -1,8 +1,9 @@
 import { filterAttachment } from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/helpers";
 import { Plus } from "lucide-react";
 
+export type MediaType = "image" | "audio" | "video";
 type Props = {
-    attachmentType: "image" | "audio" | "video";
+    attachmentType: MediaType | MediaType[];
     onUpload: any;
     payloadId: string;
 };

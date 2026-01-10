@@ -7,7 +7,7 @@ function joinUrl(base: string, path: string) {
     return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 }
 
-export function resolveImageSrc(src?: string | null): string | StaticImageData {
+export function resolveMediaSrc(src?: string | null): string | StaticImageData {
     if (!src) return images.fallback;
 
     if (src.startsWith("http://") || src.startsWith("https://")) {

@@ -20,7 +20,7 @@ function AudioNode({ nodeId, payload }: Props) {
         try {
             const res = await uploadService.uploadFile(file);
             FlowController.updateNodePayload(nodeId, payload.id, {
-                url: res.data.data.path,
+                url: res.data.path,
             });
         } catch (error) {
             console.error(error);
@@ -37,6 +37,8 @@ function AudioNode({ nodeId, payload }: Props) {
             console.log(error);
         }
     }
+
+    console.log(url);
 
     return (
         <BaseContent id={nodeId}>

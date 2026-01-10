@@ -5,17 +5,19 @@ export const uploadService = {
         const formData = new FormData();
         formData.append("file", file);
 
-        return api.post("/upload/image", formData, {
+        const res = await api.post("/upload/file", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
+
+        return res.data;
     },
 
     uploadMutipleFiles: async (files: File[]) => {
-        await api.post("/upload/images", files);
+        await api.post("/upload/files", files);
     },
     deleteFile: async (path: string) => {
-        await api.delete(`/upload/`, { params: { path } });
+        await api.delete(`/upload`, { params: { path } });
     },
 };

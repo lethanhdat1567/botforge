@@ -10,12 +10,19 @@ type Props = {
     value: string;
     onChange: (value: string) => void;
     setErrors?: any;
+    placeholder?: string;
 };
 
-function TextArea({ className, value, onChange, setErrors }: Props) {
+function TextArea({
+    className,
+    value,
+    onChange,
+    setErrors,
+    placeholder,
+}: Props) {
     const [inputValue, setInputValue] = useState(value);
     const debouceValue = useDebounce(inputValue, 300);
-    const isError = setErrors && !inputValue.trim();
+    const isError = setErrors && !inputValue?.trim();
 
     useEffect(() => {
         onChange(debouceValue);
@@ -61,6 +68,7 @@ function TextArea({ className, value, onChange, setErrors }: Props) {
             rows={4}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            placeholder={placeholder}
         />
     );
 }

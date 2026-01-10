@@ -28,4 +28,23 @@ export const ActionRegistry: NodeRegistry<"action", ActionNodeData> = {
             data: { ...node.data, ...patch },
         };
     },
+    updatePayload(node, payloadId, patch) {
+        return {
+            ...node,
+            data: {
+                ...node.data,
+                messages: node.data.messages.map((msg) =>
+                    msg.id === payloadId
+                        ? {
+                              ...msg,
+                              fields: {
+                                  ...msg.fields,
+                                  ...patch,
+                              },
+                          }
+                        : msg,
+                ),
+            },
+        };
+    },
 };

@@ -1,54 +1,152 @@
-import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import ButtonList from "@/components/FlowCanvas/Nodes/BasicComp/Button/ButtonList";
 import TextArea from "@/components/FlowCanvas/Nodes/BasicComp/TextArea/TextArea";
-import GenericUploadImage from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/GenericItem/GenericUploadImage";
+import ViewUpload from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/ViewUpload/ViewUpload";
 import { GenericTemplateElement } from "@/components/FlowCanvas/types/node/message.type";
-import { useState } from "react";
+import { uploadService } from "@/services/uploadService";
+import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
 
 type Props = {
-    nodeId: string;
     generic: GenericTemplateElement;
-    onUpdateGeneric: any;
+    nodeId: string;
+    payload: any;
+    setErrors: any;
 };
 
-function GenericItem({ nodeId, generic }: Props) {
-    const { title, subtitle, image_url, default_action, buttons } = generic;
-    const [errors, setErrors] = useState([]);
+function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
+    /**
+     * Update current generic only
+     */
+    function updateGeneric(
+        updater: (g: GenericTemplateElement) => GenericTemplateElement,
+    ) {
+        const newGenerics = payload.fields.elements.map(
+            (g: GenericTemplateElement) =>
+                g.id === generic.id ? updater(g) : g,
+        );
 
-    function handleUpload(src: string) {}
-    function handleChangeTitle(title: string) {}
-    function handleChangeUrl(url: string) {}
+        FlowController.updateNodePayload(nodeId, payload.id, {
+            elements: newGenerics,
+        });
+    }
 
-    function handleSetBtnList(lists: any) {}
+    /**
+     * Upload image / media
+     */
+    async function handleUpload(file: File) {
+        try {
+            const res = await uploadService.uploadFile(file);
+
+            updateGeneric((g) => ({
+                ...g,
+                image_url: res.data.path,
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Remove image
+     */
+    function handleDestroyImage() {
+        updateGeneric((g) => ({
+            ...g,
+            image_url: "",
+        }));
+    }
+
+    /**
+     * Update title
+     */
+    function handleUpdateTitle(title: string) {
+        updateGeneric((g) => ({
+            ...g,
+            title,
+        }));
+    }
+
+    /**
+     * Update subtitle
+     */
+    function handleUpdateSubtitle(subtitle: string) {
+        updateGeneric((g) => ({
+            ...g,
+            subtitle,
+        }));
+    }
+
+    /**
+     * Update default action URL
+     */
+    function handleUpdateUrl(url: string) {
+        updateGeneric((g) => ({
+            ...g,
+            default_action: {
+                ...(g.default_action ?? { type: "web_url" }),
+                url,
+            },
+        }));
+    }
+
+    /**
+     * Update button list
+     */
+    function handleUpdateBtnLists(buttons: any[]) {
+        updateGeneric((g) => ({
+            ...g,
+            buttons,
+        }));
+    }
 
     return (
-        <BaseContent id={nodeId}>
-            <div className="shrink-0 space-y-4">
-                <GenericUploadImage src={image_url} onUpload={handleUpload} />
-                <div className="space-y-2">
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <div className="w-full shrink-0 space-y-2">
+                    <ViewUpload
+                        src={generic.image_url}
+                        onUpload={handleUpload}
+                        onDestroy={handleDestroyImage}
+                        genericId={generic.id}
+                    />
+
                     <TextArea
-                        value={title}
-                        onChange={handleChangeTitle}
+                        value={generic.title}
+                        onChange={handleUpdateTitle}
                         setErrors={setErrors}
                     />
+
                     <TextArea
-                        value={subtitle || ""}
-                        onChange={handleChangeTitle}
+                        value={generic.subtitle || ""}
+                        onChange={handleUpdateSubtitle}
                     />
+
                     <TextArea
-                        value={default_action.url}
-                        onChange={handleChangeUrl}
+                        value={generic.default_action?.url || ""}
+                        onChange={handleUpdateUrl}
+                    />
+
+                    <ButtonList
+                        buttonLists={generic.buttons || []}
+                        setButtonList={handleUpdateBtnLists}
                         setErrors={setErrors}
                     />
                 </div>
-
-                <ButtonList
-                    buttonLists={buttons || []}
-                    setButtonList={handleSetBtnList}
-                    setErrors={setErrors}
-                />
-            </div>
-        </BaseContent>
+            </TooltipTrigger>
+            <TooltipContent>
+                <div className="flex items-center gap-2">
+                    <Button size={"icon-sm"} variant={"destructive"}>
+                        <Trash />
+                    </Button>
+                </div>
+            </TooltipContent>
+        </Tooltip>
     );
 }
 

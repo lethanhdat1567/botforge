@@ -1,6 +1,8 @@
 import AddFieldFooter from "@/components/FlowCanvas/Nodes/BaseNode/components/AddFieldFooter/AddFieldFooter";
 import Handler from "@/components/FlowCanvas/Nodes/BaseNode/components/Handler/Handler";
 import Heading from "@/components/FlowCanvas/Nodes/BaseNode/components/Heading/Heading";
+import Note from "@/components/FlowCanvas/Nodes/BaseNode/components/Note/Note";
+import StartPinner from "@/components/FlowCanvas/Nodes/BaseNode/components/StartPinner/StartPinner";
 import Toolbar from "@/components/FlowCanvas/Nodes/BaseNode/components/Toolbar/Toolbar";
 import {
     NodeType,
@@ -19,11 +21,18 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
     return (
         <div
             style={{ "--c": nodeTypeData.color } as React.CSSProperties}
-            className={` ${isContentDragging ? "nodrag" : ""} group/base bg-background w-70 space-y-4 rounded-md border p-3 pb-0 text-[14px] hover:border-(--c) ${childProps.selected ? "border-(--c)" : ""} `}
+            className={` ${isContentDragging ? "nodrag" : ""} group/base bg-background relative w-70 space-y-4 rounded-md border p-3 pb-0 text-[14px] hover:border-(--c) ${childProps.selected ? "border-(--c)" : ""} `}
         >
             {/* Heading */}
-            <Heading nodeTypeData={nodeTypeData} name={childProps.data.label} />
+            <Heading
+                nodeTypeData={nodeTypeData}
+                name={childProps.data.label}
+                nodeId={childProps.id}
+            />
 
+            {childProps.data.note && (
+                <Note nodeId={childProps.id} noteData={childProps.data.note} />
+            )}
             {/* Content */}
             <div>{children}</div>
 
@@ -34,7 +43,9 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
             <Handler />
 
             {/* Toolbar */}
-            <Toolbar />
+            <Toolbar node={childProps} />
+
+            {childProps.data.markStart && <StartPinner />}
         </div>
     );
 }

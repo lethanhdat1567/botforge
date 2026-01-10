@@ -2,15 +2,15 @@ import { FlowController } from "@/components/FlowCanvas/Controller/FlowControlle
 import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
 import UploadBtn from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/UploadBtn";
 import View from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/View/View";
-import { ImageAttachmentData } from "@/components/FlowCanvas/types/node/message.type";
+import { VideoAttachmentData } from "@/components/FlowCanvas/types/node/message.type";
 import { uploadService } from "@/services/uploadService";
 
 type Props = {
     nodeId: string;
-    payload: ImageAttachmentData;
+    payload: VideoAttachmentData;
 };
 
-function ImageNode({ nodeId, payload }: Props) {
+function VideoNode({ nodeId, payload }: Props) {
     const { url } = payload.fields;
 
     async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -29,12 +29,10 @@ function ImageNode({ nodeId, payload }: Props) {
 
     async function handleDestroy() {
         try {
-            if (payload.type === "image") {
-                await uploadService.deleteFile(url);
-                FlowController.updateNodePayload(nodeId, payload.id, {
-                    url: "",
-                });
-            }
+            await uploadService.deleteFile(url);
+            FlowController.updateNodePayload(nodeId, payload.id, {
+                url: "",
+            });
         } catch (error) {
             console.log(error);
         }
@@ -59,4 +57,4 @@ function ImageNode({ nodeId, payload }: Props) {
     );
 }
 
-export default ImageNode;
+export default VideoNode;

@@ -7,6 +7,7 @@ import { useEdgeStore } from "@/store/edgeStore";
 import JsonBtns from "@/components/FlowCanvas/Canvas/components/JsonBtns/JsonBtns";
 import ContextMenu from "@/components/FlowCanvas/Canvas/components/ContextMenu/ContextMenu";
 import { nodeTypes } from "@/components/FlowCanvas/Canvas/components/nodeType";
+import Warning from "@/components/FlowCanvas/Canvas/components/Warning/Warning";
 
 function FlowCanvas() {
     const nodes = useNodeStore((s) => s.nodes);
@@ -29,8 +30,9 @@ function FlowCanvas() {
             >
                 <Background />
                 <Controls />
-                <Panel position="top-center">
+                <Panel position="top-center" className="space-y-2">
                     <JsonBtns />
+                    <Warning />
                 </Panel>
                 <ContextMenu />
             </ReactFlow>

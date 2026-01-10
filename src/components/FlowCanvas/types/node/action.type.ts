@@ -27,7 +27,8 @@ export interface DelayActionData {
     id: string;
     type: "delay";
     fields: {
-        duration: string; // ms
+        duration: number;
+        unit: "second" | "minute" | "hour";
     };
 }
 

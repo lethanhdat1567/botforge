@@ -5,7 +5,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
-import { resolveImageSrc } from "@/lib/image";
+import { resolveMediaSrc } from "@/lib/image";
 import { cn } from "@/lib/utils";
 
 type AvatarProps = {
@@ -24,10 +24,10 @@ function Avatar({
     return (
         <RootAvatar className={cn(className)}>
             <AvatarImage
-                src={resolveImageSrc(src) as string}
+                src={resolveMediaSrc(src) as string}
                 alt={alt}
                 onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = resolveImageSrc(
+                    (e.currentTarget as HTMLImageElement).src = resolveMediaSrc(
                         null,
                     ) as string;
                 }}

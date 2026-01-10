@@ -21,6 +21,7 @@ function MessageNode(props: any) {
     const [isDragging, setIsDragging] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(props.data.messages || []);
     }, [props]);
 

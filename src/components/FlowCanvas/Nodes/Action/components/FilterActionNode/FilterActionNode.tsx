@@ -1,15 +1,20 @@
-import ConditionNode from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/ConditionNode";
 import DelayNode from "@/components/FlowCanvas/Nodes/Action/components/DelayNode/DelayNode";
-import SetVariableNode from "@/components/FlowCanvas/Nodes/Action/components/SetVariableNode/SetVariableNode";
+import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
 
-function FilterActionNode({ node }: { node: any }) {
-    switch (node.type) {
+function FilterActionNode({
+    nodeId,
+    payload,
+}: {
+    nodeId: string;
+    payload: ActionData;
+}) {
+    switch (payload.type) {
         case "delay":
-            return <DelayNode node={node} />;
-        case "condition":
-            return <ConditionNode node={node} />;
-        case "set_variable":
-            return <SetVariableNode node={node} />;
+            return <DelayNode nodeId={nodeId} payload={payload} />;
+        // case "condition":
+        //     return <ConditionNode node={node} />;
+        // case "set_variable":
+        //     return <SetVariableNode node={node} />;
         default:
             return <div>Unknown Action Node Type</div>;
     }

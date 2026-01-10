@@ -2,6 +2,7 @@
 import { AddNodeCommand } from "@/components/FlowCanvas/Commands/AddNodeCommand";
 import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager";
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
+import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/DuplicateNodeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
 import { UpdatePayloadCommand } from "@/components/FlowCanvas/Commands/UpdateNodePayloadCommand";
@@ -33,6 +34,10 @@ export const FlowController = {
         commandManager.execute(
             new UpdatePayloadCommand(nodeId, payloadId, patch),
         );
+    },
+
+    duplicateNode(nodeId: string) {
+        commandManager.execute(new DuplicateNodeCommand(nodeId));
     },
 
     connect(connection: Connection) {
