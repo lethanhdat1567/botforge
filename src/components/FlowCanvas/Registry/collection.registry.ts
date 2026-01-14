@@ -40,4 +40,19 @@ export const CollectionRegistry: NodeRegistry<
             },
         };
     },
+    updatePayload(node, payloadId, patch) {
+        return {
+            ...node,
+            data: {
+                ...node.data,
+                messages: {
+                    ...node.data.messages,
+                    fields: {
+                        ...node.data.messages.fields,
+                        ...patch,
+                    },
+                },
+            },
+        };
+    },
 };

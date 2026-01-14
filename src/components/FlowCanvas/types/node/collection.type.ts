@@ -9,6 +9,17 @@ export type CollectionVariableType =
     | "phone"
     | "custom";
 
+export type VariableData = {
+    key: string;
+    value?: any;
+    regex?: string;
+    fallback: string;
+    timeout: {
+        value: number;
+        unit: "seconds" | "minutes" | "hours";
+    };
+};
+
 export interface CollectionData {
     id: string;
     type: CollectionType;
@@ -16,12 +27,6 @@ export interface CollectionData {
         text: string;
         buttons: ButtonNode[];
         type: CollectionVariableType;
-        variable: {
-            key: string;
-            value?: any;
-            regex?: string;
-            fallback: string;
-            timeout: string;
-        };
+        variable: VariableData;
     };
 }

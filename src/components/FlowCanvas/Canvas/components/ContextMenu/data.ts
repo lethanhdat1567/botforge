@@ -6,6 +6,10 @@ import {
     ImageIcon,
     Volume2,
     Video,
+    Hash,
+    Mail,
+    Phone,
+    SlidersHorizontal,
 } from "lucide-react";
 
 export const menuData = [
@@ -149,10 +153,38 @@ export const menuData = [
         color: "#00C853",
         children: [
             {
-                id: "collection-basic",
-                type: "collection-basic",
-                title: "New Collection",
-                icon: Folder,
+                id: "collection-text",
+                type: "text",
+                title: "Text",
+                icon: Type,
+                color: "#00C853",
+            },
+            {
+                id: "collection-number",
+                type: "number",
+                title: "Number",
+                icon: Hash,
+                color: "#00C853",
+            },
+            {
+                id: "collection-email",
+                type: "email",
+                title: "Email",
+                icon: Mail,
+                color: "#00C853",
+            },
+            {
+                id: "collection-phone",
+                type: "phone",
+                title: "Phone",
+                icon: Phone,
+                color: "#00C853",
+            },
+            {
+                id: "collection-custom",
+                type: "custom",
+                title: "Custom",
+                icon: SlidersHorizontal,
                 color: "#00C853",
             },
         ],

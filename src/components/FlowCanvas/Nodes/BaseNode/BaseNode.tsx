@@ -37,7 +37,9 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
             <div>{children}</div>
 
             {/* Fooder */}
-            <AddFieldFooter />
+            {childProps.type !== "collection" && (
+                <AddFieldFooter node={childProps} type={childProps.type} />
+            )}
 
             {/* Handler */}
             <Handler />

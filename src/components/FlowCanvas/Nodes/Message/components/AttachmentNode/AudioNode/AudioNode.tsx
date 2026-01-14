@@ -38,8 +38,6 @@ function AudioNode({ nodeId, payload }: Props) {
         }
     }
 
-    console.log(url);
-
     return (
         <BaseContent id={nodeId}>
             {url ? (
