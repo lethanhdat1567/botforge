@@ -26,6 +26,6 @@ export function compileActionNode(
                 }
             })
             .filter(Boolean),
-        ...(next && { children: next }),
+        ...(next && { children: { next } }),
     };
 }

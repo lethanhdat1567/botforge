@@ -4,5 +4,5 @@ export interface EngineNode {
     id: string;
     category: NodeCategory;
     payload: any;
-    children?: string;
+    children?: Record<string, string>;
 }

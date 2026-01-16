@@ -4,8 +4,12 @@ import { Copy, FlagTriangleRight, Trash } from "lucide-react";
 import NoteBtn from "@/components/FlowCanvas/Nodes/BaseNode/components/Toolbar/components/NoteBtn";
 import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { useNodeStore } from "@/store/nodeStore";
+import { flowService } from "@/services/flowService";
+import { useSearchParams } from "next/navigation";
 
 function Toolbar({ node }: { node: FlowNode }) {
+    const searchParams = useSearchParams();
+    const flowId = searchParams.get("flowId");
     const markStartNode = useNodeStore((s) => s.markStartNode);
 
     function handleDestroyNode() {
@@ -16,8 +20,14 @@ function Toolbar({ node }: { node: FlowNode }) {
         FlowController.duplicateNode(node.id);
     }
 
-    function handleMarkStart() {
-        markStartNode(node.id);
+    async function handleMarkStart() {
+        if (flowId) {
+            const res = await flowService.updateFlow(flowId, {
+                startNodeId: node.id,
+            });
+
+            markStartNode(res.data.startNodeId);
+        }
     }
 
     return (

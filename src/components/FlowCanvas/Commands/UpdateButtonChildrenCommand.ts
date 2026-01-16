@@ -28,14 +28,14 @@ export class UpdateButtonChildrenCommand implements Command {
         const btn = buttons.find((b: ButtonNode) => b.id === this.btnId);
         if (!btn) return false;
 
-        if (btn.children === this.targetNodeId) return false;
+        if (btn.next === this.targetNodeId) return false;
 
         this.payloadId = payload.id;
         this.before = structuredClone(buttons);
 
         store.updateNodePayload(this.nodeId, payload.id, {
             buttons: buttons.map((b: ButtonNode) =>
-                b.id === this.btnId ? { ...b, children: this.targetNodeId } : b,
+                b.id === this.btnId ? { ...b, next: this.targetNodeId } : b,
             ),
         });
 

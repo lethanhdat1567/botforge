@@ -11,10 +11,13 @@ import { initialEdges } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
 
 interface EdgeState {
     edges: Edge[];
+    isConnecting: boolean;
 
     // react-flow
     onEdgesChange: (changes: EdgeChange[]) => void;
     onConnect: (connection: Connection) => void;
+    onConnectStart: () => void;
+    onConnectEnd: () => void;
 
     // core
     setEdges: (edges: Edge[]) => void;
@@ -28,6 +31,7 @@ interface EdgeState {
 
 export const useEdgeStore = create<EdgeState>((set, get) => ({
     edges: initialEdges,
+    isConnecting: false,
 
     // React Flow internal
     onEdgesChange: (changes) => {
@@ -45,7 +49,16 @@ export const useEdgeStore = create<EdgeState>((set, get) => ({
 
         set({
             edges: addEdge(newEdge, get().edges),
+            isConnecting: false,
         });
+    },
+
+    onConnectStart: () => {
+        set({ isConnecting: true });
+    },
+
+    onConnectEnd: () => {
+        set({ isConnecting: false });
     },
 
     setEdges: (edges) => set({ edges }),

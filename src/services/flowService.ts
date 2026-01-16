@@ -15,7 +15,7 @@ export const flowService = {
         return response.data;
     },
 
-    updateFlow: async (id: string, data: { name: string }) => {
+    updateFlow: async (id: string, data: any) => {
         const response = await api.patch(`/flows/${id}`, data);
         return response.data;
     },

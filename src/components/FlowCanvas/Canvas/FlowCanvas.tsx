@@ -27,10 +27,14 @@ function FlowCanvas() {
     const onEdgesChange = useEdgeStore((s) => s.onEdgesChange);
     const onConnect = useEdgeStore((s) => s.onConnect);
 
+    const onConnectStart = useEdgeStore((s) => s.onConnectStart);
+    const onConnectEnd = useEdgeStore((s) => s.onConnectEnd);
+
     function handleConnectEnd(
         event: MouseEvent | TouchEvent,
         connectionState: FinalConnectionState,
     ) {
+        onConnectEnd();
         const nodeEl = (event.target as HTMLElement).closest("[data-node-id]");
 
         if (nodeEl) {
@@ -69,6 +73,7 @@ function FlowCanvas() {
                 nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                onConnectStart={onConnectStart}
                 onConnectEnd={handleConnectEnd}
                 onConnect={onConnect}
                 connectionMode={ConnectionMode.Strict}

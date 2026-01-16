@@ -24,8 +24,11 @@ function ButtonDialog({ showTooltip, btn, onChange }: Props) {
         onChange(newBtn);
     }
 
-    function handlePostbackChange(postbackValue: string) {
-        const newBtn = { ...btn, payload: { postback_value: postbackValue } };
+    function handlePostbackChange(keyValue: string, variableValue: string) {
+        const newBtn = {
+            ...btn,
+            payload: { key: keyValue, value: variableValue },
+        };
         onChange(newBtn);
     }
 
@@ -35,16 +38,14 @@ function ButtonDialog({ showTooltip, btn, onChange }: Props) {
             payloadData = { url: "" };
             FlowController.removeButtonEdge(btn.id);
         } else if (selectValue === "postback") {
-            payloadData = { variable: "", value: "" };
-        }
+            payloadData = { key: "", value: "" };
+        } else if (selectValue === "continue") payloadData = { next: "" };
         const newBtn = {
             ...btn,
             type: selectValue,
             payload: payloadData,
             children: null,
         };
-        console.log(btn.id);
-        FlowController.removeEdge(btn.id);
 
         onChange(newBtn);
         setSelected(selectValue);

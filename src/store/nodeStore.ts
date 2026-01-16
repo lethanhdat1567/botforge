@@ -6,6 +6,7 @@ import { initialNodes } from "@/components/FlowCanvas/Canvas/initNodeAndEdge";
 
 interface NodeState {
     nodes: FlowNode[];
+    isDragging: boolean;
 
     // react-flow
     onNodesChange: (changes: NodeChange[]) => void;
@@ -23,11 +24,17 @@ interface NodeState {
 
 export const useNodeStore = create<NodeState>((set, get) => ({
     nodes: initialNodes,
+    isDragging: false,
 
     // React Flow internal changes
     onNodesChange: (changes) => {
+        const dragging = changes.some(
+            (c) => c.type === "position" && c.dragging === true,
+        );
+
         set({
             nodes: applyNodeChanges(changes, get().nodes) as FlowNode[],
+            isDragging: dragging,
         });
     },
 

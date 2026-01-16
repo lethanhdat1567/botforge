@@ -32,6 +32,6 @@ export function compileCollectionNode(
                 },
             },
         } as CollectionDataEngine,
-        ...(next && { children: next }),
+        ...(next && { children: { next } }),
     };
 }

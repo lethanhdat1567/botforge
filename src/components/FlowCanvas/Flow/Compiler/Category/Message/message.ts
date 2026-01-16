@@ -18,22 +18,21 @@ export function compileMessageNode(
     const payload: MessageData[] = messages
         .map((item: any): MessageDataEngine | null => {
             switch (item.type) {
-                case "text":
-                    return {
-                        type: "text",
-                        fields: {
-                            text: String(item.fields?.text ?? ""),
-                        },
-                    };
+                case "button": {
+                    const hasButtons =
+                        Array.isArray(item.fields?.buttons) &&
+                        item.fields.buttons.length > 0;
 
-                case "button":
                     return {
-                        type: "button",
+                        type: hasButtons ? "button" : "text",
                         fields: {
                             text: item.fields?.text ?? "",
-                            buttons: item.fields?.buttons ?? [],
+                            ...(hasButtons && {
+                                buttons: item.fields.buttons,
+                            }),
                         },
-                    };
+                    } as any;
+                }
 
                 case "image":
                 case "video":
@@ -74,6 +73,6 @@ export function compileMessageNode(
         id: node.id,
         category: "message",
         payload,
-        ...(next && { children: next }),
+        ...(next && { children: { next } }),
     };
 }
