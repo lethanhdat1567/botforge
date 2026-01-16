@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button as ButtonUI } from "@/components/ui/button";
+import { Handle, Position } from "@xyflow/react";
 
 type Props = {
     btn: ButtonNode;
@@ -58,6 +59,14 @@ function Button({ btn, onChange, onDestroyBtn }: Props) {
                 onChange={(e) => setButtonInput(e.target.value)}
                 onFocus={() => setShowTooltip(true)}
             />
+            {btn.type !== "url" && (
+                <Handle
+                    type="source"
+                    position={Position.Right}
+                    className="bg-yellow-500! p-1!"
+                    id={`btn-source-${btn.id}`}
+                />
+            )}
 
             {/* Tooltip */}
             <ButtonDialog

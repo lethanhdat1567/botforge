@@ -22,6 +22,7 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
         <div
             style={{ "--c": nodeTypeData.color } as React.CSSProperties}
             className={` ${isContentDragging ? "nodrag" : ""} group/base bg-background relative w-70 space-y-4 rounded-md border p-3 pb-0 text-[14px] hover:border-(--c) ${childProps.selected ? "border-(--c)" : ""} `}
+            data-node-id={childProps.id}
         >
             {/* Heading */}
             <Heading
@@ -42,7 +43,7 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
             )}
 
             {/* Handler */}
-            <Handler />
+            <Handler nodeId={childProps.id} />
 
             {/* Toolbar */}
             <Toolbar node={childProps} />

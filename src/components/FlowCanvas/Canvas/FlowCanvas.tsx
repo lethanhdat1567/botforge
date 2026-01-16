@@ -6,6 +6,7 @@ import {
     Controls,
     Panel,
     FinalConnectionState,
+    ConnectionMode,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useNodeStore } from "@/store/nodeStore";
@@ -15,6 +16,7 @@ import ContextMenu from "@/components/FlowCanvas/Canvas/components/ContextMenu/C
 import { nodeTypes } from "@/components/FlowCanvas/Canvas/components/nodeType";
 import Warning from "@/components/FlowCanvas/Canvas/components/Warning/Warning";
 import { useContextMenuStore } from "@/store/contextMenuStore";
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 
 function FlowCanvas() {
     const openMenu = useContextMenuStore((s) => s.openAt);
@@ -29,10 +31,28 @@ function FlowCanvas() {
         event: MouseEvent | TouchEvent,
         connectionState: FinalConnectionState,
     ) {
-        if (connectionState.toNode) return;
+        const nodeEl = (event.target as HTMLElement).closest("[data-node-id]");
 
-        const e = event as MouseEvent;
-        openMenu(e.clientX, e.clientY);
+        if (nodeEl) {
+            const fromHandle = connectionState.fromHandle;
+
+            if (fromHandle?.id?.startsWith("btn-source")) {
+                const sourceNode = connectionState.fromNode;
+                const targetNode = connectionState.toNode;
+                if (!sourceNode || !targetNode) return;
+
+                const btnId = fromHandle.id.replace("btn-source-", "");
+
+                FlowController.updateButtonChildren(
+                    sourceNode.id,
+                    btnId,
+                    targetNode.id,
+                );
+            }
+        } else {
+            const e = event as MouseEvent;
+            openMenu(e.clientX, e.clientY);
+        }
     }
 
     return (
@@ -51,6 +71,7 @@ function FlowCanvas() {
                 onEdgesChange={onEdgesChange}
                 onConnectEnd={handleConnectEnd}
                 onConnect={onConnect}
+                connectionMode={ConnectionMode.Strict}
                 fitView
             >
                 <Background />

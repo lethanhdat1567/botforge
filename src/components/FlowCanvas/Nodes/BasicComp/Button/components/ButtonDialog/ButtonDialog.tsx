@@ -1,3 +1,4 @@
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import ButtonContinue from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonContinue";
 import CustomSelect from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonSelect";
 import ButtonSetVariable from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonSetVariable";
@@ -32,10 +33,19 @@ function ButtonDialog({ showTooltip, btn, onChange }: Props) {
         let payloadData = null;
         if (selectValue === "url") {
             payloadData = { url: "" };
+            FlowController.removeButtonEdge(btn.id);
         } else if (selectValue === "postback") {
             payloadData = { variable: "", value: "" };
         }
-        const newBtn = { ...btn, type: selectValue, payload: payloadData };
+        const newBtn = {
+            ...btn,
+            type: selectValue,
+            payload: payloadData,
+            children: null,
+        };
+        console.log(btn.id);
+        FlowController.removeEdge(btn.id);
+
         onChange(newBtn);
         setSelected(selectValue);
     }

@@ -21,6 +21,7 @@ interface EdgeState {
     addEdge: (edge: Edge) => void;
     removeEdge: (id: string) => void;
     removeEdgesByNode: (nodeId: string) => void;
+    removeEdgeBySourceHandle: (sourceHandle: string) => void;
 
     resetEdges: () => void;
 }
@@ -67,5 +68,10 @@ export const useEdgeStore = create<EdgeState>((set, get) => ({
             ),
         }),
 
+    removeEdgeBySourceHandle(sourceHandle) {
+        set((state) => ({
+            edges: state.edges.filter((e) => e.sourceHandle !== sourceHandle),
+        }));
+    },
     resetEdges: () => set({ edges: initialEdges }),
 }));

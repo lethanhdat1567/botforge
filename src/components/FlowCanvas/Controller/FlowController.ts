@@ -3,7 +3,9 @@ import { AddNodeCommand } from "@/components/FlowCanvas/Commands/AddNodeCommand"
 import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager";
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
 import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/DuplicateNodeCommand";
+import { RemoveEdgeCommand } from "@/components/FlowCanvas/Commands/RemoveEdgeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
+import { UpdateButtonChildrenCommand } from "@/components/FlowCanvas/Commands/UpdateButtonChildrenCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
 import { UpdatePayloadCommand } from "@/components/FlowCanvas/Commands/UpdateNodePayloadCommand";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
@@ -24,6 +26,12 @@ export const FlowController = {
         position: { x: number; y: number },
     ) {
         commandManager.execute(new AddNodeCommand(type, messageType, position));
+    },
+
+    updateButtonChildren(nodeId: string, btnId: string, targetNodeId: string) {
+        commandManager.execute(
+            new UpdateButtonChildrenCommand(nodeId, btnId, targetNodeId),
+        );
     },
 
     updateNode(nodeId: string, patch: any) {
@@ -53,6 +61,14 @@ export const FlowController = {
         commandManager.execute(new RemoveNodeCommand(nodeId));
     },
 
+    removeEdge(edgeId: string) {
+        commandManager.execute(new RemoveEdgeCommand(edgeId));
+    },
+
+    removeButtonEdge(btnId: string) {
+        const edgeStore = useEdgeStore.getState();
+        edgeStore.removeEdgeBySourceHandle(`btn-source-${btnId}`);
+    },
     undo() {
         commandManager.undo();
     },

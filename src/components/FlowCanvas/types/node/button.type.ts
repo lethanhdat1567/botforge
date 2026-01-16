@@ -14,6 +14,7 @@ export type ButtonNode =
           type: "postback";
           title: string;
           payload: PostbackPayload;
+          children?: string;
       }
     | {
           id: string;
@@ -25,4 +26,5 @@ export type ButtonNode =
           id: string;
           type: "continue";
           title: string;
+          children?: string;
       };

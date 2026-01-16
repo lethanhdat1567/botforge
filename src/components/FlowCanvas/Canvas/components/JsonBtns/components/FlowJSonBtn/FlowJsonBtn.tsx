@@ -9,14 +9,26 @@ import { Button } from "@/components/ui/button";
 import { Square, Copy, Check } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useNodeStore } from "@/store/nodeStore";
 import { useEdgeStore } from "@/store/edgeStore";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { compileFlow } from "@/components/FlowCanvas/Flow/Compiler";
 
-function EdgeJsonBtn() {
+function FlowJsonBtn() {
+    const nodes = useNodeStore((s) => s.nodes);
     const edges = useEdgeStore((s) => s.edges);
     const [copied, setCopied] = useState(false);
 
-    const json = JSON.stringify(edges, null, 2);
+    // ✅ compile flow (memo để không recompute liên tục)
+    const flowJson = useMemo(() => {
+        try {
+            return compileFlow(nodes, edges);
+        } catch (e: any) {
+            return { error: e.message };
+        }
+    }, [nodes, edges]);
+
+    const json = JSON.stringify(flowJson, null, 2);
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(json);
@@ -29,13 +41,13 @@ function EdgeJsonBtn() {
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <Square />
-                    View Edge Json
+                    View Flow Json
                 </Button>
             </DialogTrigger>
 
             <DialogContent className="min-h-[50vh] max-w-[70vw]!">
                 <DialogHeader className="hidden">
-                    <DialogTitle>Edge JSON</DialogTitle>
+                    <DialogTitle>Flow JSON</DialogTitle>
                 </DialogHeader>
 
                 {/* Header actions */}
@@ -73,4 +85,4 @@ function EdgeJsonBtn() {
     );
 }
 
-export default EdgeJsonBtn;
+export default FlowJsonBtn;
