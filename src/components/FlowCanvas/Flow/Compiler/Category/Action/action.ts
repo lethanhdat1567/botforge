@@ -10,7 +10,7 @@ export function compileActionNode(
     childrenMap: ChildrenMap,
 ): EngineNode {
     const payloads = (node.data.messages as ActionData[]) ?? [];
-    const next = childrenMap[node.id];
+    const next = childrenMap[`node-source-${node.id}`];
 
     return {
         id: node.id,
@@ -24,6 +24,24 @@ export function compileActionNode(
                             fields: {
                                 duration: item.fields.duration,
                                 unit: item.fields.unit,
+                            },
+                        };
+                    case "condition":
+                        return {
+                            type: "condition",
+                            fields: {
+                                items: item.fields.items,
+                                ...(item.fields.next && {
+                                    next: item.fields.next,
+                                }),
+                            },
+                        };
+                    case "set_variable":
+                        return {
+                            type: "set_variable",
+                            fields: {
+                                key: item.fields.key,
+                                value: item.fields.value,
                             },
                         };
                 }

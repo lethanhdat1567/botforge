@@ -8,17 +8,18 @@ export type ActionData =
     | SetVariableActionData;
 
 // Condition node
+export interface ConditionItem {
+    id: string;
+    field: string;
+    operator: "equals" | "not_equals" | "contains" | "regex";
+    value: any;
+}
 export interface ConditionActionData {
     id: string;
     type: "condition";
     fields: {
-        items: {
-            conditions: {
-                field: string; // payload, variable, ...
-                operator: "equals" | "not_equals" | "contains" | "regex";
-                value: any;
-            }[];
-        }[];
+        items: ConditionItem[];
+        next?: string;
     };
 }
 

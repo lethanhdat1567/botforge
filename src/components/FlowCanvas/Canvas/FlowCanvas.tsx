@@ -37,9 +37,11 @@ function FlowCanvas() {
         onConnectEnd();
         const nodeEl = (event.target as HTMLElement).closest("[data-node-id]");
 
+        // update button children
         if (nodeEl) {
             const fromHandle = connectionState.fromHandle;
 
+            // Update button next edge
             if (fromHandle?.id?.startsWith("btn-source")) {
                 const sourceNode = connectionState.fromNode;
                 const targetNode = connectionState.toNode;
@@ -50,6 +52,21 @@ function FlowCanvas() {
                 FlowController.updateButtonChildren(
                     sourceNode.id,
                     btnId,
+                    targetNode.id,
+                );
+            } else if (fromHandle?.id?.startsWith("condition-source")) {
+                const sourceNode = connectionState.fromNode;
+                const targetNode = connectionState.toNode;
+                if (!sourceNode || !targetNode) return;
+
+                const conditionId = fromHandle.id.replace(
+                    "condition-source-",
+                    "",
+                );
+
+                FlowController.updateConditionNext(
+                    sourceNode.id,
+                    conditionId,
                     targetNode.id,
                 );
             }

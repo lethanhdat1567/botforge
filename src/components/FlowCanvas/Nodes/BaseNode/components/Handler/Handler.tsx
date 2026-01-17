@@ -7,13 +7,13 @@ function Handler({ nodeId }: { nodeId: string }) {
                 type="target"
                 position={Position.Right}
                 className="bg-red-500! p-2!"
-                id={`node-source-${nodeId}`}
+                id={`node-target-${nodeId}`}
             />
             <Handle
                 type="source"
                 position={Position.Left}
                 className="bg-blue-500! p-2!"
-                id={`node-target-${nodeId}`}
+                id={`node-source-${nodeId}`}
             />
         </div>
     );

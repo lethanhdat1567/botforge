@@ -6,15 +6,19 @@ export function buildChildrenMap(edges: Edge[]): ChildrenMap {
     const map: ChildrenMap = {};
 
     for (const edge of edges) {
+        if (!edge.source || !edge.target || !edge.sourceHandle) continue;
+
         if (edge.source === edge.target) {
             throw new Error(`Node ${edge.source} không được trỏ tới chính nó`);
         }
 
-        if (map[edge.source]) {
-            throw new Error(`Node ${edge.source} có nhiều hơn 1 children`);
+        const key = edge.sourceHandle;
+
+        if (map[key]) {
+            throw new Error(`Handle ${key} có nhiều hơn 1 children`);
         }
 
-        map[edge.source] = edge.target;
+        map[key] = edge.target;
     }
 
     return map;

@@ -13,7 +13,7 @@ export function compileCollectionNode(
     childrenMap: ChildrenMap,
 ): EngineNode {
     const payloads = (node.data.messages as CollectionData) ?? {};
-    const next = childrenMap[node.id];
+    const next = childrenMap[`node-source-${node.id}`];
 
     return {
         id: node.id,

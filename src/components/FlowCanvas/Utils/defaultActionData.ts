@@ -12,13 +12,10 @@ export function getDefaultActionData(
                 fields: {
                     items: [
                         {
-                            conditions: [
-                                {
-                                    field: "",
-                                    operator: "equals",
-                                    value: "",
-                                },
-                            ],
+                            id: uuid(),
+                            field: "",
+                            operator: "equals",
+                            value: "",
                         },
                     ],
                 },

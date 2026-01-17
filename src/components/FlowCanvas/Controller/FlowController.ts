@@ -6,6 +6,7 @@ import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/Duplicate
 import { RemoveEdgeCommand } from "@/components/FlowCanvas/Commands/RemoveEdgeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
 import { UpdateButtonChildrenCommand } from "@/components/FlowCanvas/Commands/UpdateButtonChildrenCommand";
+import { UpdateConditionNextCommand } from "@/components/FlowCanvas/Commands/UpdateConditionNextCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
 import { UpdatePayloadCommand } from "@/components/FlowCanvas/Commands/UpdateNodePayloadCommand";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
@@ -31,6 +32,16 @@ export const FlowController = {
     updateButtonChildren(nodeId: string, btnId: string, targetNodeId: string) {
         commandManager.execute(
             new UpdateButtonChildrenCommand(nodeId, btnId, targetNodeId),
+        );
+    },
+
+    updateConditionNext(
+        nodeId: string,
+        conditionId: string,
+        targetNodeId: string,
+    ) {
+        commandManager.execute(
+            new UpdateConditionNextCommand(nodeId, conditionId, targetNodeId),
         );
     },
 

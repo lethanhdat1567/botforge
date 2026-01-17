@@ -19,13 +19,11 @@ export interface ConditionActionData {
     type: "condition";
     fields: {
         items: {
-            conditions: {
-                field: string; // payload, variable, ...
-                operator: "equals" | "not_equals" | "contains" | "regex";
-                value: any;
-            }[];
-            next: string; // nodeId nếu tất cả điều kiện trong item thỏa
+            field: string;
+            operator: "equals" | "not_equals" | "contains" | "regex";
+            value: any;
         }[];
+        next?: string;
     };
 }
 

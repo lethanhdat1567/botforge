@@ -13,7 +13,7 @@ export function compileMessageNode(
     childrenMap: ChildrenMap,
 ): EngineNode {
     const messages = (node.data.messages as MessageData[]) ?? [];
-    const next = childrenMap[node.id];
+    const next = childrenMap[`node-source-${node.id}`];
 
     const payload: MessageData[] = messages
         .map((item: any): MessageDataEngine | null => {
