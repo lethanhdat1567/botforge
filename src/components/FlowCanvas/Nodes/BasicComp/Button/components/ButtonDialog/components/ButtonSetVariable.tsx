@@ -14,8 +14,8 @@ function ButtonSetVariable({
     variableBtnValue,
     postbackBtnValue,
 }: Props) {
-    const [variableValue, setVariableValue] = useState(variableBtnValue);
-    const [postbackValue, setPostbackValue] = useState(postbackBtnValue);
+    const [variableValue, setVariableValue] = useState(variableBtnValue || "");
+    const [postbackValue, setPostbackValue] = useState(postbackBtnValue || "");
     const debouncedVariableValue = useDebounce(variableValue, 500);
     const debouncedPostbackValue = useDebounce(postbackValue, 500);
 

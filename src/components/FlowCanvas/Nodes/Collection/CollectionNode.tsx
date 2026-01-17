@@ -16,6 +16,7 @@ function CollectionNode(props: any) {
                 <AskBlock
                     text={nodeContent.text}
                     buttons={nodeContent.buttons}
+                    variable={nodeContent.variable.key}
                     nodeId={props.id}
                     fieldId={props.data.messages.id}
                     setErrors={setErrors}

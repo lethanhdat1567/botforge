@@ -3,17 +3,29 @@ import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
-function CreateButton({
-    onCreateNewBtn,
-}: {
+type Props = {
+    variable?: string;
     onCreateNewBtn: (newBtn: ButtonNode) => void;
-}) {
+};
+
+function CreateButton({ onCreateNewBtn, variable }: Props) {
     function handleCreateBtn() {
-        const btnData: ButtonNode = {
+        let btnData: ButtonNode = {
             id: uuid(),
             type: "continue",
             title: "New Button",
         };
+
+        if (variable) {
+            btnData = {
+                ...btnData,
+                type: "postback",
+                payload: {
+                    variable,
+                    value: "",
+                },
+            };
+        }
 
         onCreateNewBtn(btnData);
     }

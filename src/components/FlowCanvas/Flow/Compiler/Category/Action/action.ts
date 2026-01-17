@@ -14,14 +14,17 @@ export function compileActionNode(
 
     return {
         id: node.id,
-        category: "message",
+        category: "action",
         payload: (payloads as ActionDataEngine[])
             .map((item) => {
                 switch (item.type) {
                     case "delay":
                         return {
-                            duration: item.fields.duration,
-                            unit: item.fields.unit,
+                            type: "delay",
+                            fields: {
+                                duration: item.fields.duration,
+                                unit: item.fields.unit,
+                            },
                         };
                 }
             })

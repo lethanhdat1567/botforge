@@ -7,9 +7,15 @@ type Props = {
     buttonLists: ButtonNode[];
     setButtonList: any;
     setErrors: any;
+    variable?: string;
 };
 
-function ButtonList({ buttonLists = [], setButtonList, setErrors }: Props) {
+function ButtonList({
+    buttonLists = [],
+    setButtonList,
+    setErrors,
+    variable,
+}: Props) {
     function handleCreateNewBtn(btn: ButtonNode) {
         setButtonList([...buttonLists, btn]);
     }
@@ -68,9 +74,13 @@ function ButtonList({ buttonLists = [], setButtonList, setErrors }: Props) {
                     btn={btn}
                     onChange={handleChangeBtn}
                     onDestroyBtn={handleDestroyBtn}
+                    variable={variable}
                 />
             ))}
-            <CreateButton onCreateNewBtn={handleCreateNewBtn} />
+            <CreateButton
+                onCreateNewBtn={handleCreateNewBtn}
+                variable={variable}
+            />
         </div>
     );
 }

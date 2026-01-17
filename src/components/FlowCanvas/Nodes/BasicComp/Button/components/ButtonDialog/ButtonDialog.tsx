@@ -14,10 +14,11 @@ type Props = {
     showTooltip: boolean;
     btn: ButtonNode;
     onChange: any;
+    variable?: string;
 };
 
-function ButtonDialog({ showTooltip, btn, onChange }: Props) {
-    const [selected, setSelected] = useState<string>("continue");
+function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
+    const [selected, setSelected] = useState<string>(btn.type);
 
     function handleUrlChange(url: string) {
         const newBtn = { ...btn, payload: { url } };
@@ -38,7 +39,7 @@ function ButtonDialog({ showTooltip, btn, onChange }: Props) {
             payloadData = { url: "" };
             FlowController.removeButtonEdge(btn.id);
         } else if (selectValue === "postback") {
-            payloadData = { key: "", value: "" };
+            payloadData = { key: variable || "", value: "" };
         } else if (selectValue === "continue") payloadData = { next: "" };
         const newBtn = {
             ...btn,
@@ -75,7 +76,7 @@ function ButtonDialog({ showTooltip, btn, onChange }: Props) {
                 {selected === "postback" && btn?.type === "postback" && (
                     <ButtonSetVariable
                         onChange={handlePostbackChange}
-                        variableBtnValue={btn.payload.variable}
+                        variableBtnValue={variable || btn.payload.variable}
                         postbackBtnValue={btn.payload.value}
                     />
                 )}

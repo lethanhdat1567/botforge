@@ -15,8 +15,8 @@ export type VariableData = {
     regex?: string;
     fallback: string;
     timeout: {
-        value: number;
-        unit: "seconds" | "minutes" | "hours";
+        duration: number;
+        unit: "second" | "minute" | "hour";
     };
 };
 

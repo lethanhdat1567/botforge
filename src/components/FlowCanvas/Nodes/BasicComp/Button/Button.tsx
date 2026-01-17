@@ -12,11 +12,12 @@ import { Handle, Position } from "@xyflow/react";
 
 type Props = {
     btn: ButtonNode;
+    variable?: string;
     onChange: (btn: ButtonNode) => void;
     onDestroyBtn: (btnId: string) => void;
 };
 
-function Button({ btn, onChange, onDestroyBtn }: Props) {
+function Button({ btn, onChange, onDestroyBtn, variable }: Props) {
     const inputRef = useRef<HTMLDivElement>(null);
     const [showTooltip, setShowTooltip] = useState(false);
     const [buttonInput, setButtonInput] = useState(btn.title);
@@ -73,6 +74,7 @@ function Button({ btn, onChange, onDestroyBtn }: Props) {
                 showTooltip={showTooltip}
                 btn={btn}
                 onChange={onChange}
+                variable={variable}
             />
 
             <ButtonUI

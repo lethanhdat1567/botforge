@@ -36,8 +36,8 @@ export function getDefaultCollectionData(
                 regex: getRegexByVariableType(variableType),
                 fallback: "",
                 timeout: {
-                    value: 5,
-                    unit: "seconds",
+                    duration: 5,
+                    unit: "second",
                 },
             },
         },

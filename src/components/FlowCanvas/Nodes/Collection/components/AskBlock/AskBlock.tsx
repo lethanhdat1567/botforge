@@ -11,9 +11,17 @@ type Props = {
     setErrors: any;
     nodeId: string;
     fieldId: string;
+    variable?: string;
 };
 
-function AskBlock({ nodeId, fieldId, text, buttons, setErrors }: Props) {
+function AskBlock({
+    nodeId,
+    fieldId,
+    text,
+    buttons,
+    setErrors,
+    variable,
+}: Props) {
     const [textValue, setTextValue] = useState(text);
     const debounceText = useDebounce(textValue, 300);
 
@@ -40,6 +48,7 @@ function AskBlock({ nodeId, fieldId, text, buttons, setErrors }: Props) {
                 buttonLists={buttons}
                 setButtonList={handleSetButtons}
                 setErrors={setErrors}
+                variable={variable}
             />
         </div>
     );

@@ -28,7 +28,10 @@ export function compileCollectionNode(
                     key: payloads.fields.variable.key,
                     type: payloads.fields.type as CollectionVariableType,
                     regex: payloads.fields.variable.regex,
-                    timeout: String(payloads.fields.variable.timeout.value),
+                    timeout: {
+                        duration: payloads.fields.variable.timeout.duration,
+                        unit: payloads.fields.variable.timeout.unit,
+                    },
                 },
             },
         } as CollectionDataEngine,

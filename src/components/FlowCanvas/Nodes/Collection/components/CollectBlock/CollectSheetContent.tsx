@@ -78,12 +78,12 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
             ...prev,
             timeout: {
                 ...prev.timeout,
-                value,
+                duration: value,
             },
         }));
     };
 
-    const handleChangeTimeoutUnit = (unit: "seconds" | "minutes" | "hours") => {
+    const handleChangeTimeoutUnit = (unit: "second" | "minute" | "hour") => {
         setLocalVariable((prev) => ({
             ...prev,
             timeout: {
@@ -135,7 +135,7 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
                     min={1}
                     max={99}
                     step={1}
-                    value={localVariable.timeout.value}
+                    value={localVariable.timeout.duration}
                     onChange={handleChangeTimeoutValue}
                 />
 
@@ -147,9 +147,9 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="seconds">Giây</SelectItem>
-                        <SelectItem value="minutes">Phút</SelectItem>
-                        <SelectItem value="hours">Giờ</SelectItem>
+                        <SelectItem value="second">Giây</SelectItem>
+                        <SelectItem value="minute">Phút</SelectItem>
+                        <SelectItem value="hour">Giờ</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
