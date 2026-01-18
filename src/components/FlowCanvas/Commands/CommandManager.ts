@@ -5,6 +5,8 @@ class CommandManager {
     private redoStack: Command[] = [];
 
     execute(command: Command) {
+        console.log("Exercute: ", command);
+
         command.execute();
         this.undoStack.push(command);
         this.redoStack = [];
@@ -24,6 +26,23 @@ class CommandManager {
 
         cmd.execute();
         this.undoStack.push(cmd);
+    }
+
+    get undoCount() {
+        return this.undoStack.length;
+    }
+
+    get redoCount() {
+        return this.redoStack.length;
+    }
+
+    // (optional)
+    canUndo() {
+        return this.undoStack.length > 0;
+    }
+
+    canRedo() {
+        return this.redoStack.length > 0;
     }
 }
 

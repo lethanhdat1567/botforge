@@ -1,14 +1,14 @@
 // FlowController.ts
 import { AddNodeCommand } from "@/components/FlowCanvas/Commands/AddNodeCommand";
 import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager";
+import { ConnectButtonEdge } from "@/components/FlowCanvas/Commands/ConnectButtonEdge";
+import { ConnectConditionEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectConditionEdge";
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
 import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/DuplicateNodeCommand";
 import { DuplicatePayloadCommand } from "@/components/FlowCanvas/Commands/DuplicatePayloadCommand";
 import { RemoveEdgeCommand } from "@/components/FlowCanvas/Commands/RemoveEdgeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
 import { RemovePayloadNodeCommand } from "@/components/FlowCanvas/Commands/RemovePayloadNodeCommand";
-import { UpdateButtonChildrenCommand } from "@/components/FlowCanvas/Commands/UpdateButtonChildrenCommand";
-import { UpdateConditionNextCommand } from "@/components/FlowCanvas/Commands/UpdateConditionNextCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
 import { UpdatePayloadCommand } from "@/components/FlowCanvas/Commands/UpdateNodePayloadCommand";
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
@@ -53,6 +53,14 @@ export const FlowController = {
         commandManager.execute(new ConnectEdgeCommand(connection));
     },
 
+    connectByButtonHandle(connection: Connection) {
+        commandManager.execute(new ConnectButtonEdge(connection));
+    },
+
+    connectByConditionHandle(connection: Connection) {
+        commandManager.execute(new ConnectConditionEdgeCommand(connection));
+    },
+
     resetFlow() {
         useNodeStore.getState().resetNodes();
         useEdgeStore.getState().resetEdges();
@@ -75,27 +83,28 @@ export const FlowController = {
         edgeStore.removeEdgeBySourceHandle(`btn-source-${btnId}`);
     },
 
-    updateButtonChildren(nodeId: string, btnId: string, targetNodeId: string) {
-        commandManager.execute(
-            new UpdateButtonChildrenCommand(nodeId, btnId, targetNodeId),
-        );
-    },
-
-    updateConditionNext(
-        nodeId: string,
-        conditionId: string,
-        targetNodeId: string,
-    ) {
-        commandManager.execute(
-            new UpdateConditionNextCommand(nodeId, conditionId, targetNodeId),
-        );
-    },
-
     undo() {
         commandManager.undo();
     },
 
     redo() {
         commandManager.redo();
+    },
+
+    undoCount() {
+        return commandManager.undoCount;
+    },
+
+    redoCount() {
+        return commandManager.redoCount;
+    },
+
+    // (optional)
+    canUndo() {
+        return commandManager.canUndo;
+    },
+
+    canRedo() {
+        return commandManager.canRedo;
     },
 };

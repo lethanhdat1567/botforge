@@ -1,21 +1,27 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useDebounce from "@/hooks/use-debounce";
 import { useEffect, useState } from "react";
 
 function ButtonUrl({
-    onChange,
+    onCommit,
     urlValue,
 }: {
-    onChange: any;
+    onCommit: (value: string) => void;
     urlValue: string;
 }) {
     const [urlInput, setUrlInput] = useState(urlValue);
-    const debouncedUrlInput = useDebounce(urlInput, 500);
 
+    // sync khi undo / redo / external update
     useEffect(() => {
-        onChange(debouncedUrlInput);
-    }, [debouncedUrlInput]);
+        setUrlInput(urlValue);
+    }, [urlValue]);
+
+    const handleBlur = () => {
+        if (urlInput === urlValue) return;
+        onCommit(urlInput);
+    };
 
     return (
         <div className="pt-2">
@@ -23,6 +29,7 @@ function ButtonUrl({
             <Input
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
+                onBlur={handleBlur}
                 className="w-full"
                 placeholder="Url..."
             />

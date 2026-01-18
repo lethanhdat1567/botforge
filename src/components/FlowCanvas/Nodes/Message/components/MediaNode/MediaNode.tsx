@@ -50,7 +50,7 @@ function MediaNode({ nodeId, payload }: Props) {
     }
 
     return (
-        <BaseContent id={nodeId} errors={errors}>
+        <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
             <div className="space-y-4 p-2">
                 {media_url ? (
                     <View

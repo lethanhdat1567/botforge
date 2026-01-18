@@ -1,26 +1,42 @@
+"use client";
+
 import { formatConditionOperator } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
 import { ConditionItem as ConditionType } from "@/components/FlowCanvas/types/node/action.type";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useDebounce from "@/hooks/use-debounce";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Props = {
     condition: ConditionType;
-    onUpdate: (condition: ConditionType) => void;
+    onCommit: (condition: ConditionType) => void;
     onDestroy: (condition: ConditionType) => void;
 };
 
-function ConditionItem({ condition, onUpdate, onDestroy }: Props) {
+function ConditionItem({ condition, onCommit, onDestroy }: Props) {
     const [key, setKey] = useState(condition.field);
     const [value, setValue] = useState(condition.value);
-    const debounceKey = useDebounce(key, 500);
-    const debounceValue = useDebounce(value, 500);
+
+    // sync undo / redo
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setKey(condition.field);
+    }, [condition.field]);
 
     useEffect(() => {
-        onUpdate({ ...condition, field: debounceKey, value: debounceValue });
-    }, [debounceKey, debounceValue]);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setValue(condition.value);
+    }, [condition.value]);
+
+    const commitChange = () => {
+        if (key === condition.field && value === condition.value) return;
+
+        onCommit({
+            ...condition,
+            field: key,
+            value,
+        });
+    };
 
     return (
         <div className="flex items-center gap-2">
@@ -38,6 +54,7 @@ function ConditionItem({ condition, onUpdate, onDestroy }: Props) {
                 placeholder="Key"
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
+                onBlur={commitChange}
             />
 
             {/* Operator */}
@@ -48,6 +65,7 @@ function ConditionItem({ condition, onUpdate, onDestroy }: Props) {
                 placeholder="Value"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
+                onBlur={commitChange}
             />
         </div>
     );

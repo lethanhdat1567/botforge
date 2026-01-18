@@ -72,7 +72,7 @@ function ButtonList({
                 <Button
                     key={btn.id}
                     btn={btn}
-                    onChange={handleChangeBtn}
+                    onCommit={handleChangeBtn}
                     onDestroyBtn={handleDestroyBtn}
                     variable={variable}
                 />

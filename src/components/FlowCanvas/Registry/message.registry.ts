@@ -92,6 +92,10 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
         return {
             ...cloned,
             id: uuid(),
+            position: {
+                x: cloned.position.x + 300,
+                y: cloned.position.y,
+            },
             selected: false,
         };
     },

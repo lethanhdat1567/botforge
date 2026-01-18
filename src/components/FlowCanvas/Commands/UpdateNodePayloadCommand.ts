@@ -3,7 +3,7 @@ import { NodeRegistryMap } from "@/components/FlowCanvas/Registry";
 import { useNodeStore } from "@/store/nodeStore";
 
 export class UpdatePayloadCommand implements Command {
-    private prevData: any;
+    private oldNode: any;
 
     constructor(
         private nodeId: string,
@@ -17,24 +17,24 @@ export class UpdatePayloadCommand implements Command {
 
         if (!node) return;
 
-        this.prevData = structuredClone(node);
+        this.oldNode = structuredClone(node);
 
         const registry = NodeRegistryMap[node.type];
 
         if (!registry.updatePayload) return;
 
-        const newData = registry.updatePayload(
+        const newNode = registry.updatePayload(
             node as any,
             this.payloadId,
             this.patch,
         );
 
-        store.updateNode(this.nodeId, newData);
+        store.updateNode(this.nodeId, newNode);
     }
 
     undo() {
-        if (!this.prevData) return;
+        if (!this.oldNode) return;
 
-        useNodeStore.getState().updateNode(this.nodeId, this.prevData);
+        useNodeStore.getState().updateNode(this.nodeId, this.oldNode);
     }
 }

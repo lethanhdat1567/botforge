@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { VariableData } from "@/components/FlowCanvas/types/node/collection.type";
 import { Input } from "@/components/ui/input";
@@ -9,8 +11,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import useDebounce from "@/hooks/use-debounce";
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
+import equal from "fast-deep-equal";
 
 type Props = {
     variable: VariableData;
@@ -19,27 +21,23 @@ type Props = {
 };
 
 function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
-    /* =====================
-     * Local state
-     * ===================== */
     const [localVariable, setLocalVariable] = useState<VariableData>(variable);
 
-    // Sync khi đổi node / đổi variable
+    // Sync khi undo / redo / đổi node
     useEffect(() => {
         setLocalVariable(variable);
     }, [variable]);
 
     /* =====================
-     * Debounce
+     * Commit helper
      * ===================== */
-    const debouncedVariable = useDebounce(localVariable, 500);
+    const commit = (next: VariableData) => {
+        if (equal(next, variable)) return;
 
-    useEffect(() => {
         FlowController.updateNodePayload(nodeId, fieldId, {
-            variable: debouncedVariable,
+            variable: next,
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedVariable]);
+    };
 
     /* =====================
      * Handlers
@@ -54,6 +52,10 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
         }));
     };
 
+    const handleBlurVariableKey = () => {
+        commit(localVariable);
+    };
+
     const handleChangeRegex = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLocalVariable((prev) => ({
             ...prev,
@@ -61,17 +63,16 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
         }));
     };
 
+    const handleBlurRegex = () => {
+        commit(localVariable);
+    };
+
     const handleChangeTimeoutValue = (
         e: React.ChangeEvent<HTMLInputElement>,
     ) => {
         let value = Number(e.target.value);
+        if (Number.isNaN(value)) return;
 
-        // Cho phép rỗng khi đang gõ
-        if (Number.isNaN(value)) {
-            return;
-        }
-
-        // Clamp 1 → 99
         value = Math.max(1, Math.min(99, value));
 
         setLocalVariable((prev) => ({
@@ -83,14 +84,21 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
         }));
     };
 
+    const handleBlurTimeoutValue = () => {
+        commit(localVariable);
+    };
+
     const handleChangeTimeoutUnit = (unit: "second" | "minute" | "hour") => {
-        setLocalVariable((prev) => ({
-            ...prev,
+        const next = {
+            ...localVariable,
             timeout: {
-                ...prev.timeout,
+                ...localVariable.timeout,
                 unit,
             },
-        }));
+        };
+
+        setLocalVariable(next);
+        commit(next); // Select → commit ngay
     };
 
     const handleChangeFallback = (
@@ -102,6 +110,10 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
         }));
     };
 
+    const handleBlurFallback = () => {
+        commit(localVariable);
+    };
+
     /* =====================
      * Render
      * ===================== */
@@ -110,25 +122,27 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
         <div className="space-y-6 px-4">
             {/* Variable */}
             <div>
-                <label className="text-md mb-1 block font-medium">Biến</label>
+                <label className="mb-1 block font-medium">Biến</label>
                 <Input
                     value={localVariable.key}
                     onChange={handleChangeVariableKey}
+                    onBlur={handleBlurVariableKey}
                 />
             </div>
 
             {/* Regex */}
             <div>
-                <label className="text-md mb-1 block font-medium">Regex</label>
+                <label className="mb-1 block font-medium">Regex</label>
                 <Input
                     value={localVariable.regex}
                     onChange={handleChangeRegex}
+                    onBlur={handleBlurRegex}
                 />
             </div>
 
             {/* Timeout */}
             <div className="flex items-center gap-2">
-                <label className="text-md w-70 font-medium">Timeout Bot:</label>
+                <label className="w-32 font-medium">Timeout Bot:</label>
 
                 <Input
                     type="number"
@@ -137,13 +151,14 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
                     step={1}
                     value={localVariable.timeout.duration}
                     onChange={handleChangeTimeoutValue}
+                    onBlur={handleBlurTimeoutValue}
                 />
 
                 <Select
                     value={localVariable.timeout.unit}
                     onValueChange={handleChangeTimeoutUnit}
                 >
-                    <SelectTrigger className="min-w-34">
+                    <SelectTrigger className="min-w-32">
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -156,18 +171,13 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
 
             {/* Fallback */}
             <div>
-                <label className="text-md mb-1 block font-medium">
-                    Fallback
-                </label>
+                <label className="mb-1 block font-medium">Fallback</label>
                 <Textarea
                     className="h-40 resize-none"
                     value={localVariable.fallback}
                     onChange={handleChangeFallback}
+                    onBlur={handleBlurFallback}
                 />
-                <p className="mt-2 text-sm text-neutral-400 italic">
-                    * Đây là tin nhắn sẽ được gửi đi sau khi hết thời gian
-                    timeout
-                </p>
             </div>
         </div>
     );

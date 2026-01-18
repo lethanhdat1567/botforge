@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
         ],
         unoptimized: true,
     },
+    reactStrictMode: false,
 };
 
 const withNextIntl = createNextIntlPlugin();

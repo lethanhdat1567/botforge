@@ -12,7 +12,12 @@ function CollectionNode(props: any) {
 
     return (
         <BaseNode childProps={props}>
-            <BaseContent id={props.id} errors={errors}>
+            <BaseContent
+                nodeId={props.id}
+                payloadId={props.data.messages.id}
+                errors={errors}
+                isHideToolbar={true}
+            >
                 <AskBlock
                     text={nodeContent.text}
                     buttons={nodeContent.buttons}

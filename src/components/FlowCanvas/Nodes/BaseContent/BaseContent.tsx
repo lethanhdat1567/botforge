@@ -9,6 +9,7 @@ type Props = {
     children?: React.ReactNode;
     errors?: Array<{ field: string; message: string }>;
     isContentDragging?: boolean;
+    isHideToolbar?: boolean;
 };
 
 function BaseContent({
@@ -17,6 +18,7 @@ function BaseContent({
     children,
     errors,
     isContentDragging,
+    isHideToolbar,
 }: Props) {
     const {
         setNodeRef,
@@ -55,7 +57,7 @@ function BaseContent({
             {isError && <AlertBagde errors={errors} />}
 
             {/* Toolbar = drag handle */}
-            {!isContentDragging && (
+            {!isContentDragging && !isHideToolbar && (
                 <ContentToolbar
                     nodeId={nodeId}
                     payloadId={payloadId}

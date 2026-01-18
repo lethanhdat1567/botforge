@@ -1,9 +1,9 @@
+"use client";
+
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import ButtonList from "@/components/FlowCanvas/Nodes/BasicComp/Button/ButtonList";
 import TextArea from "@/components/FlowCanvas/Nodes/BasicComp/TextArea/TextArea";
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
-import useDebounce from "@/hooks/use-debounce";
-import { useEffect, useState } from "react";
 
 type Props = {
     text: string;
@@ -22,28 +22,28 @@ function AskBlock({
     setErrors,
     variable,
 }: Props) {
-    const [textValue, setTextValue] = useState(text);
-    const debounceText = useDebounce(textValue, 300);
+    function commitText(nextText: string) {
+        if (nextText === text) return;
+
+        FlowController.updateNodePayload(nodeId, fieldId, {
+            text: nextText,
+        });
+    }
 
     function handleSetButtons(lists: ButtonNode[]) {
-        FlowController.updateNodePayload(nodeId, fieldId, { buttons: lists });
+        FlowController.updateNodePayload(nodeId, fieldId, {
+            buttons: lists,
+        });
     }
-
-    function handleSetText(text: string) {
-        setTextValue(text);
-    }
-
-    useEffect(() => {
-        FlowController.updateNodePayload(nodeId, fieldId, { text: textValue });
-    }, [debounceText, fieldId, nodeId, textValue]);
 
     return (
-        <div>
+        <div className="space-y-2">
             <TextArea
-                value={textValue}
-                onChange={handleSetText}
+                value={text}
+                onCommit={commitText}
                 setErrors={setErrors}
             />
+
             <ButtonList
                 buttonLists={buttons}
                 setButtonList={handleSetButtons}

@@ -9,17 +9,15 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import useDebounce from "@/hooks/use-debounce";
 import { StickyNote } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function NoteBtn({ node }: { node: FlowNode }) {
     const [noteValue, setNoteValue] = useState(node.data.note || "");
-    const debouceValue = useDebounce(noteValue, 300);
 
-    useEffect(() => {
-        FlowController.updateNode(node.id, { note: debouceValue });
-    }, [debouceValue]);
+    const onUpdateNode = useCallback(() => {
+        FlowController.updateNode(node.id, { note: noteValue });
+    }, [noteValue, node.id]);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -46,6 +44,7 @@ function NoteBtn({ node }: { node: FlowNode }) {
                     placeholder="Ghi chu..."
                     value={noteValue}
                     onChange={(e) => setNoteValue(e.target.value)}
+                    onBlur={onUpdateNode}
                 />
             </DialogContent>
         </Dialog>

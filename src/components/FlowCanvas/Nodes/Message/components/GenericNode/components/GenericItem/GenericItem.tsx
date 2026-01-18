@@ -118,18 +118,18 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
 
                     <TextArea
                         value={generic.title}
-                        onChange={handleUpdateTitle}
+                        onCommit={handleUpdateTitle}
                         setErrors={setErrors}
                     />
 
                     <TextArea
                         value={generic.subtitle || ""}
-                        onChange={handleUpdateSubtitle}
+                        onCommit={handleUpdateSubtitle}
                     />
 
                     <TextArea
                         value={generic.default_action?.url || ""}
-                        onChange={handleUpdateUrl}
+                        onCommit={handleUpdateUrl}
                     />
 
                     <ButtonList

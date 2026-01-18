@@ -3,7 +3,6 @@
 import ButtonDialog from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/ButtonDialog";
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 import { Input } from "@/components/ui/input";
-import useDebounce from "@/hooks/use-debounce";
 import { cn } from "@/lib/utils";
 import { Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -13,25 +12,22 @@ import { Handle, Position } from "@xyflow/react";
 type Props = {
     btn: ButtonNode;
     variable?: string;
-    onChange: (btn: ButtonNode) => void;
+    onCommit: (btn: ButtonNode) => void;
     onDestroyBtn: (btnId: string) => void;
 };
 
-function Button({ btn, onChange, onDestroyBtn, variable }: Props) {
+function Button({ btn, onCommit, onDestroyBtn, variable }: Props) {
     const inputRef = useRef<HTMLDivElement>(null);
     const [showTooltip, setShowTooltip] = useState(false);
     const [buttonInput, setButtonInput] = useState(btn.title);
-    const debounceInput = useDebounce(buttonInput, 300);
+
     const isError = !btn.title?.trim();
 
+    // sync khi undo / redo
     useEffect(() => {
-        const btnData = {
-            ...btn,
-            title: debounceInput,
-        };
-
-        onChange(btnData);
-    }, [debounceInput]);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setButtonInput(btn.title);
+    }, [btn.title]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -49,6 +45,15 @@ function Button({ btn, onChange, onDestroyBtn, variable }: Props) {
         };
     }, []);
 
+    const handleBlur = () => {
+        if (buttonInput === btn.title) return;
+
+        onCommit({
+            ...btn,
+            title: buttonInput,
+        });
+    };
+
     return (
         <div className="group/btn relative" ref={inputRef}>
             <Input
@@ -58,8 +63,10 @@ function Button({ btn, onChange, onDestroyBtn, variable }: Props) {
                 )}
                 value={buttonInput}
                 onChange={(e) => setButtonInput(e.target.value)}
+                onBlur={handleBlur}
                 onFocus={() => setShowTooltip(true)}
             />
+
             {btn.type !== "url" && (
                 <Handle
                     type="source"
@@ -69,11 +76,10 @@ function Button({ btn, onChange, onDestroyBtn, variable }: Props) {
                 />
             )}
 
-            {/* Tooltip */}
             <ButtonDialog
                 showTooltip={showTooltip}
                 btn={btn}
-                onChange={onChange}
+                onChange={onCommit}
                 variable={variable}
             />
 

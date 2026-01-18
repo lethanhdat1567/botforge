@@ -59,7 +59,7 @@ function GenericNode({ nodeId, payload }: Props) {
                     {isExpand ? "Thu nhỏ" : "Mở rộng"}
                 </Button>
             </div>
-            <BaseContent id={nodeId} errors={errors}>
+            <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
                 <div>
                     {isExpand ? (
                         <div className="flex items-center gap-4">

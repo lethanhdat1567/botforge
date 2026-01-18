@@ -28,7 +28,7 @@ function ConditionNode({ nodeId, payload }: Props) {
     }
 
     return (
-        <BaseContent id={nodeId}>
+        <BaseContent nodeId={nodeId} payloadId={payload.id}>
             {/* Condition items */}
             {conditionItems.map((item, index) => (
                 <Sheet key={index}>

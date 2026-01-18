@@ -1,14 +1,13 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
-import useDebounce from "@/hooks/use-debounce";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 type Props = {
     className?: string;
     value: string;
-    onChange: (value: string) => void;
+    onCommit: (value: string) => void;
     setErrors?: any;
     placeholder?: string;
 };
@@ -16,47 +15,49 @@ type Props = {
 function TextArea({
     className,
     value,
-    onChange,
+    onCommit,
     setErrors,
     placeholder,
 }: Props) {
     const [inputValue, setInputValue] = useState(value);
-    const debouceValue = useDebounce(inputValue, 300);
-    const isError = setErrors && !inputValue?.trim();
 
+    const isError = setErrors && !inputValue.trim();
+
+    // sync khi parent đổi value (undo / redo)
     useEffect(() => {
-        onChange(debouceValue);
-    }, [debouceValue]);
+        setInputValue(value);
+    }, [value]);
 
+    // validation realtime
     useEffect(() => {
         if (!setErrors) return;
-        if (inputValue.trim() === "") {
-            setErrors((prev: any[]) => {
-                const hasTextError = prev.some(
-                    (error) => error.field === "text",
-                );
 
-                if (hasTextError) {
-                    // update lỗi text
-                    return prev.map((error) =>
-                        error.field === "text"
-                            ? { ...error, message: "Text Không được để trống" }
-                            : error,
-                    );
-                } else {
-                    // thêm lỗi text mới
-                    return [
-                        ...prev,
-                        { field: "text", message: "Text Không được để trống" },
-                    ];
-                }
+        if (!inputValue.trim()) {
+            setErrors((prev: any[]) => {
+                const exists = prev.some((e) => e.field === "text");
+                return exists
+                    ? prev.map((e) =>
+                          e.field === "text"
+                              ? { ...e, message: "Text không được để trống" }
+                              : e,
+                      )
+                    : [
+                          ...prev,
+                          {
+                              field: "text",
+                              message: "Text không được để trống",
+                          },
+                      ];
             });
         } else {
-            setErrors((prev: any) =>
-                prev.filter((error: any) => error.field !== "text"),
-            );
+            setErrors((prev: any[]) => prev.filter((e) => e.field !== "text"));
         }
-    }, [inputValue]);
+    }, [inputValue, setErrors]);
+
+    const handleBlur = () => {
+        if (inputValue === value) return; // không đổi → không commit
+        onCommit(inputValue.trim());
+    };
 
     return (
         <Textarea
@@ -68,6 +69,7 @@ function TextArea({
             rows={4}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onBlur={handleBlur}
             placeholder={placeholder}
         />
     );

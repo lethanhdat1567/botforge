@@ -1,25 +1,27 @@
 import { Command } from "@/components/FlowCanvas/Commands/Command";
 import { useEdgeStore } from "@/store/edgeStore";
-import type { Connection, Edge } from "@xyflow/react";
+import { MarkerType, type Connection, type Edge } from "@xyflow/react";
+
+import { v4 as uuid } from "uuid";
 
 export class ConnectEdgeCommand implements Command {
-    private edge?: Edge;
+    private edge!: Edge;
 
     constructor(private connection: Connection) {}
 
     execute() {
         const edgeStore = useEdgeStore.getState();
 
-        const before = edgeStore.edges;
-        edgeStore.onConnect(this.connection);
+        this.edge = {
+            id: uuid(),
+            ...this.connection,
+            markerEnd: { type: MarkerType.Arrow },
+        };
 
-        // lấy edge vừa được tạo
-        this.edge = edgeStore.edges.find((e) => !before.includes(e));
+        edgeStore.addEdge(this.edge);
     }
 
     undo() {
-        if (!this.edge) return;
-
         useEdgeStore.getState().removeEdge(this.edge.id);
     }
 }

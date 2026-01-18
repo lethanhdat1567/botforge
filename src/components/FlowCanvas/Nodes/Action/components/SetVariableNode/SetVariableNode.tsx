@@ -1,8 +1,9 @@
+"use client";
+
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
 import { SetVariableActionData } from "@/components/FlowCanvas/types/node/action.type";
 import { Input } from "@/components/ui/input";
-import useDebounce from "@/hooks/use-debounce";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -14,28 +15,41 @@ function SetVariableNode({ nodeId, payload }: Props) {
     const [key, setKey] = useState(payload.fields.key);
     const [value, setValue] = useState(payload.fields.value);
 
-    const debouncedKey = useDebounce(key, 500);
-    const debouncedValue = useDebounce(value, 500);
+    // sync undo / redo
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setKey(payload.fields.key);
+    }, [payload.fields.key]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setValue(payload.fields.value);
+    }, [payload.fields.value]);
+
+    const commitChange = () => {
+        if (key === payload.fields.key && value === payload.fields.value)
+            return;
+
         FlowController.updateNodePayload(nodeId, payload.id, {
-            key: debouncedKey,
-            value: debouncedValue,
+            key,
+            value,
         });
-    }, [debouncedKey, debouncedValue]);
+    };
 
     return (
-        <BaseContent id={nodeId}>
-            <div>
+        <BaseContent nodeId={nodeId} payloadId={payload.id}>
+            <div className="space-y-2">
                 <Input
                     placeholder="key"
-                    onChange={(e) => setKey(e.target.value)}
                     value={key}
+                    onChange={(e) => setKey(e.target.value)}
+                    onBlur={commitChange}
                 />
                 <Input
                     placeholder="value"
-                    onChange={(e) => setValue(e.target.value)}
                     value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onBlur={commitChange}
                 />
             </div>
         </BaseContent>

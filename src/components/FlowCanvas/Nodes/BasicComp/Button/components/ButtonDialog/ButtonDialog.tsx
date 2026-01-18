@@ -69,13 +69,13 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
                 {selected === "continue" && <ButtonContinue />}
                 {selected === "url" && btn?.type === "url" && (
                     <ButtonUrl
-                        onChange={handleUrlChange}
+                        onCommit={handleUrlChange}
                         urlValue={btn.payload.url}
                     />
                 )}
                 {selected === "postback" && btn?.type === "postback" && (
                     <ButtonSetVariable
-                        onChange={handlePostbackChange}
+                        onCommit={handlePostbackChange}
                         variableBtnValue={variable || btn.payload.variable}
                         postbackBtnValue={btn.payload.value}
                     />

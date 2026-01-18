@@ -3,7 +3,7 @@
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import useDebounce from "@/hooks/use-debounce";
 import { useNodeStore } from "@/store/nodeStore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
     nodeTypeData: { color: string; icon: any };
@@ -12,9 +12,7 @@ type Props = {
 };
 
 function Heading({ nodeTypeData, name, nodeId }: Props) {
-    const updateNode = useNodeStore((state) => state.updateNode);
     const [nameInput, setNameInput] = useState(name);
-    const debounceValue = useDebounce(nameInput, 500);
 
     const Icon = nodeTypeData.icon;
 
@@ -22,9 +20,11 @@ function Heading({ nodeTypeData, name, nodeId }: Props) {
         setNameInput(name);
     }, [name]);
 
-    useEffect(() => {
-        FlowController.updateNode(nodeId, { name: debounceValue });
-    }, [debounceValue]);
+    const commitChange = useCallback(() => {
+        if (nameInput === name) return;
+
+        FlowController.updateNode(nodeId, { label: nameInput });
+    }, [nameInput, name, nodeId]);
 
     return (
         <div className="flex items-center gap-1">
@@ -42,6 +42,8 @@ function Heading({ nodeTypeData, name, nodeId }: Props) {
                 className="focus:border-foreground flex-1 border border-transparent outline-none"
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
+                onBlur={commitChange}
+                placeholder="Title..."
             />
         </div>
     );

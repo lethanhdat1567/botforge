@@ -41,7 +41,7 @@ function ImageNode({ nodeId, payload }: Props) {
     }
 
     return (
-        <BaseContent id={nodeId}>
+        <BaseContent nodeId={nodeId} payloadId={payload.id}>
             {url ? (
                 <View
                     type={payload.type as any}

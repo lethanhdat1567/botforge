@@ -51,7 +51,7 @@ function History() {
     }, [undo, redo]);
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
@@ -66,8 +66,9 @@ function History() {
                     <p>Undo</p>
                 </TooltipContent>
             </Tooltip>
+            <span>{FlowController.undoCount()}</span>
 
-            <Separator orientation="vertical" className="h-4" />
+            <Separator orientation="vertical" className="h-4!" />
 
             <Tooltip>
                 <TooltipTrigger asChild>
@@ -83,6 +84,7 @@ function History() {
                     <p>Redo</p>
                 </TooltipContent>
             </Tooltip>
+            <span>{FlowController.redoCount()}</span>
         </div>
     );
 }

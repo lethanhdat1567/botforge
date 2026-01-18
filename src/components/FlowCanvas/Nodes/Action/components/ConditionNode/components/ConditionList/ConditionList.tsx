@@ -36,7 +36,7 @@ function ConditionList({ items, nodeId, payloadId }: Props) {
                 <ConditionItem
                     condition={item}
                     key={index}
-                    onUpdate={handleUpdateCondition}
+                    onCommit={handleUpdateCondition}
                     onDestroy={handleDestroyCondition}
                 />
             ))}

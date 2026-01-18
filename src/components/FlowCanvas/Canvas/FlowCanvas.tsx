@@ -5,8 +5,8 @@ import {
     Background,
     Controls,
     Panel,
-    FinalConnectionState,
     ConnectionMode,
+    Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useNodeStore } from "@/store/nodeStore";
@@ -27,56 +27,23 @@ function FlowCanvas() {
 
     const onNodesChange = useNodeStore((s) => s.onNodesChange);
     const onEdgesChange = useEdgeStore((s) => s.onEdgesChange);
-    const onConnect = useEdgeStore((s) => s.onConnect);
 
     const onConnectStart = useEdgeStore((s) => s.onConnectStart);
-    const onConnectEnd = useEdgeStore((s) => s.onConnectEnd);
 
-    function handleConnectEnd(
-        event: MouseEvent | TouchEvent,
-        connectionState: FinalConnectionState,
-    ) {
-        onConnectEnd();
-        const nodeEl = (event.target as HTMLElement).closest("[data-node-id]");
-
-        // update button children
-        if (nodeEl) {
-            const fromHandle = connectionState.fromHandle;
-
-            // Update button next edge
-            if (fromHandle?.id?.startsWith("btn-source")) {
-                const sourceNode = connectionState.fromNode;
-                const targetNode = connectionState.toNode;
-                if (!sourceNode || !targetNode) return;
-
-                const btnId = fromHandle.id.replace("btn-source-", "");
-
-                FlowController.updateButtonChildren(
-                    sourceNode.id,
-                    btnId,
-                    targetNode.id,
-                );
-            } else if (fromHandle?.id?.startsWith("condition-source")) {
-                const sourceNode = connectionState.fromNode;
-                const targetNode = connectionState.toNode;
-                if (!sourceNode || !targetNode) return;
-
-                const conditionId = fromHandle.id.replace(
-                    "condition-source-",
-                    "",
-                );
-
-                FlowController.updateConditionNext(
-                    sourceNode.id,
-                    conditionId,
-                    targetNode.id,
-                );
-            }
-        } else {
-            const e = event as MouseEvent;
-            openMenu(e.clientX, e.clientY);
+    const handleConnect = (connection: Connection) => {
+        // Check if button handle
+        if (connection.sourceHandle?.startsWith("btn-source-")) {
+            FlowController.connectByButtonHandle(connection);
         }
-    }
+
+        // Check if condition handle
+        else if (connection.sourceHandle?.startsWith("condition-source-")) {
+            FlowController.connectByConditionHandle(connection);
+        } else {
+            // Edge connect → có undo
+            FlowController.connect(connection);
+        }
+    };
 
     return (
         <div
@@ -93,8 +60,8 @@ function FlowCanvas() {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnectStart={onConnectStart}
-                onConnectEnd={handleConnectEnd}
-                onConnect={onConnect}
+                // onConnectEnd={handleConnectEnd}
+                onConnect={handleConnect}
                 connectionMode={ConnectionMode.Strict}
                 fitView
             >
