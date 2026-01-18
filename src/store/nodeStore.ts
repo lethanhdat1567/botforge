@@ -15,7 +15,6 @@ interface NodeState {
     setNodes: (nodes: FlowNode[]) => void;
     addNode: (node: FlowNode) => void;
     updateNode: (id: string, patch: any) => void;
-    updateNodePayload: (nodeId: string, payloadId: string, patch: any) => void;
     removeNode: (id: string) => void;
     markStartNode: (nodeId: string) => void;
 
@@ -45,29 +44,11 @@ export const useNodeStore = create<NodeState>((set, get) => ({
             nodes: [...get().nodes, node],
         }),
 
-    // ✅ update đi qua registry (store không biết data shape)
-    updateNode: (id, patch) => {
+    updateNode: (id, updatedNode) => {
         set({
-            nodes: get().nodes.map((node) => {
-                if (node.id !== id) return node;
-
-                const registry = NodeRegistryMap[node.type];
-                return registry.update(node as any, patch);
-            }),
-        });
-    },
-
-    updateNodePayload: (nodeId: string, payloadId: string, patch: any) => {
-        set({
-            nodes: get().nodes.map((node) => {
-                if (node.id !== nodeId) return node;
-
-                const registry = NodeRegistryMap[node.type];
-
-                if (!registry.updatePayload) return node;
-
-                return registry.updatePayload(node as any, payloadId, patch);
-            }),
+            nodes: get().nodes.map((node) =>
+                node.id === id ? updatedNode : node,
+            ),
         });
     },
 

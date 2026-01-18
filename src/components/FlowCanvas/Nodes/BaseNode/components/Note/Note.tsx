@@ -1,11 +1,9 @@
-import { useNodeStore } from "@/store/nodeStore";
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { X } from "lucide-react";
 
 function Note({ nodeId, noteData }: { nodeId: string; noteData: string }) {
-    const updateNode = useNodeStore((state) => state.updateNode);
-
     function handleDestroyNote() {
-        updateNode(nodeId, { note: "" });
+        FlowController.updateNode(nodeId, { note: "" });
     }
 
     return (

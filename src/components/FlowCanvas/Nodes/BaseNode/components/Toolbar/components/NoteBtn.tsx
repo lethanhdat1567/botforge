@@ -1,3 +1,4 @@
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,17 +10,15 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import useDebounce from "@/hooks/use-debounce";
-import { useNodeStore } from "@/store/nodeStore";
 import { StickyNote } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function NoteBtn({ node }: { node: FlowNode }) {
-    const updateNode = useNodeStore((state) => state.updateNode);
     const [noteValue, setNoteValue] = useState(node.data.note || "");
     const debouceValue = useDebounce(noteValue, 300);
 
     useEffect(() => {
-        updateNode(node.id, { note: debouceValue });
+        FlowController.updateNode(node.id, { note: debouceValue });
     }, [debouceValue]);
 
     useEffect(() => {

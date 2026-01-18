@@ -35,7 +35,12 @@ export class UpdateButtonChildrenCommand implements Command {
 
         store.updateNodePayload(this.nodeId, payload.id, {
             buttons: buttons.map((b: ButtonNode) =>
-                b.id === this.btnId ? { ...b, next: this.targetNodeId } : b,
+                b.id === this.btnId
+                    ? {
+                          ...b,
+                          payload: { ...b.payload, next: this.targetNodeId },
+                      }
+                    : b,
             ),
         });
 

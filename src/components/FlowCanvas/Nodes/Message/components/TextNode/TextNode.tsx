@@ -20,19 +20,19 @@ function TextNode({ nodeId, payload }: Props) {
     const [errors, setErrors] = useState<ErrorType>([]);
 
     function handleUpdateText(text: string) {
-        FlowController.updateNodePayload(nodeId, payload.id, {
-            text: text,
-        });
+        // FlowController.updateNodePayload(nodeId, payload.id, {
+        //     text: text,
+        // });
     }
 
     function handleUpdateBtns(lists: ButtonNode[]) {
-        FlowController.updateNodePayload(nodeId, payload.id, {
-            buttons: lists,
-        });
+        // FlowController.updateNodePayload(nodeId, payload.id, {
+        //     buttons: lists,
+        // });
     }
 
     return (
-        <BaseContent id={payload.id} errors={errors}>
+        <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
             <div className="space-y-4 p-2">
                 <TextArea
                     value={payload.fields.text}

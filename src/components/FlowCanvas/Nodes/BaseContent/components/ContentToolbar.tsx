@@ -1,15 +1,31 @@
 "use client";
 
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { GripVertical, Plus, Trash } from "lucide-react";
 
 type Props = {
+    nodeId: string;
+    payloadId: string;
     dragListeners?: any;
     dragAttributes?: any;
 };
 
-function ContentToolbar({ dragListeners, dragAttributes }: Props) {
+function ContentToolbar({
+    nodeId,
+    payloadId,
+    dragListeners,
+    dragAttributes,
+}: Props) {
     const hydrated = useHydrated();
+
+    function handleDestroy() {
+        FlowController.removePayloadNode(nodeId, payloadId);
+    }
+
+    function handleDuplicate() {
+        FlowController.duplicatePayload(nodeId, payloadId);
+    }
 
     if (!hydrated) return null;
 
@@ -24,11 +40,17 @@ function ContentToolbar({ dragListeners, dragAttributes }: Props) {
                 <GripVertical size={16} />
             </button>
 
-            <button className="hover:bg-muted cursor-pointer rounded-sm p-2">
+            <button
+                className="hover:bg-muted cursor-pointer rounded-sm p-2"
+                onClick={handleDuplicate}
+            >
                 <Plus size={16} />
             </button>
 
-            <button className="cursor-pointer rounded-sm p-2 transition hover:bg-red-100">
+            <button
+                className="cursor-pointer rounded-sm p-2 transition hover:bg-red-100"
+                onClick={handleDestroy}
+            >
                 <Trash color="red" size={16} />
             </button>
         </div>

@@ -1,8 +1,5 @@
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import {
-    CollectionData,
-    CollectionVariableType,
-} from "@/components/FlowCanvas/types/node/collection.type";
+import { CollectionVariableType } from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import {
     FlowNodeType,
@@ -34,5 +31,21 @@ export interface NodeRegistry<
         patch: any,
     ): NodeOf<TType, TData>;
 
-    onDelete?(node: NodeOf<TType, TData>): void;
+    duplicate(node: NodeOf<TType, TData>): NodeOf<TType, TData>;
+    duplicatePayload?(
+        node: NodeOf<TType, TData>,
+        payloadId: string,
+    ): NodeOf<TType, TData>;
+
+    removeNode?(node: NodeOf<TType, TData>): void;
+    removePayloadNode?: (
+        data: any,
+        payloadId: string,
+    ) => {
+        nextData: TData;
+        removedPayload: any | null;
+        removedIndex: number;
+    };
+
+    onDelete?(node: NodeOf<TType, any>): void;
 }

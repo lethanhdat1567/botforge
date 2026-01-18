@@ -1,4 +1,5 @@
 import { Command } from "@/components/FlowCanvas/Commands/Command";
+import { NodeRegistryMap } from "@/components/FlowCanvas/Registry";
 import { useNodeStore } from "@/store/nodeStore";
 
 export class UpdateNodeCommand implements Command {
@@ -16,14 +17,16 @@ export class UpdateNodeCommand implements Command {
         if (!node) return;
 
         // clone data cũ để undo
-        this.prevData = structuredClone(node.data);
+        this.prevData = structuredClone(node);
 
-        nodeStore.updateNode(this.nodeId, this.patch);
+        // update node
+        const registry = NodeRegistryMap[node.type];
+        const updateNode = registry.update(node as any, this.patch);
+
+        nodeStore.updateNode(this.nodeId, updateNode);
     }
 
     undo() {
-        if (!this.prevData) return;
-
         useNodeStore.getState().updateNode(this.nodeId, this.prevData);
     }
 }

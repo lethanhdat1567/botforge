@@ -3,8 +3,10 @@ import { AddNodeCommand } from "@/components/FlowCanvas/Commands/AddNodeCommand"
 import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager";
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
 import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/DuplicateNodeCommand";
+import { DuplicatePayloadCommand } from "@/components/FlowCanvas/Commands/DuplicatePayloadCommand";
 import { RemoveEdgeCommand } from "@/components/FlowCanvas/Commands/RemoveEdgeCommand";
 import { RemoveNodeCommand } from "@/components/FlowCanvas/Commands/RemoveNodeCommand";
+import { RemovePayloadNodeCommand } from "@/components/FlowCanvas/Commands/RemovePayloadNodeCommand";
 import { UpdateButtonChildrenCommand } from "@/components/FlowCanvas/Commands/UpdateButtonChildrenCommand";
 import { UpdateConditionNextCommand } from "@/components/FlowCanvas/Commands/UpdateConditionNextCommand";
 import { UpdateNodeCommand } from "@/components/FlowCanvas/Commands/UpdateNodeCommand";
@@ -29,22 +31,6 @@ export const FlowController = {
         commandManager.execute(new AddNodeCommand(type, messageType, position));
     },
 
-    updateButtonChildren(nodeId: string, btnId: string, targetNodeId: string) {
-        commandManager.execute(
-            new UpdateButtonChildrenCommand(nodeId, btnId, targetNodeId),
-        );
-    },
-
-    updateConditionNext(
-        nodeId: string,
-        conditionId: string,
-        targetNodeId: string,
-    ) {
-        commandManager.execute(
-            new UpdateConditionNextCommand(nodeId, conditionId, targetNodeId),
-        );
-    },
-
     updateNode(nodeId: string, patch: any) {
         commandManager.execute(new UpdateNodeCommand(nodeId, patch));
     },
@@ -57,6 +43,10 @@ export const FlowController = {
 
     duplicateNode(nodeId: string) {
         commandManager.execute(new DuplicateNodeCommand(nodeId));
+    },
+
+    duplicatePayload(nodeId: string, payloadId: string) {
+        commandManager.execute(new DuplicatePayloadCommand(nodeId, payloadId));
     },
 
     connect(connection: Connection) {
@@ -76,10 +66,31 @@ export const FlowController = {
         commandManager.execute(new RemoveEdgeCommand(edgeId));
     },
 
+    removePayloadNode(nodeId: string, payloadId: string) {
+        commandManager.execute(new RemovePayloadNodeCommand(nodeId, payloadId));
+    },
+
     removeButtonEdge(btnId: string) {
         const edgeStore = useEdgeStore.getState();
         edgeStore.removeEdgeBySourceHandle(`btn-source-${btnId}`);
     },
+
+    updateButtonChildren(nodeId: string, btnId: string, targetNodeId: string) {
+        commandManager.execute(
+            new UpdateButtonChildrenCommand(nodeId, btnId, targetNodeId),
+        );
+    },
+
+    updateConditionNext(
+        nodeId: string,
+        conditionId: string,
+        targetNodeId: string,
+    ) {
+        commandManager.execute(
+            new UpdateConditionNextCommand(nodeId, conditionId, targetNodeId),
+        );
+    },
+
     undo() {
         commandManager.undo();
     },

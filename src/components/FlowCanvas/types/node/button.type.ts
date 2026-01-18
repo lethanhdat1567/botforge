@@ -1,10 +1,12 @@
 type PostbackPayload = {
     variable: string;
     value: string;
+    next?: string;
 };
 
 type URLPayLoad = {
     url: string;
+    next?: string;
 };
 
 // Kiểu cho button riêng lẻ
@@ -27,4 +29,5 @@ export type ButtonNode =
           type: "continue";
           title: string;
           children?: string;
+          payload: { next?: string };
       };

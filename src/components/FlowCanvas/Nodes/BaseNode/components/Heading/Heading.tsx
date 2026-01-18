@@ -1,5 +1,6 @@
 "use client";
 
+import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import useDebounce from "@/hooks/use-debounce";
 import { useNodeStore } from "@/store/nodeStore";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ function Heading({ nodeTypeData, name, nodeId }: Props) {
     }, [name]);
 
     useEffect(() => {
-        updateNode(nodeId, { label: debounceValue });
+        FlowController.updateNode(nodeId, { name: debounceValue });
     }, [debounceValue]);
 
     return (

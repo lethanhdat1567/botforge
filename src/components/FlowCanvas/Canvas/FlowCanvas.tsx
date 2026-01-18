@@ -17,6 +17,8 @@ import { nodeTypes } from "@/components/FlowCanvas/Canvas/components/nodeType";
 import Warning from "@/components/FlowCanvas/Canvas/components/Warning/Warning";
 import { useContextMenuStore } from "@/store/contextMenuStore";
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
+import History from "@/components/FlowCanvas/Canvas/components/History/History";
+import AutoSave from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/AutoSave/AutoSave";
 
 function FlowCanvas() {
     const openMenu = useContextMenuStore((s) => s.openAt);
@@ -99,7 +101,11 @@ function FlowCanvas() {
                 <Background />
                 <Controls />
                 <Panel position="top-center" className="space-y-2">
-                    <JsonBtns />
+                    <div className="bg-background flex items-center gap-6 border p-2 shadow">
+                        <JsonBtns />
+                        <History />
+                        <AutoSave />
+                    </div>
                     <Warning />
                 </Panel>
                 <ContextMenu />

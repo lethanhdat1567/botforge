@@ -4,13 +4,20 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
-    id: string;
+    nodeId: string;
+    payloadId: string;
     children?: React.ReactNode;
     errors?: Array<{ field: string; message: string }>;
     isContentDragging?: boolean;
 };
 
-function BaseContent({ id, children, errors, isContentDragging }: Props) {
+function BaseContent({
+    nodeId,
+    payloadId,
+    children,
+    errors,
+    isContentDragging,
+}: Props) {
     const {
         setNodeRef,
         listeners,
@@ -18,7 +25,7 @@ function BaseContent({ id, children, errors, isContentDragging }: Props) {
         transform,
         transition,
         isDragging,
-    } = useSortable({ id });
+    } = useSortable({ id: payloadId });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -50,6 +57,8 @@ function BaseContent({ id, children, errors, isContentDragging }: Props) {
             {/* Toolbar = drag handle */}
             {!isContentDragging && (
                 <ContentToolbar
+                    nodeId={nodeId}
+                    payloadId={payloadId}
                     dragListeners={listeners}
                     dragAttributes={attributes}
                 />

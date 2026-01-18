@@ -25,7 +25,7 @@ export const CollectionRegistry: NodeRegistry<
             type: "collection",
             position: position,
             data: {
-                label: "",
+                label: "Collection",
                 messages: defaultCollection,
             },
         };
@@ -52,6 +52,17 @@ export const CollectionRegistry: NodeRegistry<
                         ...patch,
                     },
                 },
+            },
+        };
+    },
+
+    duplicate(node) {
+        return {
+            ...node,
+            id: uuid(),
+            position: {
+                x: node.position.x + 300,
+                y: node.position.y,
             },
         };
     },
