@@ -34,8 +34,12 @@ export function getDefaultCollectionData(
                 key: "",
                 value: "",
                 regex: getRegexByVariableType(variableType),
-                fallback: "",
+                fallback: {
+                    mode: "default",
+                    value: "",
+                },
                 timeout: {
+                    mode: "default",
                     duration: 5,
                     unit: "second",
                 },

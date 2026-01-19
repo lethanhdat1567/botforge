@@ -19,10 +19,14 @@ export interface CollectionDataEngine {
             key: string;
             value?: any;
             regex?: string;
-            fallback: string;
+            fallback: {
+                mode: "default" | "custom";
+                value: string;
+            };
             timeout: {
                 duration: number;
                 unit: "second" | "minute" | "hour";
+                mode: "default" | "custom";
             };
         };
     };

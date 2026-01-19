@@ -1,3 +1,8 @@
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { Button } from "@/components/ui/button";
@@ -26,22 +31,30 @@ function NoteBtn({ node }: { node: FlowNode }) {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button
-                    size={"icon-lg"}
-                    variant={"ghost"}
-                    className="rounded-none"
-                >
-                    <StickyNote />
-                </Button>
-            </DialogTrigger>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <DialogTrigger asChild>
+                        <Button
+                            size="icon-lg"
+                            variant="ghost"
+                            className="rounded-none"
+                        >
+                            <StickyNote />
+                        </Button>
+                    </DialogTrigger>
+                </TooltipTrigger>
+
+                <TooltipContent side="top">Add note</TooltipContent>
+            </Tooltip>
+
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Ghi chú</DialogTitle>
+                    <DialogTitle>Ghi chú</DialogTitle>
                 </DialogHeader>
+
                 <Textarea
-                    className="h-40! w-full"
-                    placeholder="Ghi chu..."
+                    className="h-40 w-full"
+                    placeholder="Ghi chú..."
                     value={noteValue}
                     onChange={(e) => setNoteValue(e.target.value)}
                     onBlur={onUpdateNode}

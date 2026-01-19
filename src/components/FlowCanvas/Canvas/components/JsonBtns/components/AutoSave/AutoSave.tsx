@@ -31,12 +31,11 @@ function AutoSave() {
         }
     }, [nodes, edges]);
 
-    const debouncedPayload = useDebounce(payload, 1200);
+    const debouncedPayload = useDebounce(payload, 1000);
     const lastSavedRef = useRef<any>(null);
 
     useEffect(() => {
         if (!debouncedPayload) return;
-        if (isDragging || isConnecting) return;
         if (!flowId) return;
 
         // When equal object
@@ -65,12 +64,12 @@ function AutoSave() {
     }, [debouncedPayload, isDragging, isConnecting, flowId]);
 
     return loading ? (
-        <div className="flex items-center gap-2 text-sm">
-            <Spinner /> Saving...
+        <div className="flex h-10 w-20 shrink-0 items-center gap-2 text-sm">
+            <Spinner /> Đang lưu...
         </div>
     ) : (
-        <div className="flex items-center gap-2 text-sm">
-            <Check size={16} className="text-green-500" /> Saved
+        <div className="flex h-10 w-20 shrink-0 items-center gap-2 text-sm">
+            <Check size={16} className="text-green-500" /> Đã lưu
         </div>
     );
 }

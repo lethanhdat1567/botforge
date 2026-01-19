@@ -58,6 +58,7 @@ function History() {
                         variant="secondary"
                         onClick={undo}
                         aria-label="Undo"
+                        disabled={FlowController.undoCount() === 0}
                     >
                         <Undo2 />
                     </Button>
@@ -66,7 +67,6 @@ function History() {
                     <p>Undo</p>
                 </TooltipContent>
             </Tooltip>
-            <span>{FlowController.undoCount()}</span>
 
             <Separator orientation="vertical" className="h-4!" />
 
@@ -76,6 +76,7 @@ function History() {
                         variant="secondary"
                         onClick={redo}
                         aria-label="Redo"
+                        disabled={FlowController.redoCount() === 0}
                     >
                         <Redo2 />
                     </Button>
@@ -84,7 +85,6 @@ function History() {
                     <p>Redo</p>
                 </TooltipContent>
             </Tooltip>
-            <span>{FlowController.redoCount()}</span>
         </div>
     );
 }

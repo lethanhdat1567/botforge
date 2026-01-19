@@ -27,12 +27,9 @@ function Warning() {
 
     return (
         isWarning && (
-            <Alert variant="default">
+            <Alert variant="destructive">
                 <CircleAlert />
-                <AlertTitle>Lưu ý!</AlertTitle>
-                <AlertDescription>
-                    Bạn chưa setup nơi bắt đầu chạy node.
-                </AlertDescription>
+                <AlertTitle>Bạn chưa setup nơi bắt đầu chạy node!.</AlertTitle>
             </Alert>
         )
     );

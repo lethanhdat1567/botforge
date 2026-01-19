@@ -1,6 +1,11 @@
 import api from "@/config/axios";
 
 export const flowService = {
+    getFlowById: async (id: string) => {
+        const response = await api.get(`/flows/${id}`);
+        return response.data;
+    },
+
     createFlow: async (data: {
         name: string;
         folderId: string;

@@ -19,31 +19,85 @@ import { useContextMenuStore } from "@/store/contextMenuStore";
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import History from "@/components/FlowCanvas/Canvas/components/History/History";
 import AutoSave from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/AutoSave/AutoSave";
+import { useSearchParams } from "next/navigation";
+import EmptyFlow from "@/components/FlowCanvas/Canvas/EmptyFlow";
+import { useEffect, useState } from "react";
+
+type FlowStatus = "idle" | "loading" | "ready" | "error";
 
 function FlowCanvas() {
+    const searchParams = useSearchParams();
+    const flowId = searchParams.get("flowId");
+
+    const [status, setStatus] = useState<FlowStatus>("idle");
+
     const openMenu = useContextMenuStore((s) => s.openAt);
     const nodes = useNodeStore((s) => s.nodes);
     const edges = useEdgeStore((s) => s.edges);
 
     const onNodesChange = useNodeStore((s) => s.onNodesChange);
     const onEdgesChange = useEdgeStore((s) => s.onEdgesChange);
-
     const onConnectStart = useEdgeStore((s) => s.onConnectStart);
 
     const handleConnect = (connection: Connection) => {
-        // Check if button handle
         if (connection.sourceHandle?.startsWith("btn-source-")) {
             FlowController.connectByButtonHandle(connection);
-        }
-
-        // Check if condition handle
-        else if (connection.sourceHandle?.startsWith("condition-source-")) {
+        } else if (connection.sourceHandle?.startsWith("condition-source-")) {
             FlowController.connectByConditionHandle(connection);
         } else {
-            // Edge connect → có undo
             FlowController.connect(connection);
         }
     };
+
+    const handleEdgeChange = (changes: any) => {
+        const removedEdges = changes.filter((c: any) => c.type === "remove");
+
+        if (removedEdges.length > 0) {
+            removedEdges.forEach((c: any) => {
+                FlowController.removeEdge(c.id);
+            });
+        } else {
+            onEdgesChange(changes);
+        }
+    };
+
+    // 🔹 Lifecycle flow
+    useEffect(() => {
+        if (!flowId) {
+            FlowController.resetFlow();
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setStatus("idle");
+            return;
+        }
+
+        setStatus("loading");
+
+        FlowController.loadFlow(flowId)
+            .then(() => setStatus("ready"))
+            .catch(() => setStatus("error"));
+    }, [flowId]);
+
+    // 🔹 Render theo trạng thái
+    if (!flowId) {
+        return <EmptyFlow />;
+    }
+
+    if (status === "loading") {
+        return (
+            <div className="flex h-screen items-center justify-center text-neutral-500">
+                Đang tải flow...
+            </div>
+        );
+    }
+
+    if (status === "error") {
+        return (
+            <EmptyFlow
+                title="Không thể tải flow"
+                description="Flow không tồn tại hoặc đã xảy ra lỗi khi tải dữ liệu."
+            />
+        );
+    }
 
     return (
         <div
@@ -58,9 +112,8 @@ function FlowCanvas() {
                 edges={edges}
                 nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
+                onEdgesChange={handleEdgeChange}
                 onConnectStart={onConnectStart}
-                // onConnectEnd={handleConnectEnd}
                 onConnect={handleConnect}
                 connectionMode={ConnectionMode.Strict}
                 fitView
@@ -68,7 +121,7 @@ function FlowCanvas() {
                 <Background />
                 <Controls />
                 <Panel position="top-center" className="space-y-2">
-                    <div className="bg-background flex items-center gap-6 border p-2 shadow">
+                    <div className="bg-background flex items-center gap-6 rounded-sm border p-2 shadow">
                         <JsonBtns />
                         <History />
                         <AutoSave />

@@ -15,11 +15,33 @@ import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
 import { CollectionVariableType } from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { FlowNodeType } from "@/components/FlowCanvas/types/node/node.type";
+import { flowService } from "@/services/flowService";
 import { useEdgeStore } from "@/store/edgeStore";
 import { useNodeStore } from "@/store/nodeStore";
 import { Connection } from "@xyflow/react";
 
 export const FlowController = {
+    async loadFlow(flowId: string) {
+        try {
+            this.resetFlow();
+
+            const res = await flowService.getFlowById(flowId);
+
+            if (!res?.data?.layoutJson) {
+                throw new Error("FLOW_NOT_FOUND");
+            }
+
+            const nodes = res.data.layoutJson.nodes ?? [];
+            const edges = res.data.layoutJson.edges ?? [];
+
+            useNodeStore.getState().setNodes(nodes);
+            useEdgeStore.getState().setEdges(edges);
+        } catch (err) {
+            this.resetFlow();
+            throw err;
+        }
+    },
+
     addNode(
         type: FlowNodeType,
         messageType:

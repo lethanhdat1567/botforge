@@ -24,13 +24,17 @@ export function compileCollectionNode(
                 text: payloads.fields.text,
                 buttons: payloads.fields.buttons,
                 variable: {
-                    fallback: payloads.fields.variable.fallback,
+                    fallback: {
+                        mode: payloads.fields.variable.fallback.mode,
+                        value: payloads.fields.variable.fallback.value,
+                    },
                     key: payloads.fields.variable.key,
                     type: payloads.fields.type as CollectionVariableType,
                     regex: payloads.fields.variable.regex,
                     timeout: {
                         duration: payloads.fields.variable.timeout.duration,
                         unit: payloads.fields.variable.timeout.unit,
+                        mode: payloads.fields.variable.timeout.mode,
                     },
                 },
             },
