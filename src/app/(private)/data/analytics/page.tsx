@@ -1,75 +1,55 @@
 "use client";
 
-import React from "react";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-
+import { columns } from "@/app/(private)/data/analytics/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import { useDataTable } from "@/hooks/use-data-table";
-import { userFlowColumns } from "@/app/(private)/data/analytics/columns";
-import { useAuthStore } from "@/store/authStore";
 import { userFlowStateService } from "@/services/userFlowStateService";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export default function UserFlowAnalyticsPage() {
-    const user = useAuthStore((state) => state.user);
+function AnalyshPage() {
+    const [trackingData, setTrackingData] = useState([]);
 
-    const [flowId] = useQueryState("flowId", parseAsString.withDefault(""));
-    const [status] = useQueryState(
-        "status",
-        parseAsArrayOf(parseAsString).withDefault([]),
-    );
+    const http = useCallback(async () => {
+        try {
+            const res = await userFlowStateService.getByOwner();
+            setTrackingData(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
 
-    const [data, setData] = React.useState<any[]>([]);
-    const [loading, setLoading] = React.useState(true);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        http();
+    }, [http]);
 
-    // Fetch by owner (user.id lấy từ token)
-    React.useEffect(() => {
-        if (!user?.id) return;
+    async function handleDestroy(rows: any) {
+        const ids = rows.map((row: any) => row.original.id);
 
-        userFlowStateService
-            .getByOwner()
-            .then((res) => {
-                setData(res.data.data ?? []);
-            })
-            .finally(() => setLoading(false));
-    }, [user?.id]);
-
-    // Filter theo query
-    const filteredData = React.useMemo(() => {
-        return data.filter((item) => {
-            const matchesFlow =
-                flowId === "" ||
-                item.flowId.toLowerCase().includes(flowId.toLowerCase());
-
-            const matchesStatus =
-                status.length === 0 || status.includes(item.status);
-
-            return matchesFlow && matchesStatus;
-        });
-    }, [data, flowId, status]);
-
-    const { table } = useDataTable({
-        data: filteredData,
-        columns: userFlowColumns,
-        pageCount: 10,
-        getRowId: (row) => row.id,
-        initialState: {
-            sorting: [{ id: "createdAt", desc: true }],
-            columnPinning: { right: ["actions"] },
-        },
-    });
-
-    if (loading) {
-        return (
-            <div className="text-muted-foreground p-6 text-sm">Loading…</div>
-        );
+        try {
+            await userFlowStateService.deleteMany(ids);
+            toast.success("Deleted successfully");
+            http();
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to delete");
+        } finally {
+        }
     }
 
     return (
-        <div className="data-table-container">
-            <DataTable table={table}>
-                <DataTableToolbar table={table} />
-            </DataTable>
+        <div className="mx-auto">
+            <h1 className="text-2xl font-bold">Analysh</h1>
+            <DataTable
+                columns={columns}
+                data={trackingData}
+                options={{
+                    filterColumn: "flowId",
+                }}
+                onDestroy={handleDestroy}
+            />
         </div>
     );
 }
+
+export default AnalyshPage;

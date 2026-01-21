@@ -1,42 +1,32 @@
 "use client";
 
-import type { Column, ColumnDef } from "@tanstack/react-table";
-import {
-    CheckCircle2,
-    Clock,
-    Loader,
-    XCircle,
-    MoreHorizontal,
-    Text,
-    LucideIcon,
-} from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ColumnDef } from "@tanstack/react-table";
+import { FileText } from "lucide-react";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import {
-    UserFlowState,
-    UserFlowStatus,
-} from "@/app/(private)/data/analytics/type";
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Status from "@/app/(private)/data/analytics/components/Status";
+import VariableDialog from "@/app/(private)/data/analytics/components/VariableDialog/VariableDialog";
+import StepHistory from "@/app/(private)/data/analytics/components/StepHistory/StepHistory";
 
-const STATUS_META: Record<
-    UserFlowStatus,
-    { label: string; icon: React.ElementType }
-> = {
-    running: { label: "Running", icon: Loader },
-    pending: { label: "Pending", icon: Clock },
-    completed: { label: "Completed", icon: CheckCircle2 },
-    cancelled: { label: "Cancelled", icon: XCircle },
-};
+export interface TrackingFlow {
+    id: string;
+    platformUserId: string;
+    ownerUserId: string;
+    flowId: string;
+    pageId: string;
+    currentStep: string;
+    stepHistory?: any; // JSON array
+    variables?: any; // JSON object
+    status: "running" | "pending" | "cancelled" | "completed";
+    createdAt: Date;
+    updatedAt: Date;
+}
 
-export const userFlowColumns: ColumnDef<UserFlowState>[] = [
+export const columns: ColumnDef<TrackingFlow>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -45,104 +35,68 @@ export const userFlowColumns: ColumnDef<UserFlowState>[] = [
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && "indeterminate")
                 }
-                onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+                onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                }
+                aria-label="Select all"
             />
         ),
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
-                onCheckedChange={(v) => row.toggleSelected(!!v)}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
             />
         ),
-        size: 32,
         enableSorting: false,
         enableHiding: false,
     },
 
     {
-        id: "flowId",
-        accessorKey: "flowId",
-        header: ({ column }: { column: Column<UserFlowState> }) => (
-            <DataTableColumnHeader column={column} label="Flow ID" />
-        ),
-        cell: ({ cell }) => cell.getValue<string>(),
-        meta: {
-            label: "Flow ID",
-            placeholder: "Search flow id...",
-            variant: "text",
-            icon: Text,
-        },
-        enableColumnFilter: true,
+        accessorKey: "platformUserId",
+        header: "Platform User ID",
     },
-
+    {
+        accessorKey: "flowId",
+        header: "Flow ID",
+    },
     {
         accessorKey: "currentStep",
-        header: ({ column }: { column: Column<UserFlowState> }) => (
-            <DataTableColumnHeader column={column} label="Current Step" />
-        ),
+        header: "Current Step",
+    },
+    {
+        accessorKey: "stepHistory",
+        header: "Step History",
+        cell: ({ getValue }) => {
+            const value = getValue<any>();
+
+            if (!value) return null;
+
+            return <StepHistory history={value} />;
+        },
+    },
+    {
+        accessorKey: "variables",
+        header: "Variables",
+        cell: ({ getValue }) => {
+            const value = getValue<any>();
+
+            if (!value) return null;
+
+            return <VariableDialog variable={value} />;
+        },
     },
 
     {
         accessorKey: "status",
-        header: ({ column }: { column: Column<UserFlowState> }) => (
-            <DataTableColumnHeader column={column} label="Status" />
-        ),
-        cell: ({ cell }) => {
-            const status = cell.getValue<UserFlowStatus>();
-            const { icon: Icon, label } = STATUS_META[status];
-
-            return (
-                <Badge variant="outline" className="gap-1 capitalize">
-                    <Icon className="size-4" />
-                    {label}
-                </Badge>
-            );
+        header: "Status",
+        cell: ({ getValue }) => {
+            return <Status status={getValue<string>() as any} />;
         },
-        meta: {
-            label: "Status",
-            variant: "multiSelect",
-            options: [
-                {
-                    label: "Running",
-                    value: "running",
-                    icon: CheckCircle2 as LucideIcon,
-                },
-                {
-                    label: "Pending",
-                    value: "pending",
-                    icon: XCircle as LucideIcon,
-                },
-            ],
-        },
-        enableColumnFilter: true,
     },
-
     {
-        accessorKey: "updatedAt",
-        header: ({ column }: { column: Column<UserFlowState> }) => (
-            <DataTableColumnHeader column={column} label="Updated" />
-        ),
-        cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleString(),
-    },
-
-    {
-        id: "actions",
-        cell: () => (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="size-4" />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem>View</DropdownMenuItem>
-                    <DropdownMenuItem>Restart</DropdownMenuItem>
-                    <DropdownMenuItem variant="destructive">
-                        Cancel
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        ),
-        size: 32,
+        accessorKey: "createdAt",
+        header: "Created At",
+        cell: ({ getValue }) => new Date(getValue<Date>()).toLocaleString(),
     },
 ];

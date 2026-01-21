@@ -1,7 +1,18 @@
-import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
-import type * as React from "react";
+"use client";
 
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import {
+    ColumnDef,
+    flexRender,
+    SortingState,
+    ColumnFiltersState,
+    VisibilityState,
+    useReactTable,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    getFilteredRowModel,
+} from "@tanstack/react-table";
+
 import {
     Table,
     TableBody,
@@ -10,54 +21,107 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { getColumnPinningStyle } from "@/lib/data-table";
-import { cn } from "@/lib/utils";
+import { DataTablePagination } from "@/components/data-table/pagination";
+import React from "react";
+import DataTableFilter from "@/components/data-table/Filter";
+import { DataTableViewOptions } from "@/components/data-table/Visibility";
+import DestroyBtn from "@/components/data-table/DestroyBtn";
 
-interface DataTableProps<TData> extends React.ComponentProps<"div"> {
-    table: TanstackTable<TData>;
-    actionBar?: React.ReactNode;
+interface DataTableOptions {
+    filterColumn?: string;
+    enableColumnVisibility?: boolean;
 }
 
-export function DataTable<TData>({
-    table,
-    actionBar,
-    children,
-    className,
-    ...props
-}: DataTableProps<TData>) {
+interface DataTableProps<TData, TValue> {
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+    options?: DataTableOptions;
+    onDestroy: (rows: any) => void;
+}
+
+export function DataTable<TData, TValue>({
+    columns,
+    data,
+    options = {
+        enableColumnVisibility: true,
+    },
+    onDestroy,
+}: DataTableProps<TData, TValue>) {
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] =
+        React.useState<VisibilityState>({});
+
+    const [rowSelection, setRowSelection] = React.useState({});
+
+    // eslint-disable-next-line react-hooks/incompatible-library
+    const table = useReactTable({
+        data,
+        columns,
+
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            columnFilters,
+            columnVisibility,
+            rowSelection,
+        },
+    });
+
     return (
-        <div
-            className={cn(
-                "flex w-full flex-col gap-2.5 overflow-auto",
-                className,
-            )}
-            {...props}
-        >
-            {children}
-            <div className="overflow-hidden rounded-md border">
+        <div>
+            <div className="flex items-center gap-2 py-4">
+                <div className="flex items-center gap-2">
+                    {options.filterColumn && (
+                        <DataTableFilter
+                            table={table}
+                            column={options.filterColumn}
+                        />
+                    )}
+                    {table.getFilteredSelectedRowModel().rows.length > 0 && (
+                        <DestroyBtn
+                            table={table}
+                            onDestroy={() =>
+                                onDestroy(
+                                    table.getFilteredSelectedRowModel().rows,
+                                )
+                            }
+                        />
+                    )}
+                </div>
+
+                {options.enableColumnVisibility !== false && (
+                    <DataTableViewOptions table={table} />
+                )}
+            </div>
+
+            <div className="container overflow-hidden rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead
-                                        key={header.id}
-                                        colSpan={header.colSpan}
-                                        style={{
-                                            ...getColumnPinningStyle({
-                                                column: header.column,
-                                            }),
-                                        }}
-                                    >
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                  header.column.columnDef
-                                                      .header,
-                                                  header.getContext(),
-                                              )}
-                                    </TableHead>
-                                ))}
+                                {headerGroup.headers.map((header) => {
+                                    return (
+                                        <TableHead key={header.id}>
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext(),
+                                                  )}
+                                        </TableHead>
+                                    );
+                                })}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -71,14 +135,7 @@ export function DataTable<TData>({
                                     }
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell
-                                            key={cell.id}
-                                            style={{
-                                                ...getColumnPinningStyle({
-                                                    column: cell.column,
-                                                }),
-                                            }}
-                                        >
+                                        <TableCell key={cell.id}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext(),
@@ -90,7 +147,7 @@ export function DataTable<TData>({
                         ) : (
                             <TableRow>
                                 <TableCell
-                                    colSpan={table.getAllColumns().length}
+                                    colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
                                     No results.
@@ -100,12 +157,7 @@ export function DataTable<TData>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex flex-col gap-2.5">
-                <DataTablePagination table={table} />
-                {actionBar &&
-                    table.getFilteredSelectedRowModel().rows.length > 0 &&
-                    actionBar}
-            </div>
+            <DataTablePagination table={table} />
         </div>
     );
 }

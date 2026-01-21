@@ -86,8 +86,8 @@ export const userFlowStateService = {
      * Xoá flow state
      * DELETE /user-flow-states/:id
      */
-    destroy: async (id: string) => {
-        const response = await api.delete(`/flow-states/${id}`);
+    deleteMany: async (ids: string[]) => {
+        const response = await api.delete("/flow-states", { data: { ids } });
         return response.data;
     },
 };
