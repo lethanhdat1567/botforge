@@ -29,7 +29,11 @@ function PlatformContent({ platform }: Props) {
     return (
         <div>
             {templates.map((template: any) => (
-                <PlatformItem key={template.id} template={template} />
+                <PlatformItem
+                    key={template.id}
+                    template={template}
+                    onRefresh={fetchTemplate}
+                />
             ))}
         </div>
     );

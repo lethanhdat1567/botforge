@@ -1,10 +1,4 @@
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { useEffect, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -15,41 +9,93 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlugZap } from "lucide-react";
+import PageSelect from "@/app/(private)/data/templates/components/PlatformContent/components/SelectPage/SelectPage";
 
 type Props = {
     onConnect: (pageId: string) => void;
+    pageId?: string;
 };
 
-function ActionConnect({ onConnect }: Props) {
+function ActionConnect({ onConnect, pageId: initialPageId = "" }: Props) {
+    const [open, setOpen] = useState(false);
+    const [pageId, setPageId] = useState(initialPageId);
+    const [error, setError] = useState<string | undefined>();
+
+    const resetState = () => {
+        setPageId(initialPageId);
+        setError(undefined);
+    };
+
+    const handleSave = () => {
+        if (!pageId) {
+            setError("Please select a page");
+            return;
+        }
+
+        onConnect(pageId);
+        setOpen(false);
+    };
+
+    const handleCancel = () => {
+        resetState();
+        setOpen(false);
+    };
+
+    // 🔹 mỗi lần mở dialog → sync lại pageId
+    useEffect(() => {
+        if (open) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setPageId(initialPageId);
+            setError(undefined);
+        }
+    }, [open, initialPageId]);
+
     return (
-        <Dialog>
+        <Dialog
+            open={open}
+            onOpenChange={(value) => {
+                setOpen(value);
+                if (!value) resetState();
+            }}
+        >
             <DialogTrigger asChild>
-                <Button variant={"outline"}>
-                    Connect <PlugZap />
+                <Button variant="outline">
+                    {initialPageId ? "Update connection" : "Connect"}
+                    <PlugZap />
                 </Button>
             </DialogTrigger>
+
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Connect to page</DialogTitle>
+                    <DialogTitle>
+                        {initialPageId
+                            ? "Update page connection"
+                            : "Connect to page"}
+                    </DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
+                        Select a page to connect this flow.
                     </DialogDescription>
                 </DialogHeader>
-                <Select>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Theme" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
-                    </SelectContent>
-                </Select>
+
+                <PageSelect
+                    value={pageId}
+                    error={error}
+                    onChange={(value) => {
+                        setPageId(value);
+                        setError(undefined);
+                    }}
+                />
+
                 <div className="flex items-center justify-end gap-3">
-                    <Button variant={"destructive"}>Cancel</Button>
-                    <Button>Save</Button>
+                    <Button variant="ghost" onClick={handleCancel}>
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={handleSave}
+                        disabled={!pageId || pageId === initialPageId}
+                    >
+                        Save
+                    </Button>
                 </div>
             </DialogContent>
         </Dialog>

@@ -1,5 +1,8 @@
 import PlatformContent from "@/app/(private)/data/templates/components/PlatformContent/PlatformContent";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const PLATFORMS = [
     { key: "unconnected", label: "Unconnected" },
@@ -11,7 +14,14 @@ const PLATFORMS = [
 function TemplatesPage() {
     return (
         <div>
-            <h1 className="mb-6 text-2xl font-bold">Templates</h1>
+            <div className="flex items-center justify-between">
+                <h1 className="mb-6 text-2xl font-bold">Templates</h1>
+                <Link href={"/bot/flows" as any}>
+                    <Button>
+                        Quản lý thư mục template <ArrowRight />
+                    </Button>
+                </Link>
+            </div>
 
             <Tabs defaultValue="facebook" className="w-full">
                 <TabsList className="rounded-none">

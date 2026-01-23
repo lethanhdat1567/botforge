@@ -7,12 +7,13 @@ import {
 } from "@/components/ui/select";
 
 type Props = {
+    status: "draft" | "published";
     onUpdateStatus: (value: string) => void;
 };
 
-function ActionStatus({ onUpdateStatus }: Props) {
+function ActionStatus({ status, onUpdateStatus }: Props) {
     return (
-        <Select defaultValue="draft" onValueChange={onUpdateStatus}>
+        <Select defaultValue={status} onValueChange={onUpdateStatus}>
             <SelectTrigger className="w-35 cursor-pointer border-0 p-0 shadow-none">
                 <SelectValue placeholder="Theme" />
             </SelectTrigger>
