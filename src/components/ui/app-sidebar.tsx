@@ -54,6 +54,10 @@ const data = {
             icon: Database,
             items: [
                 {
+                    title: "Trang của tôi",
+                    url: "/data/pages",
+                },
+                {
                     title: "Mẫu của tôi",
                     url: "/data/templates",
                 },
