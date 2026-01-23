@@ -2,6 +2,7 @@ import PlatformContent from "@/app/(private)/data/templates/components/PlatformC
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const PLATFORMS = [
+    { key: "unconnected", label: "Unconnected" },
     { key: "facebook", label: "Facebook" },
     { key: "instagram", label: "Instagram" },
     { key: "zalo", label: "Zalo" },

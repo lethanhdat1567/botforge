@@ -6,41 +6,49 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Plus } from "lucide-react";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import AlertDestroyDialog from "@/components/AlertDestroyDialog";
 import { useState } from "react";
+import PageForm, {
+    PageFormData,
+} from "@/app/(private)/data/pages/components/PageForm/PageForm";
+import { PageType } from "@/app/(private)/data/pages/type";
 
 type Props = {
-    onUpdate: () => void;
-    onDuplicate: () => void;
+    page: PageType;
+    onUpdate: (page: PageFormData) => void;
     onDestroy: () => void;
+    error: string;
+    setError: (error: string) => void;
 };
 
-function Options({ onUpdate, onDuplicate, onDestroy }: Props) {
+function Options({ onUpdate, onDestroy, page, error, setError }: Props) {
     const [showAlert, setShowAlert] = useState(false);
+    const [showUpdate, setShowUpdate] = useState(false);
+
+    function handleUpdate(data: PageFormData) {
+        onUpdate(data);
+        setShowUpdate(false);
+    }
 
     return (
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline">
+                    <Button variant="outline" className="rounded-none">
                         <EllipsisVertical />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="end">
                     <DropdownMenuLabel>Action</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={onUpdate}>
+                    <DropdownMenuItem onClick={() => setShowUpdate(true)}>
                         Update
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -57,6 +65,29 @@ function Options({ onUpdate, onDuplicate, onDestroy }: Props) {
                 onOpenChange={setShowAlert}
                 itemName="Template"
             />
+            <Dialog open={showUpdate} onOpenChange={setShowUpdate}>
+                <form>
+                    <DialogContent className="sm:max-w-106.25">
+                        <DialogHeader>
+                            <DialogTitle>Add Your New Page</DialogTitle>
+                            <DialogDescription>
+                                Make changes to your profile here. Click save
+                                when you&apos;re done.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <PageForm
+                            onSubmit={handleUpdate}
+                            initialValues={{
+                                name: page.name,
+                                access_token: page.accessToken,
+                                page_uid: page.pageUid,
+                            }}
+                            error={error}
+                            setError={setError}
+                        />
+                    </DialogContent>
+                </form>
+            </Dialog>
         </>
     );
 }

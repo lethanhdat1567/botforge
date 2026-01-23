@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Field, FieldLabel, FieldSet } from "@/components/ui/field";
+import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 export type PageFormData = {
+    platform: "facebook" | "instagram" | "zalo";
     name: string;
     page_uid: string;
     access_token: string;
@@ -16,10 +24,19 @@ type Props = {
     initialValues?: Partial<PageFormData>;
     onSubmit: (data: PageFormData) => void;
     loading?: boolean;
+    error: string;
+    setError: (error: string) => void;
 };
 
-function PageForm({ initialValues, onSubmit, loading }: Props) {
+function PageForm({
+    initialValues,
+    onSubmit,
+    loading,
+    error,
+    setError,
+}: Props) {
     const [form, setForm] = useState<PageFormData>({
+        platform: "facebook",
         name: "",
         page_uid: "",
         access_token: "",
@@ -39,10 +56,14 @@ function PageForm({ initialValues, onSubmit, loading }: Props) {
         (key: keyof PageFormData) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
             setForm({ ...form, [key]: e.target.value });
+            setError("");
         };
 
     const isValid =
-        form.name.trim() && form.page_uid.trim() && form.access_token.trim();
+        form.platform &&
+        form.name.trim() &&
+        form.page_uid.trim() &&
+        form.access_token.trim();
 
     return (
         <form
@@ -54,6 +75,30 @@ function PageForm({ initialValues, onSubmit, loading }: Props) {
             }}
         >
             <FieldSet>
+                <Field>
+                    <FieldLabel>Platform</FieldLabel>
+
+                    <Select
+                        value={form.platform}
+                        onValueChange={(value) =>
+                            setForm({ ...form, platform: value as any })
+                        }
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select platform" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="facebook">Facebook</SelectItem>
+                            <SelectItem value="zalo">Zalo OA</SelectItem>
+                            <SelectItem value="instagram">Instagram</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    <p className="text-muted-foreground text-xs">
+                        Chọn nền tảng mà page thuộc về
+                    </p>
+                </Field>
+
                 <Field>
                     <FieldLabel htmlFor="name">Page name</FieldLabel>
                     <Input
@@ -107,6 +152,7 @@ function PageForm({ initialValues, onSubmit, loading }: Props) {
                     <p className="text-muted-foreground text-xs">
                         Token sẽ được mã hoá và không hiển thị lại đầy đủ
                     </p>
+                    {error && <FieldError>{error}</FieldError>}
                 </Field>
             </FieldSet>
 

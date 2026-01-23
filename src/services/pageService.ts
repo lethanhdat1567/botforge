@@ -9,7 +9,7 @@ export const pageService = {
     create: async (payload: {
         name: string;
         platform: "facebook" | "instagram" | "zalo";
-        pageId: string;
+        pageUid: string;
         accessToken: string;
         avatar?: string;
     }) => {
@@ -18,8 +18,12 @@ export const pageService = {
     },
 
     // Lấy danh sách page của user
-    list: async () => {
-        const res = await api.get("/pages");
+    list: async ({
+        platform,
+    }: {
+        platform?: "facebook" | "instagram" | "zalo";
+    }) => {
+        const res = await api.get("/pages", { params: { platform } });
         return res.data;
     },
 
@@ -35,6 +39,7 @@ export const pageService = {
         payload: {
             name?: string;
             accessToken?: string;
+            pageUid?: string;
             avatar?: string;
             status?: "active" | "inactive";
         },

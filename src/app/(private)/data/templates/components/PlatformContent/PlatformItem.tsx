@@ -4,8 +4,13 @@ import ActionConnect from "@/app/(private)/data/templates/components/PlatformCon
 import ActionStatus from "@/app/(private)/data/templates/components/PlatformContent/components/ActionStatus/ActionStatus";
 import Options from "@/app/(private)/data/templates/components/PlatformContent/components/Options/Options";
 import ShareBtn from "@/app/(private)/data/templates/components/PlatformContent/components/ShareBtn/ShareBtn";
+import { FlowType } from "@/app/(private)/data/templates/type";
 
-function PlatformItem() {
+type Props = {
+    template: FlowType;
+};
+
+function PlatformItem({ template }: Props) {
     function handleUpdateStatus(value: string) {}
 
     function handleConnect(pageId: string) {}

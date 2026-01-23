@@ -8,7 +8,6 @@ function Dashboard() {
         const getProfile = async () => {
             try {
                 const res = await api.get("/profile");
-                console.log(res);
             } catch (error) {
                 console.log(error);
             }

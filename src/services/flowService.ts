@@ -1,6 +1,14 @@
 import api from "@/config/axios";
 
 export const flowService = {
+    getFlows: async ({
+        platform,
+    }: {
+        platform: "facebook" | "instagram" | "zalo";
+    }) => {
+        const response = await api.get("/flows", { params: { platform } });
+        return response.data;
+    },
     getFlowById: async (id: string) => {
         const response = await api.get(`/flows/${id}`);
         return response.data;
