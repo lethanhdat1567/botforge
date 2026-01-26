@@ -14,6 +14,7 @@ function Actions({ sharedItem }: Props) {
             <DowloadBtn
                 downloadCount={sharedItem.downloadCount}
                 sharedItemId={sharedItem.id}
+                flowId={sharedItem.flowId}
             />
             <SaveBtn sharedItemId={sharedItem.id} />
         </div>

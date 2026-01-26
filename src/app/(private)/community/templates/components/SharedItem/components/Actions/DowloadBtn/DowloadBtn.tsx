@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,22 +12,41 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
+import FolderWrapper from "@/app/(private)/community/templates/components/SharedItem/components/Actions/DowloadBtn/FolderWrapper";
+import { flowSharedService } from "@/services/flowSharedService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
     sharedItemId: string;
+    flowId: string;
     downloadCount: number;
 };
 
-function DowloadBtn({ sharedItemId, downloadCount }: Props) {
+function DowloadBtn({ flowId, sharedItemId, downloadCount }: Props) {
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
+
+    async function handleDowload(id: string) {
+        try {
+            await flowSharedService.downloadShared(sharedItemId, {
+                flowId,
+                folderId: id,
+                pageId: null,
+            });
+
+            toast.success("Download successfully");
+            setOpen(false); // 👈 đóng dialog
+            router.refresh();
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to download");
+        }
+    }
+
     return (
-        <Dialog>
-            <DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
                 <Button
                     size="icon"
                     variant="ghost"
@@ -36,27 +56,16 @@ function DowloadBtn({ sharedItemId, downloadCount }: Props) {
                     <Download className={cn("h-4 w-4 transition-all")} />
                 </Button>
             </DialogTrigger>
+
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Choice your folder</DialogTitle>
+                    <DialogTitle>Choose your folder</DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
+                        Select a folder to download this flow into.
                     </DialogDescription>
                 </DialogHeader>
-                <div>
-                    <Accordion type="single" collapsible defaultValue="item-1">
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger>
-                                Is it accessible?
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                Yes. It adheres to the WAI-ARIA design pattern.
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-                </div>
+
+                <FolderWrapper onDowload={handleDowload} />
             </DialogContent>
         </Dialog>
     );

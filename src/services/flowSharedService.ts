@@ -108,8 +108,15 @@ export const flowSharedService = {
     },
 
     // PATCH /flows/shared/:id/dowload
-    downloadShared: async (id: string) => {
-        const response = await api.patch(`/flows/shared/${id}/dowload`);
+    downloadShared: async (
+        id: string,
+        data: {
+            flowId: string;
+            folderId: string | null;
+            pageId: string | null;
+        },
+    ) => {
+        const response = await api.patch(`/flows/shared/${id}/download`, data);
         return response.data;
     },
 
