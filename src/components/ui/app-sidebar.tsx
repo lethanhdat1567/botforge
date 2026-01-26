@@ -72,6 +72,10 @@ const data = {
             icon: Layers,
             items: [
                 {
+                    title: "Mẫu chia sẻ của tôi",
+                    url: "/community/store",
+                },
+                {
                     title: "Kho mẫu cộng đồng",
                     url: "/community/templates",
                 },

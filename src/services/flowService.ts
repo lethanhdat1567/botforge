@@ -4,7 +4,7 @@ export const flowService = {
     getFlows: async ({
         platform,
     }: {
-        platform: "facebook" | "instagram" | "zalo";
+        platform?: "facebook" | "instagram" | "zalo";
     }) => {
         const response = await api.get("/flows", { params: { platform } });
         return response.data;
