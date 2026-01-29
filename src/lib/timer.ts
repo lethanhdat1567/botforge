@@ -1,4 +1,11 @@
-export function timeAgo(timestamp: number) {
+export function timeAgo(input: number | string | Date) {
+    const timestamp =
+        typeof input === "number"
+            ? input < 1e12
+                ? input * 1000
+                : input
+            : new Date(input).getTime();
+
     const diff = Math.floor((Date.now() - timestamp) / 1000);
 
     if (diff < 5) return "vừa xong";
@@ -13,6 +20,7 @@ export function timeAgo(timestamp: number) {
     const days = Math.floor(hours / 24);
     return `${days} ngày trước`;
 }
+
 export function timerFormat(
     date: Date | string,
     options?: Intl.DateTimeFormatOptions,

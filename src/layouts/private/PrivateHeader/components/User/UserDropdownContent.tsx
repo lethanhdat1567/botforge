@@ -7,6 +7,7 @@ import {
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { Bell, LogOut, UserIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -48,9 +49,11 @@ function UserDropdownContent({
                 </div>
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-                <UserIcon /> Trang cá nhân
-            </DropdownMenuItem>
+            <Link href={"/profile" as any}>
+                <DropdownMenuItem>
+                    <UserIcon /> Trang cá nhân
+                </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>
                 <Bell /> Thông báo
             </DropdownMenuItem>

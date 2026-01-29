@@ -2,7 +2,6 @@ import Actions from "@/app/(private)/community/templates/[id]/components/Actions
 import Comment from "@/app/(private)/community/templates/[id]/components/Comment/Comment";
 import Content from "@/app/(private)/community/templates/[id]/components/Content/Content";
 import Heading from "@/app/(private)/community/templates/[id]/components/Heading/Heading";
-import OtherTemplate from "@/app/(private)/community/templates/[id]/components/OtherTemplate/OtherTemplate";
 import { flowSharedService, SharedType } from "@/services/flowSharedService";
 
 type PageProps = {
@@ -26,7 +25,7 @@ async function TemplateDetailPage({ params }: PageProps) {
     if (sharedTemplate === null) return;
 
     return (
-        <div className="mt-10">
+        <div className="mt-10 overflow-auto">
             <div className="grid grid-cols-12 gap-8">
                 {/* Heading */}
                 <div className="col-span-8">
@@ -47,8 +46,6 @@ async function TemplateDetailPage({ params }: PageProps) {
             <Content content={sharedTemplate.description} />
             {/* Comment */}
             <Comment sharedTemplateId={sharedTemplate.id} />
-            {/* Other templates */}
-            <OtherTemplate />
         </div>
     );
 }
