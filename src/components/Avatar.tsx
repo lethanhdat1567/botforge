@@ -31,6 +31,7 @@ function Avatar({
                         null,
                     ) as string;
                 }}
+                className="object-cover"
             />
             <AvatarFallback>{fallback}</AvatarFallback>
         </RootAvatar>
