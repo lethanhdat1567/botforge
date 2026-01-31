@@ -1,3 +1,9 @@
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import PrivateLogo from "@/components/PrivateLogo";
 import { Button } from "@/components/ui/button";
 import { PanelLeftClose } from "lucide-react";
@@ -10,13 +16,20 @@ function Heading({
     return (
         <div className="flex items-center justify-between border-b pb-2">
             <PrivateLogo />
-            <Button
-                variant={"ghost"}
-                size={"icon-lg"}
-                onClick={() => setExpand(false)}
-            >
-                <PanelLeftClose />
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button
+                        variant={"ghost"}
+                        size={"icon-lg"}
+                        onClick={() => setExpand(false)}
+                    >
+                        <PanelLeftClose />
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Thu nhỏ</p>
+                </TooltipContent>
+            </Tooltip>
         </div>
     );
 }

@@ -47,6 +47,7 @@ export class ConnectConditionEdgeCommand implements Command {
             id: uuid(),
             ...this.connection,
             markerEnd: { type: MarkerType.Arrow },
+            type: "custom-edge",
         };
 
         useEdgeStore.getState().addEdge(this.oldEdge);

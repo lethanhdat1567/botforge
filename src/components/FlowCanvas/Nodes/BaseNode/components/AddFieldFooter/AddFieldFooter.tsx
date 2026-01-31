@@ -50,7 +50,10 @@ function AddFieldFooter({ node, type }: Props) {
         <div className="w-full">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full gap-2">
+                    <Button
+                        variant="outline"
+                        className="w-full gap-2 rounded-none"
+                    >
                         <Plus size={16} />
                         Thêm trường mới
                     </Button>
@@ -75,7 +78,7 @@ function AddFieldFooter({ node, type }: Props) {
                                     handleCreateField(item);
                                 }}
                             >
-                                <Icon size={16} />
+                                <Icon size={16} color={item.color} />
                                 {item.title}
                             </DropdownMenuItem>
                         );

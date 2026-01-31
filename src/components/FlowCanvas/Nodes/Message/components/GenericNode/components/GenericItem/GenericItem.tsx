@@ -120,16 +120,19 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
                         value={generic.title}
                         onCommit={handleUpdateTitle}
                         setErrors={setErrors}
+                        placeholder="Tiêu đề..."
                     />
 
                     <TextArea
                         value={generic.subtitle || ""}
                         onCommit={handleUpdateSubtitle}
+                        placeholder="Tiêu đề phụ..."
                     />
 
                     <TextArea
                         value={generic.default_action?.url || ""}
                         onCommit={handleUpdateUrl}
+                        placeholder="url..."
                     />
 
                     <ButtonList

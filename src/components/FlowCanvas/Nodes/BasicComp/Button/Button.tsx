@@ -65,14 +65,15 @@ function Button({ btn, onCommit, onDestroyBtn, variable }: Props) {
                 onChange={(e) => setButtonInput(e.target.value)}
                 onBlur={handleBlur}
                 onFocus={() => setShowTooltip(true)}
+                placeholder="Nội dung..."
             />
 
             {btn.type !== "url" && (
                 <Handle
                     type="source"
                     position={Position.Right}
-                    className="bg-yellow-500! p-1!"
                     id={`btn-source-${btn.id}`}
+                    className="bg-muted-foreground! hover:bg-foreground! h-2.5! w-2.5! cursor-crosshair rounded-full! border transition-all duration-150 hover:scale-125!"
                 />
             )}
 

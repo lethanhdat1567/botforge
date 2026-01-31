@@ -6,7 +6,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Square, Copy, Check } from "lucide-react";
+import { Copy, Check, Workflow } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useNodeStore } from "@/store/nodeStore";
@@ -40,8 +40,8 @@ function FlowJsonBtn() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline">
-                    <Square />
-                    View Flow Json
+                    <Workflow />
+                    Xem Flow Json
                 </Button>
             </DialogTrigger>
 
@@ -61,12 +61,12 @@ function FlowJsonBtn() {
                         {copied ? (
                             <>
                                 <Check size={14} />
-                                Copied
+                                Đã sao chép
                             </>
                         ) : (
                             <>
                                 <Copy size={14} />
-                                Copy
+                                Sao chép
                             </>
                         )}
                     </Button>

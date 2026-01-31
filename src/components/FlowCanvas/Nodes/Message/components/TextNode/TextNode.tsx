@@ -38,6 +38,7 @@ function TextNode({ nodeId, payload }: Props) {
                     value={payload.fields.text}
                     onCommit={handleUpdateText}
                     setErrors={setErrors}
+                    placeholder="Nội dung..."
                 />
                 <ButtonList
                     buttonLists={payload.fields.buttons}

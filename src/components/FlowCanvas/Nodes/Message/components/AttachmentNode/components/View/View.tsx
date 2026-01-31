@@ -41,7 +41,7 @@ function View({ type, src, onDestroy }: Props) {
                 className={`absolute inset-0 hidden items-center justify-center bg-black/50 transition ${type !== "audio" && type !== "video" ? "group-hover/attachment:flex" : ""}`}
             >
                 <Button variant={"destructive"} onClick={onDestroy}>
-                    Xoa
+                    Xóa ảnh
                 </Button>
             </div>
         </div>

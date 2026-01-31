@@ -55,6 +55,7 @@ function History() {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
+                        size={"icon-sm"}
                         variant="secondary"
                         onClick={undo}
                         aria-label="Undo"
@@ -73,6 +74,7 @@ function History() {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
+                        size={"icon-sm"}
                         variant="secondary"
                         onClick={redo}
                         aria-label="Redo"

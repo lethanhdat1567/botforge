@@ -13,7 +13,8 @@ function CreateButton({ onCreateNewBtn, variable }: Props) {
         let btnData: ButtonNode = {
             id: uuid(),
             type: "continue",
-            title: "New Button",
+            title: "",
+            payload: {},
         };
 
         if (variable) {

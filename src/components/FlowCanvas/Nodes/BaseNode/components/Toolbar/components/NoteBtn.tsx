@@ -39,12 +39,12 @@ function NoteBtn({ node }: { node: FlowNode }) {
                             variant="ghost"
                             className="rounded-none"
                         >
-                            <StickyNote />
+                            <StickyNote color="#F59E0B" />
                         </Button>
                     </DialogTrigger>
                 </TooltipTrigger>
 
-                <TooltipContent side="top">Add note</TooltipContent>
+                <TooltipContent side="top">Ghi chú</TooltipContent>
             </Tooltip>
 
             <DialogContent>

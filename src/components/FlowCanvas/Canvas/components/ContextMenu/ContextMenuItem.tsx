@@ -46,12 +46,14 @@ function ContextMenuItem({
             <div
                 onClick={handleClick}
                 className="flex cursor-pointer items-center justify-between px-3 py-2.5 transition-colors hover:bg-gray-100"
-                style={{ color: isChild ? "#000" : item.color }}
             >
-                <div className="flex items-center gap-2">
+                <div
+                    className={`flex items-center gap-2`}
+                    style={{ color: item.children ? item.color : "#000" }}
+                >
                     {Icon && (
                         <span className="bg-background flex h-6 w-6 items-center justify-center rounded-sm">
-                            <Icon size={16} color={item.color} />
+                            <Icon size={14} color={item.color} />
                         </span>
                     )}
                     {item.title}

@@ -45,6 +45,7 @@ export const useEdgeStore = create<EdgeState>((set, get) => ({
         const newEdge = {
             ...connection,
             markerEnd: { type: MarkerType.Arrow },
+            type: "custom-edge",
         };
 
         set({

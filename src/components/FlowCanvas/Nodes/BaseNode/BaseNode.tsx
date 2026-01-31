@@ -42,11 +42,11 @@ function BaseNode({ children, childProps, isContentDragging }: Props) {
                 <AddFieldFooter node={childProps} type={childProps.type} />
             )}
 
-            {/* Handler */}
-            <Handler nodeId={childProps.id} />
-
             {/* Toolbar */}
             <Toolbar node={childProps} />
+
+            {/* Handler */}
+            <Handler nodeId={childProps.id} />
 
             {childProps.data.markStart && <StartPinner />}
         </div>

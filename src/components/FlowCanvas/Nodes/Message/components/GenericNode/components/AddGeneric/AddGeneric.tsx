@@ -8,7 +8,7 @@ function AddGeneric({ onAddGeneric }: Props) {
     return (
         <div>
             <Button onClick={onAddGeneric} variant={"outline"}>
-                Add Generic
+                Thêm mẫu
             </Button>
         </div>
     );

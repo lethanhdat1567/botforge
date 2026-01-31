@@ -1,8 +1,6 @@
 "use client";
 
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
-import useDebounce from "@/hooks/use-debounce";
-import { useNodeStore } from "@/store/nodeStore";
 import { useCallback, useEffect, useState } from "react";
 
 type Props = {
@@ -39,11 +37,11 @@ function Heading({ nodeTypeData, name, nodeId }: Props) {
                 />
             </span>
             <input
-                className="focus:border-foreground flex-1 border border-transparent outline-none"
+                className="focus:border-muted-foreground flex-1 rounded-sm border border-transparent px-2 py-1 outline-none"
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
                 onBlur={commitChange}
-                placeholder="Title..."
+                placeholder="Nhập tên node..."
             />
         </div>
     );

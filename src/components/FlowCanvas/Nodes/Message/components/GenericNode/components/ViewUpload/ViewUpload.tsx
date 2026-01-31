@@ -30,7 +30,7 @@ function ViewUpload({ src, genericId, onUpload, onDestroy }: Props) {
                 onChange={handleUpload}
             />
             <span className="flex items-center justify-center gap-4">
-                <Image /> Upload your image
+                <Image /> Tải ảnh
             </span>
         </label>
     );

@@ -11,3 +11,16 @@ export function filterAttachment(type: MediaType | MediaType[]): string {
 
     return types.map((t) => map[t]).join(",");
 }
+
+export function getAttachmentTypeLabel(type: MediaType): string {
+    switch (type) {
+        case "image":
+            return "ảnh";
+        case "audio":
+            return "âm thanh";
+        case "video":
+            return "video";
+        default:
+            return "";
+    }
+}

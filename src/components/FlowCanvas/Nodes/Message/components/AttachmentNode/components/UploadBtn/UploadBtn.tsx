@@ -1,4 +1,7 @@
-import { filterAttachment } from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/helpers";
+import {
+    filterAttachment,
+    getAttachmentTypeLabel,
+} from "@/components/FlowCanvas/Nodes/Message/components/AttachmentNode/components/UploadBtn/helpers";
 import { Plus } from "lucide-react";
 
 export type MediaType = "image" | "audio" | "video";
@@ -13,10 +16,12 @@ function UploadBtn({ attachmentType, onUpload, payloadId }: Props) {
         <div className="flex h-10 w-full items-center justify-center">
             <label
                 htmlFor={payloadId}
-                className="flex w-full items-center justify-center gap-2"
+                className="flex h-full w-full cursor-pointer items-center justify-center gap-2"
             >
                 <Plus size={16} />
-                Upload {attachmentType}
+                {Array.isArray(attachmentType)
+                    ? "Tải file"
+                    : `Tải ${getAttachmentTypeLabel(attachmentType as MediaType)}`}
             </label>
             <input
                 id={payloadId}

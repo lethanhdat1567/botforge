@@ -6,7 +6,6 @@ import {
     Controls,
     Panel,
     ConnectionMode,
-    Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useNodeStore } from "@/store/nodeStore";
@@ -22,6 +21,14 @@ import AutoSave from "@/components/FlowCanvas/Canvas/components/JsonBtns/compone
 import { useSearchParams } from "next/navigation";
 import EmptyFlow from "@/components/FlowCanvas/Canvas/EmptyFlow";
 import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import BackgroundAdjust from "@/components/FlowCanvas/Canvas/components/BackgroundAdjust/BackgroundAdjust";
+import { useBackgroundAdjustStore } from "@/store/backgroundAdjustStore";
+import edgeTypes from "@/components/FlowCanvas/Canvas/components/edgeType";
+import EdgeMarkers from "@/components/FlowCanvas/Canvas/defs/EdgeMarkers";
+import { useFlowConnect } from "@/hooks/useFlowConnect";
+import { useFlowEdges } from "@/hooks/useFlowEdges";
+import SortLayout from "@/components/FlowCanvas/Canvas/components/SortLayout/SortLayout";
 
 type FlowStatus = "idle" | "loading" | "ready" | "error";
 
@@ -29,37 +36,18 @@ function FlowCanvas() {
     const searchParams = useSearchParams();
     const flowId = searchParams.get("flowId");
 
+    const { handleConnect, handleEndConnect } = useFlowConnect();
+    const { handleEdgeChange } = useFlowEdges();
+
     const [status, setStatus] = useState<FlowStatus>("idle");
 
     const openMenu = useContextMenuStore((s) => s.openAt);
     const nodes = useNodeStore((s) => s.nodes);
     const edges = useEdgeStore((s) => s.edges);
+    const { variant, color, bgColor } = useBackgroundAdjustStore();
 
     const onNodesChange = useNodeStore((s) => s.onNodesChange);
-    const onEdgesChange = useEdgeStore((s) => s.onEdgesChange);
     const onConnectStart = useEdgeStore((s) => s.onConnectStart);
-
-    const handleConnect = (connection: Connection) => {
-        if (connection.sourceHandle?.startsWith("btn-source-")) {
-            FlowController.connectByButtonHandle(connection);
-        } else if (connection.sourceHandle?.startsWith("condition-source-")) {
-            FlowController.connectByConditionHandle(connection);
-        } else {
-            FlowController.connect(connection);
-        }
-    };
-
-    const handleEdgeChange = (changes: any) => {
-        const removedEdges = changes.filter((c: any) => c.type === "remove");
-
-        if (removedEdges.length > 0) {
-            removedEdges.forEach((c: any) => {
-                FlowController.removeEdge(c.id);
-            });
-        } else {
-            onEdgesChange(changes);
-        }
-    };
 
     // 🔹 Lifecycle flow
     useEffect(() => {
@@ -111,24 +99,46 @@ function FlowCanvas() {
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={handleEdgeChange}
                 onConnectStart={onConnectStart}
                 onConnect={handleConnect}
+                onConnectEnd={handleEndConnect}
                 connectionMode={ConnectionMode.Strict}
                 fitView
             >
-                <Background />
-                <Controls />
-                <Panel position="top-center" className="space-y-2">
-                    <div className="bg-background flex items-center gap-6 rounded-sm border p-2 shadow">
-                        <JsonBtns />
-                        <History />
-                        <AutoSave />
-                    </div>
+                {/* Alert */}
+                <Panel position="top-center">
                     <Warning />
                 </Panel>
+                {/* AutoSave */}
+                <Panel position="top-right">
+                    <AutoSave />
+                </Panel>
+                {/* Controls */}
+                <Controls position={"center-right"} />
+                {/* History and Json */}
+                <Panel
+                    position="bottom-left"
+                    className="bg-background flex items-center gap-4 rounded-sm border p-2"
+                >
+                    <History />
+                    <Separator orientation="vertical" className="h-7!" />
+                    <JsonBtns />
+                </Panel>
+                {/* Background */}
+                <Panel
+                    position="bottom-right"
+                    className="flex items-center gap-2"
+                >
+                    <BackgroundAdjust />
+                    <SortLayout />
+                </Panel>
+
+                <Background variant={variant} color={color} bgColor={bgColor} />
                 <ContextMenu />
+                <EdgeMarkers />
             </ReactFlow>
         </div>
     );

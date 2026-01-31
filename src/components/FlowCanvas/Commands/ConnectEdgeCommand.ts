@@ -16,6 +16,7 @@ export class ConnectEdgeCommand implements Command {
             id: uuid(),
             ...this.connection,
             markerEnd: { type: MarkerType.Arrow },
+            type: "custom-edge",
         };
 
         edgeStore.addEdge(this.edge);

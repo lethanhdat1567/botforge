@@ -53,7 +53,7 @@ function Toolbar({ node }: { node: FlowNode }) {
                             <Copy />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="top">Duplicate node</TooltipContent>
+                    <TooltipContent side="top">Nhân bản</TooltipContent>
                 </Tooltip>
 
                 <Tooltip>
@@ -67,7 +67,7 @@ function Toolbar({ node }: { node: FlowNode }) {
                             <Trash />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="top">Delete node</TooltipContent>
+                    <TooltipContent side="top">Xóa</TooltipContent>
                 </Tooltip>
 
                 {!node.data.markStart && (
@@ -83,7 +83,7 @@ function Toolbar({ node }: { node: FlowNode }) {
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="top">
-                            Mark as start node
+                            Đánh dấu điểm bắt đầu
                         </TooltipContent>
                     </Tooltip>
                 )}
