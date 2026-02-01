@@ -13,6 +13,8 @@ type Props = {
 };
 
 function AlertBagde({ errors }: Props) {
+    console.log(errors);
+
     return (
         <Tooltip>
             <TooltipTrigger asChild>

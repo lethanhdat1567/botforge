@@ -4,10 +4,4 @@ const options = [
     { value: "postback", label: "Chèn dữ liệu" },
 ];
 
-const titleMap: Record<string, string> = {
-    continue: "Tiếp tục flow",
-    url: "Chèn URL",
-    postback: "Chèn dữ liệu",
-};
-
-export { options, titleMap };
+export { options };

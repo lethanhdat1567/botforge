@@ -9,11 +9,12 @@ import { useEffect, useState } from "react";
 
 type Props = {
     condition: ConditionType;
+    ordinal: number;
     onCommit: (condition: ConditionType) => void;
     onDestroy: (condition: ConditionType) => void;
 };
 
-function ConditionItem({ condition, onCommit, onDestroy }: Props) {
+function ConditionItem({ condition, onCommit, onDestroy, ordinal }: Props) {
     const [key, setKey] = useState(condition.field);
     const [value, setValue] = useState(condition.value);
 
@@ -39,30 +40,37 @@ function ConditionItem({ condition, onCommit, onDestroy }: Props) {
     };
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-[40px_40px_1fr_auto_1fr] items-center gap-2">
+            {/* Delete */}
             <Button
-                variant={"destructive"}
+                size="icon"
+                variant="destructive"
                 onClick={() => onDestroy(condition)}
             >
-                <Trash />
+                <Trash className="h-4 w-4" />
             </Button>
 
-            <div>Nếu</div>
+            {/* Nếu / Và */}
+            <div className="text-sm font-medium">
+                {ordinal > 0 ? "Và" : "Nếu"}
+            </div>
 
-            {/* Key */}
+            {/* Field */}
             <Input
-                placeholder="Key"
+                placeholder="Biến..."
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
                 onBlur={commitChange}
             />
 
             {/* Operator */}
-            <div>{formatConditionOperator(condition.operator)}</div>
+            <div className="text-center text-sm">
+                {formatConditionOperator(condition.operator)}
+            </div>
 
             {/* Value */}
             <Input
-                placeholder="Value"
+                placeholder="Giá trị..."
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={commitChange}

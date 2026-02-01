@@ -1,7 +1,8 @@
 function ButtonContinue() {
     return (
-        <div>
-            <p>Flow nay se tiep tuc</p>
+        <div className="text-sm">
+            Nút tiếp tục sẽ dẫn người dùng đến bước tiếp theo trong luồng hội
+            thoại.
         </div>
     );
 }

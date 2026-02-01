@@ -56,7 +56,7 @@ function CustomSelect({
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="border-input ring-offset-background focus:ring-ring flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                className="flex cursor-pointer items-center gap-2 text-sm font-medium"
             >
                 <span className={selectedOption ? "" : "text-muted-foreground"}>
                     {selectedOption ? selectedOption.label : placeholder}

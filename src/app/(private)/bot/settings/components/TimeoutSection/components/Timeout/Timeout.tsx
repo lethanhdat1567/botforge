@@ -53,10 +53,9 @@ function Timeout({ duration, unit, onChange }: Props) {
 
     return (
         <div className="space-y-3">
-            <h2 className="text-lg font-semibold">
-                Cấu hình thời gian hệ thống
-            </h2>
-
+            <h3 className="text-md mb-2 block font-medium">
+                Thời gian chờ phản hồi
+            </h3>
             <div className="flex max-w-sm items-center gap-2">
                 <Input
                     type="text"
@@ -90,8 +89,8 @@ function Timeout({ duration, unit, onChange }: Props) {
             </div>
 
             <p className="text-muted-foreground text-sm">
-                Sau <b>{localDuration || "…"}</b> {unitLabel} không phản hồi,
-                bot sẽ gửi fallback
+                Sau <b>{localDuration || "…"}</b> {unitLabel} nếu không có phản
+                hồi, bot sẽ gửi <b>tin nhắn khi hết thời gian chờ</b>.
             </p>
         </div>
     );

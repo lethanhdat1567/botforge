@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, PlugZap } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -75,8 +75,9 @@ function PageForm({
             }}
         >
             <FieldSet>
+                {/* Platform */}
                 <Field>
-                    <FieldLabel>Platform</FieldLabel>
+                    <FieldLabel>Nền tảng</FieldLabel>
 
                     <Select
                         value={form.platform}
@@ -85,7 +86,7 @@ function PageForm({
                         }
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Select platform" />
+                            <SelectValue placeholder="Chọn nền tảng" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="facebook">Facebook</SelectItem>
@@ -95,35 +96,38 @@ function PageForm({
                     </Select>
 
                     <p className="text-muted-foreground text-xs">
-                        Chọn nền tảng mà page thuộc về
+                        Chọn nền tảng mà trang thuộc về
                     </p>
                 </Field>
 
+                {/* Page name */}
                 <Field>
-                    <FieldLabel htmlFor="name">Page name</FieldLabel>
+                    <FieldLabel htmlFor="name">Tên trang</FieldLabel>
                     <Input
                         id="name"
                         value={form.name}
                         onChange={handleChange("name")}
-                        placeholder="My Facebook Page"
+                        placeholder="Tên trang (ví dụ: Fanpage ABC)"
                         autoComplete="off"
                     />
                 </Field>
 
+                {/* Page UID */}
                 <Field>
-                    <FieldLabel htmlFor="page_uid">Page UID</FieldLabel>
+                    <FieldLabel htmlFor="page_uid">UID trang</FieldLabel>
                     <Input
                         id="page_uid"
                         value={form.page_uid}
                         onChange={handleChange("page_uid")}
-                        placeholder="123456789012345"
+                        placeholder="UID..."
                         autoComplete="off"
                     />
                     <p className="text-muted-foreground text-xs">
-                        UID do platform cung cấp (Facebook / Zalo / Instagram)
+                        UID do nền tảng cung cấp (Facebook / Zalo / Instagram)
                     </p>
                 </Field>
 
+                {/* Access token */}
                 <Field>
                     <FieldLabel htmlFor="access_token">Access token</FieldLabel>
 
@@ -133,7 +137,7 @@ function PageForm({
                             type={showToken ? "text" : "password"}
                             value={form.access_token}
                             onChange={handleChange("access_token")}
-                            placeholder="EAAG..."
+                            placeholder="Access token..."
                             autoComplete="off"
                         />
                         <button
@@ -150,15 +154,25 @@ function PageForm({
                     </div>
 
                     <p className="text-muted-foreground text-xs">
-                        Token sẽ được mã hoá và không hiển thị lại đầy đủ
+                        Token sẽ được mã hoá và không hiển thị đầy đủ sau khi
+                        lưu
                     </p>
+
                     {error && <FieldError>{error}</FieldError>}
                 </Field>
             </FieldSet>
 
+            {/* Actions */}
             <div className="flex justify-end">
                 <Button type="submit" disabled={!isValid || loading}>
-                    {loading ? "Saving..." : "Save"}
+                    {loading ? (
+                        "Đang kết nối..."
+                    ) : (
+                        <>
+                            <PlugZap />
+                            Kết nối trang
+                        </>
+                    )}
                 </Button>
             </div>
         </form>

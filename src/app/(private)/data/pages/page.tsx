@@ -21,7 +21,7 @@ function Pages() {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <h1 className="mb-6 text-2xl font-bold">Pages</h1>
+                <h1 className="mb-6 text-2xl font-bold">Trang kết nối</h1>
                 <AddPage onRefresh={refreshPages} />
             </div>
 

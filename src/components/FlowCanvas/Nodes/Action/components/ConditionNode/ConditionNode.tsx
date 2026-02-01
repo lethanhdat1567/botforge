@@ -13,7 +13,7 @@ import {
 import ConditionList from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/ConditionList";
 import CreateCondition from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/CreateCondition";
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
-import { formatConditionOperator } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
+import { renderConditionText } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
 import { Handle, Position } from "@xyflow/react";
 
 type Props = { nodeId: string; payload: ConditionActionData };
@@ -29,39 +29,43 @@ function ConditionNode({ nodeId, payload }: Props) {
 
     return (
         <BaseContent nodeId={nodeId} payloadId={payload.id}>
-            {/* Condition items */}
-            {conditionItems.map((item, index) => (
-                <Sheet key={index}>
-                    <SheetTrigger asChild>
-                        <div className="cursor-pointer rounded-sm bg-neutral-100 p-2">
-                            <div>
-                                Nếu {item.field || "_"}{" "}
-                                {formatConditionOperator(item.operator)}{" "}
-                                {item.value || "_"}
+            <Sheet>
+                <SheetTrigger asChild>
+                    <div className="mb-3 cursor-pointer space-y-2">
+                        {conditionItems.map((item, index) => (
+                            <div
+                                key={index}
+                                className="rounded-sm bg-white p-2"
+                            >
+                                <div className="text-foreground text-sm">
+                                    {renderConditionText(item)}
+                                </div>
                             </div>
-                        </div>
-                    </SheetTrigger>
-                    <SheetContent className="min-w-[40vw]!">
-                        <SheetHeader>
-                            <SheetTitle>
-                                Điều chỉnh dữ liệu điều kiện
-                            </SheetTitle>
-                        </SheetHeader>
-                        <ConditionList
-                            items={conditionItems}
-                            nodeId={nodeId}
-                            payloadId={payload.id}
-                        />
-                    </SheetContent>
-                </Sheet>
-            ))}
+                        ))}
+                    </div>
+                </SheetTrigger>
+
+                {/* Content */}
+                <SheetContent className="min-w-[40vw]!">
+                    <SheetHeader>
+                        <SheetTitle>Điều chỉnh dữ liệu điều kiện</SheetTitle>
+                    </SheetHeader>
+
+                    <ConditionList
+                        items={conditionItems}
+                        nodeId={nodeId}
+                        payloadId={payload.id}
+                    />
+                </SheetContent>
+            </Sheet>
+
             <CreateCondition onCreate={handleCreateCondition} />
 
             <Handle
                 type="source"
                 position={Position.Right}
                 id={`condition-source-${payload.id}`}
-                className="bg-yellow-500! p-1"
+                className="bg-muted-foreground! hover:bg-foreground! h-2.5! w-2.5! cursor-crosshair rounded-full! border transition-all duration-150 hover:scale-125!"
             />
         </BaseContent>
     );

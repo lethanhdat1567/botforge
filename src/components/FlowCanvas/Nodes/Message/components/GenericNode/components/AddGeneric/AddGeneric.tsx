@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 type Props = {
     onAddGeneric: () => void;
@@ -6,9 +7,13 @@ type Props = {
 
 function AddGeneric({ onAddGeneric }: Props) {
     return (
-        <div>
-            <Button onClick={onAddGeneric} variant={"outline"}>
-                Thêm mẫu
+        <div className="mb-2">
+            <Button
+                onClick={onAddGeneric}
+                variant={"default"}
+                className="w-full"
+            >
+                <Plus /> Thêm mục
             </Button>
         </div>
     );

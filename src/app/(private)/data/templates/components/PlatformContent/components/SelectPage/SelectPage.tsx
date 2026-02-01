@@ -33,7 +33,7 @@ function PageSelect({ value, error, onChange }: Props) {
                 const res = await pageService.list({});
                 if (mounted) setPages(res.data);
             } catch (e) {
-                console.error("Failed to fetch pages", e);
+                console.error("Không thể tải danh sách trang", e);
             } finally {
                 if (mounted) setLoading(false);
             }
@@ -46,13 +46,15 @@ function PageSelect({ value, error, onChange }: Props) {
 
     return (
         <Field>
-            <FieldLabel>Page</FieldLabel>
+            <FieldLabel>Trang</FieldLabel>
 
             <Select value={value} onValueChange={onChange} disabled={loading}>
                 <SelectTrigger aria-invalid={!!error}>
                     <SelectValue
                         placeholder={
-                            loading ? "Loading pages..." : "Select page"
+                            loading
+                                ? "Đang tải danh sách trang..."
+                                : "Chọn trang"
                         }
                     />
                 </SelectTrigger>

@@ -38,14 +38,17 @@ function TextArea({
                 return exists
                     ? prev.map((e) =>
                           e.field === "text"
-                              ? { ...e, message: "Text không được để trống" }
+                              ? {
+                                    ...e,
+                                    message: "Nội dung không được để trống",
+                                }
                               : e,
                       )
                     : [
                           ...prev,
                           {
                               field: "text",
-                              message: "Text không được để trống",
+                              message: "Nội dung không được để trống",
                           },
                       ];
             });

@@ -39,7 +39,7 @@ function AnalyshPage() {
 
     return (
         <div className="mx-auto">
-            <h1 className="text-2xl font-bold">Analysh</h1>
+            <h1 className="text-2xl font-bold">Thống kê hội thoại</h1>
             <DataTable
                 columns={columns}
                 data={trackingData}

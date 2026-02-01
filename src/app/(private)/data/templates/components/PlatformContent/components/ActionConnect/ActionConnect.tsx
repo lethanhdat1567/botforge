@@ -28,7 +28,7 @@ function ActionConnect({ onConnect, pageId: initialPageId = "" }: Props) {
 
     const handleSave = () => {
         if (!pageId) {
-            setError("Please select a page");
+            setError("Vui lòng chọn một trang");
             return;
         }
 
@@ -60,7 +60,7 @@ function ActionConnect({ onConnect, pageId: initialPageId = "" }: Props) {
         >
             <DialogTrigger asChild>
                 <Button variant="outline">
-                    {initialPageId ? "Update connection" : "Connect"}
+                    {initialPageId ? "Cập nhật kết nối" : "Kết nối trang"}
                     <PlugZap />
                 </Button>
             </DialogTrigger>
@@ -69,11 +69,11 @@ function ActionConnect({ onConnect, pageId: initialPageId = "" }: Props) {
                 <DialogHeader>
                     <DialogTitle>
                         {initialPageId
-                            ? "Update page connection"
-                            : "Connect to page"}
+                            ? "Cập nhật kết nối trang"
+                            : "Kết nối trang"}
                     </DialogTitle>
                     <DialogDescription>
-                        Select a page to connect this flow.
+                        Chọn trang để liên kết với kịch bản này.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -88,13 +88,13 @@ function ActionConnect({ onConnect, pageId: initialPageId = "" }: Props) {
 
                 <div className="flex items-center justify-end gap-3">
                     <Button variant="ghost" onClick={handleCancel}>
-                        Cancel
+                        Huỷ
                     </Button>
                     <Button
                         onClick={handleSave}
                         disabled={!pageId || pageId === initialPageId}
                     >
-                        Save
+                        Lưu
                     </Button>
                 </div>
             </DialogContent>

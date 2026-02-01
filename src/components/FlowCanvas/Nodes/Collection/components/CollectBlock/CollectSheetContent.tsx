@@ -7,14 +7,16 @@ import { FlowController } from "@/components/FlowCanvas/Controller/FlowControlle
 import equal from "fast-deep-equal";
 import TimeoutField from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/components/Timeout/TimeoutField";
 import FallbackField from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/components/Fallback/FallbackField";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
     variable: VariableData;
     nodeId: string;
     fieldId: string;
+    setErrors: any;
 };
 
-function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
+function CollectSheetContent({ variable, nodeId, fieldId, setErrors }: Props) {
     const [localVariable, setLocalVariable] = useState<VariableData>(variable);
 
     // Sync khi undo / redo / đổi node
@@ -70,18 +72,24 @@ function CollectSheetContent({ variable, nodeId, fieldId }: Props) {
                     value={localVariable.key}
                     onChange={handleChangeVariableKey}
                     onBlur={handleBlurVariableKey}
+                    placeholder="Biến..."
                 />
             </div>
 
             {/* Regex */}
             <div>
-                <label className="mb-1 block font-medium">Regex</label>
+                <label className="mb-1 block font-medium">
+                    Mẫu kiểm tra (Regex)
+                </label>
+
                 <Input
                     value={localVariable.regex}
                     onChange={handleChangeRegex}
                     onBlur={handleBlurRegex}
                 />
             </div>
+
+            <Separator />
 
             {/* Timeout */}
             <TimeoutField

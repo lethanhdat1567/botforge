@@ -9,7 +9,7 @@ type Props = {
 
 function Actions({ sharedItem }: Props) {
     return (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
             <LikeBtn sharedItemId={sharedItem.id} />
             <DowloadBtn
                 downloadCount={sharedItem.downloadCount}

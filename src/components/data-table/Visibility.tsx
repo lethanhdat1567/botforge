@@ -27,11 +27,11 @@ export function DataTableViewOptions<TData>({
                     className="ml-auto hidden h-8 rounded-none lg:flex"
                 >
                     <Settings2 />
-                    View
+                    Hiển thị cột
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[150px]">
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuLabel>Điều chỉnh hiển thị</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table
                     .getAllColumns()

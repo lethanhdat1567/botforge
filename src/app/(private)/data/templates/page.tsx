@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const PLATFORMS = [
-    { key: "unconnected", label: "Unconnected" },
+    { key: "unconnected", label: "Chưa kết nối" },
     { key: "facebook", label: "Facebook" },
     { key: "instagram", label: "Instagram" },
     { key: "zalo", label: "Zalo" },
@@ -14,16 +14,16 @@ const PLATFORMS = [
 function TemplatesPage() {
     return (
         <div>
-            <div className="flex items-center justify-between">
-                <h1 className="mb-6 text-2xl font-bold">Templates</h1>
+            <div className="mb-6 flex items-center justify-between">
+                <h1 className="text-2xl font-bold">Danh sách mẫu kịck bản</h1>
                 <Link href={"/bot/flows" as any}>
-                    <Button>
+                    <Button className="rounded-none">
                         Quản lý thư mục template <ArrowRight />
                     </Button>
                 </Link>
             </div>
 
-            <Tabs defaultValue="facebook" className="w-full">
+            <Tabs defaultValue="unconnected" className="w-full">
                 <TabsList className="rounded-none">
                     {PLATFORMS.map((p) => (
                         <TabsTrigger

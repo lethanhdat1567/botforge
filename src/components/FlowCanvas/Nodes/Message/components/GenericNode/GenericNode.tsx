@@ -7,17 +7,17 @@ import {
     GenericTemplateData,
     GenericTemplateElement,
 } from "@/components/FlowCanvas/types/node/message.type";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
     Carousel,
+    CarouselApi,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
 } from "@/components/ui/carousel";
 import GenericItem from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/GenericItem/GenericItem";
 import { v4 as uuid } from "uuid";
+import ExpandBtn from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/ExpandBtn/ExpandBtn";
+import Navigate from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/Navigate/Navigate";
 
 type Props = {
     nodeId: string;
@@ -25,6 +25,7 @@ type Props = {
 };
 
 function GenericNode({ nodeId, payload }: Props) {
+    const [api, setApi] = useState<CarouselApi | null>(null);
     const [errors, setErrors] = useState([]);
     const [isExpand, setIsExpand] = useState(false);
 
@@ -50,15 +51,16 @@ function GenericNode({ nodeId, payload }: Props) {
 
     return (
         <div>
-            <div className="my-2 flex items-center justify-between">
-                <AddGeneric onAddGeneric={handleAddNewGeneric} />
-                <Button
-                    variant={"outline"}
-                    onClick={() => setIsExpand(!isExpand)}
-                >
-                    {isExpand ? "Thu nhỏ" : "Mở rộng"}
-                </Button>
+            {/* Heading */}
+            <div className="my-2 flex items-center gap-4">
+                <ExpandBtn
+                    isExpand={isExpand}
+                    onToggleExpand={() => setIsExpand(!isExpand)}
+                />
+                {!isExpand && <Navigate api={api} />}
             </div>
+            <AddGeneric onAddGeneric={handleAddNewGeneric} />
+            {/* Lists */}
             <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
                 <div>
                     {isExpand ? (
@@ -75,6 +77,7 @@ function GenericNode({ nodeId, payload }: Props) {
                         </div>
                     ) : (
                         <Carousel
+                            setApi={setApi}
                             opts={{
                                 watchDrag: false,
                             }}
@@ -91,8 +94,6 @@ function GenericNode({ nodeId, payload }: Props) {
                                     </CarouselItem>
                                 ))}
                             </CarouselContent>
-                            <CarouselPrevious />
-                            <CarouselNext />
                         </Carousel>
                     )}
                 </div>

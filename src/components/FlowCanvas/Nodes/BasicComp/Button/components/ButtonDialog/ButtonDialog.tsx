@@ -3,10 +3,7 @@ import ButtonContinue from "@/components/FlowCanvas/Nodes/BasicComp/Button/compo
 import CustomSelect from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonSelect";
 import ButtonSetVariable from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonSetVariable";
 import ButtonUrl from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/components/ButtonUrl";
-import {
-    options,
-    titleMap,
-} from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/data";
+import { options } from "@/components/FlowCanvas/Nodes/BasicComp/Button/components/ButtonDialog/data";
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 import { useState } from "react";
 
@@ -54,18 +51,17 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
 
     return (
         <div
-            className={`${showTooltip ? "visible opacity-100" : "invisible opacity-0"} bg-background absolute top-1/2 -right-4 z-10 block w-100 translate-x-full -translate-y-1/2 rounded-sm border px-3 py-2 text-sm shadow-md`}
+            className={`${showTooltip ? "visible opacity-100" : "invisible opacity-0"} bg-background absolute top-1/2 -right-4 z-10 block w-76 translate-x-full -translate-y-1/2 rounded-sm border px-4 py-3 text-sm shadow-md`}
         >
             <div className="flex items-center justify-between gap-4">
-                <h3 className="text-md font-medium">{titleMap[selected]}</h3>
                 <CustomSelect
                     value={selected}
                     onValueChange={handleSelect}
                     options={options}
-                    className="w-40"
+                    className="w-30"
                 />
             </div>
-            <div>
+            <div className="mt-4">
                 {selected === "continue" && <ButtonContinue />}
                 {selected === "url" && btn?.type === "url" && (
                     <ButtonUrl

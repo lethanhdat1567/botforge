@@ -30,6 +30,7 @@ function CollectionNode(props: any) {
                     variable={nodeContent.variable}
                     nodeId={props.id}
                     fieldId={props.data.messages.id}
+                    setErrors={setErrors}
                 />
             </BaseContent>
         </BaseNode>

@@ -45,7 +45,7 @@ function ButtonSetVariable({
                 <Label className="mb-3">Biến của bạn:</Label>
                 <Input
                     className="w-full"
-                    placeholder="Variable..."
+                    placeholder="Biến..."
                     value={variableValue}
                     onChange={(e) => setVariableValue(e.target.value)}
                     onBlur={commitChange}
@@ -53,10 +53,10 @@ function ButtonSetVariable({
             </div>
 
             <div>
-                <Label className="mb-3">Postback của bạn:</Label>
+                <Label className="mb-3">Giá trị của biến:</Label>
                 <Input
                     className="w-full"
-                    placeholder="Postback..."
+                    placeholder="Giá trị..."
                     value={postbackValue}
                     onChange={(e) => setPostbackValue(e.target.value)}
                     onBlur={commitChange}

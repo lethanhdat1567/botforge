@@ -10,6 +10,7 @@ import { images } from "@/assets/images";
 import { platformNames } from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/data";
 import { folderService } from "@/services/folderService";
 import useDebounce from "@/hooks/use-debounce";
+import { Spinner } from "@/components/ui/spinner";
 
 function FolderList({ searchValue }: { searchValue: string }) {
     const debounceValue = useDebounce(searchValue, 300);
@@ -28,6 +29,7 @@ function FolderList({ searchValue }: { searchValue: string }) {
     const allPlatforms = ["facebook", "instagram", "zalo"];
 
     const togglePlatform = (platform: string) => {
+        if (platform !== "facebook") return;
         setOpenPlatforms((prev) => ({ ...prev, [platform]: !prev[platform] }));
     };
     const fetchFolders = async () => {
@@ -66,7 +68,9 @@ function FolderList({ searchValue }: { searchValue: string }) {
                         className="hover:bg-muted text-md flex h-8 min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-sm px-2 py-3 font-medium transition"
                         onClick={() => togglePlatform(platform)}
                     >
-                        <div className="flex flex-1 items-center gap-4">
+                        <div
+                            className={`flex flex-1 items-center gap-4 ${platform !== "facebook" ? "opacity-50" : ""}`}
+                        >
                             <GamepadDirectional size={16} />
                             <div className="flex items-center gap-2">
                                 <Image
@@ -84,15 +88,21 @@ function FolderList({ searchValue }: { searchValue: string }) {
                             </div>
                         </div>
 
-                        <AddFolderBtn
-                            onCreateFolder={() => {
-                                setNewFolderPlatform(platform); // bật CreateFolder cho platform này
-                                setOpenPlatforms((prev) => ({
-                                    ...prev,
-                                    [platform]: true,
-                                })); // chắc chắn mở platform
-                            }}
-                        />
+                        {platform === "facebook" ? (
+                            <AddFolderBtn
+                                onCreateFolder={() => {
+                                    setNewFolderPlatform(platform); // bật CreateFolder cho platform này
+                                    setOpenPlatforms((prev) => ({
+                                        ...prev,
+                                        [platform]: true,
+                                    })); // chắc chắn mở platform
+                                }}
+                            />
+                        ) : (
+                            <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                                <Spinner /> Coming soon...
+                            </div>
+                        )}
                     </div>
 
                     {/* Folder list */}

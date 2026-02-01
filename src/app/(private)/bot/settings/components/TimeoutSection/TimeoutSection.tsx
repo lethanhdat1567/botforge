@@ -43,6 +43,10 @@ function TimeoutSection() {
 
     return (
         <div className="space-y-6">
+            <h2 className="text-2xl font-semibold">
+                Cấu hình thời gian hệ thống
+            </h2>
+
             <Timeout
                 duration={fallback.timeoutDuration}
                 unit={fallback.timeoutUnit}

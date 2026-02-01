@@ -54,11 +54,11 @@ const data = {
             icon: Database,
             items: [
                 {
-                    title: "Trang của tôi",
+                    title: "Quản lý trang kết nối",
                     url: "/data/pages",
                 },
                 {
-                    title: "Mẫu của tôi",
+                    title: "Mẫu kịch bản",
                     url: "/data/templates",
                 },
                 {

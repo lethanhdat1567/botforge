@@ -27,10 +27,10 @@ function DelayInput({ rangeInput, setRangeInput }: Props) {
     }
 
     return (
-        <InputGroup>
+        <InputGroup className="bg-white">
             <InputGroupInput
                 type="number"
-                placeholder="Timer..."
+                placeholder="Chờ..."
                 value={rangeInput || ""}
                 min={1}
                 max={100}

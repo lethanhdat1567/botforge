@@ -20,7 +20,7 @@ function SharedItem({ sharedItem }: Props) {
                         src={resolveMediaSrc(sharedItem.thumbnail) as string}
                         alt="fallback"
                         fill
-                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                        className="object-cover transition duration-300 ease-out group-hover:scale-105"
                     />
                 </div>
             </Link>

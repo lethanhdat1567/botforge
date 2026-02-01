@@ -96,7 +96,6 @@ function LikeBtn({ sharedItemId }: { sharedItemId: string }) {
 
     return (
         <Button
-            size="icon"
             variant="ghost"
             disabled={loading}
             onClick={handleLike}

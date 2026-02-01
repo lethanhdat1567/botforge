@@ -6,7 +6,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical, Plus } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
 import {
     Dialog,
     DialogContent,
@@ -69,12 +69,13 @@ function Options({ onUpdate, onDestroy, page, error, setError }: Props) {
                 <form>
                     <DialogContent className="sm:max-w-106.25">
                         <DialogHeader>
-                            <DialogTitle>Add Your New Page</DialogTitle>
+                            <DialogTitle>Cập nhật thông tin trang</DialogTitle>
                             <DialogDescription>
-                                Make changes to your profile here. Click save
-                                when you&apos;re done.
+                                Chỉnh sửa thông tin trang kết nối và lưu để áp
+                                dụng thay đổi.
                             </DialogDescription>
                         </DialogHeader>
+
                         <PageForm
                             onSubmit={handleUpdate}
                             initialValues={{

@@ -51,10 +51,10 @@ function StorePage() {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold">My Template</h1>
+                <h1 className="text-2xl font-semibold">Quản lý mẫu chia sẻ</h1>
                 <Link href={"/community/store/new" as any}>
                     <Button className="rounded-none">
-                        Share Template <Plus />
+                        Chia sẻ mẫu <Plus />
                     </Button>
                 </Link>
             </div>

@@ -48,7 +48,6 @@ function DowloadBtn({ flowId, sharedItemId, downloadCount }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    size="icon"
                     variant="ghost"
                     className="h-8 w-8 transition-colors duration-200"
                 >

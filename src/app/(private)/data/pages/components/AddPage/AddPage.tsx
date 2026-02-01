@@ -3,7 +3,6 @@
 import PageForm, {
     PageFormData,
 } from "@/app/(private)/data/pages/components/PageForm/PageForm";
-import { PageType } from "@/app/(private)/data/pages/type";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -14,7 +13,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { pageService } from "@/services/pageService";
-import { Plus } from "lucide-react";
+import { PlugZap } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -47,17 +46,18 @@ export function AddPage({ onRefresh }: { onRefresh: () => void }) {
             <form>
                 <DialogTrigger asChild>
                     <Button className="rounded-none">
-                        <Plus /> Add Page
+                        <PlugZap /> Kết nối trang mới
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-106.25">
+                <DialogContent className="sm:max-w-130">
                     <DialogHeader>
-                        <DialogTitle>Add Your New Page</DialogTitle>
+                        <DialogTitle>Thêm trang mới</DialogTitle>
                         <DialogDescription>
-                            Make changes to your profile here. Click save when
-                            you&apos;re done.
+                            Nhập thông tin trang và lưu để hoàn tất việc kết
+                            nối.
                         </DialogDescription>
                     </DialogHeader>
+
                     <PageForm
                         onSubmit={handleSubmit}
                         error={error}

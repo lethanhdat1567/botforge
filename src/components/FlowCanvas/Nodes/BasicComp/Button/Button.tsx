@@ -55,7 +55,7 @@ function Button({ btn, onCommit, onDestroyBtn, variable }: Props) {
     };
 
     return (
-        <div className="group/btn relative" ref={inputRef}>
+        <div className="group/btn relative rounded-sm bg-white" ref={inputRef}>
             <Input
                 className={cn(
                     "w-full ring-0!",

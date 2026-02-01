@@ -14,9 +14,9 @@ async function TemplatesPage() {
         <div>
             {/* Heading */}
             <div className="mt-4 flex flex-col items-center justify-center gap-4">
-                <h1 className="text-2xl font-bold">Kanban Board</h1>
+                <h1 className="text-2xl font-bold">Mẫu cộng đồng</h1>
                 <InputGroup className="max-w-xl rounded-none">
-                    <InputGroupInput placeholder="Search..." />
+                    <InputGroupInput placeholder="Tìm kiếm mẫu..." />
                     <InputGroupAddon>
                         <SearchIcon className="text-muted-foreground" />
                     </InputGroupAddon>

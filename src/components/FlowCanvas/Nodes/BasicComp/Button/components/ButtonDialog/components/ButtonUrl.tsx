@@ -24,15 +24,17 @@ function ButtonUrl({
     };
 
     return (
-        <div className="pt-2">
-            <Label className="mb-3">Truyền Url của bạn:</Label>
+        <div>
             <Input
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
                 onBlur={handleBlur}
                 className="w-full"
-                placeholder="Url..."
+                placeholder="Đường dẫn..."
             />
+            <p className="text-muted-foreground mt-3 text-xs">
+                Vui lòng nhập đường dẫn hợp lệ để tránh bị lỗi cho flow.
+            </p>
         </div>
     );
 }

@@ -105,6 +105,16 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
         }));
     }
 
+    function handleRemoveGeneric() {
+        const newGenerics = payload.fields.elements.filter(
+            (g: GenericTemplateElement) => g.id !== generic.id,
+        );
+
+        FlowController.updateNodePayload(nodeId, payload.id, {
+            elements: newGenerics,
+        });
+    }
+
     return (
         <Tooltip>
             <TooltipTrigger asChild>
@@ -142,12 +152,14 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
                     />
                 </div>
             </TooltipTrigger>
-            <TooltipContent>
-                <div className="flex items-center gap-2">
-                    <Button size={"icon-sm"} variant={"destructive"}>
-                        <Trash />
-                    </Button>
-                </div>
+            <TooltipContent align="center" side="right">
+                <Button
+                    size={"icon-sm"}
+                    variant={"destructive"}
+                    onClick={handleRemoveGeneric}
+                >
+                    <Trash />
+                </Button>
             </TooltipContent>
         </Tooltip>
     );

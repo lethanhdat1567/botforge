@@ -6,7 +6,7 @@ async function SavedSharedTemplatePage() {
 
     return (
         <div>
-            <h1 className="mb-4 text-2xl font-bold">Bookmark</h1>
+            <h1 className="mb-4 text-2xl font-bold">Mẫu cộng đồng đã lưu</h1>
             <div className="grid grid-cols-4 gap-4">
                 {res.data.data.map((item: any) => (
                     <SharedItem key={item.id} sharedItem={item.flowShare} />

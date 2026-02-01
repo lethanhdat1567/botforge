@@ -17,18 +17,20 @@ type Props = {
 
 function FallbackModeSelect({ value, onChange }: Props) {
     return (
-        <div className="flex items-center gap-2">
-            <label className="w-32 font-medium">Fallback:</label>
+        <div>
+            <div className="flex items-center gap-2">
+                <label className="w-32 font-medium">Phản hồi:</label>
 
-            <Select value={value} onValueChange={onChange}>
-                <SelectTrigger className="min-w-40">
-                    <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="default">Không dùng</SelectItem>
-                    <SelectItem value="custom">Tuỳ chỉnh</SelectItem>
-                </SelectContent>
-            </Select>
+                <Select value={value} onValueChange={onChange}>
+                    <SelectTrigger className="min-w-40">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="default">Dùng Mặc định</SelectItem>
+                        <SelectItem value="custom">Tự Tuỳ chỉnh</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
         </div>
     );
 }

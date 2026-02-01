@@ -40,16 +40,18 @@ function SetVariableNode({ nodeId, payload }: Props) {
         <BaseContent nodeId={nodeId} payloadId={payload.id}>
             <div className="space-y-2">
                 <Input
-                    placeholder="key"
+                    placeholder="Biến..."
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
                     onBlur={commitChange}
+                    className="bg-white"
                 />
                 <Input
-                    placeholder="value"
+                    placeholder="Giá trị..."
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     onBlur={commitChange}
+                    className="bg-white"
                 />
             </div>
         </BaseContent>

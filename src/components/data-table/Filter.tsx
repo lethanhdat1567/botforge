@@ -4,7 +4,7 @@ function DataTableFilter({ table, column }: { table: any; column: any }) {
     return (
         <div className="flex items-center py-4">
             <Input
-                placeholder="Filter emails..."
+                placeholder="Tìm kiếm..."
                 value={
                     (table.getColumn(column)?.getFilterValue() as string) ?? ""
                 }

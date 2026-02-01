@@ -67,7 +67,7 @@ function ButtonList({
     }
 
     return (
-        <div className="bg-background space-y-2">
+        <div className="space-y-2">
             {buttonLists.map((btn: ButtonNode) => (
                 <Button
                     key={btn.id}

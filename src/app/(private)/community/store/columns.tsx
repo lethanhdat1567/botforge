@@ -40,14 +40,14 @@ export const columns = ({
                 onCheckedChange={(value) =>
                     table.toggleAllPageRowsSelected(!!value)
                 }
-                aria-label="Select all"
+                aria-label="Chọn tất cả"
             />
         ),
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
+                aria-label="Chọn dòng"
             />
         ),
         enableSorting: false,
@@ -57,21 +57,19 @@ export const columns = ({
     {
         accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Name" />
+            <DataTableColumnHeader column={column} title="Tên mẫu" />
         ),
-        cell: ({ row }) => {
-            return (
-                <ColumnName
-                    thumbnail={row.original.thumbnail}
-                    name={row.original.name}
-                />
-            );
-        },
+        cell: ({ row }) => (
+            <ColumnName
+                thumbnail={row.original.thumbnail}
+                name={row.original.name}
+            />
+        ),
     },
 
     {
         accessorKey: "flowId",
-        header: "Flow ID",
+        header: "Kịch bản",
         cell: ({ getValue }) => (
             <Link
                 href={"/bot/flows" as any}
@@ -81,36 +79,39 @@ export const columns = ({
             </Link>
         ),
     },
+
     {
         accessorKey: "downloadCount",
-        header: "Downloads",
+        header: "Lượt tải",
         cell: ({ getValue }) => (
             <div className="flex items-center gap-2 text-sm">
-                <Download size={18} /> {getValue<number>()}
+                <Download size={18} />
+                {getValue<number>()}
             </div>
         ),
     },
 
     {
         accessorKey: "status",
-        header: "Status",
+        header: "Trạng thái",
         cell: ({ getValue }) => <ColumnStatus status={getValue() as any} />,
     },
 
     {
         accessorKey: "createdAt",
-        header: "Created At",
+        header: "Ngày tạo",
         cell: ({ getValue }) => <div>{timerFormat(getValue<Date>())}</div>,
     },
 
     {
         accessorKey: "updatedAt",
-        header: "Updated At",
+        header: "Cập nhật gần nhất",
         cell: ({ getValue }) => <div>{timerFormat(getValue<Date>())}</div>,
     },
+
     {
         accessorKey: "action",
-        header: "Action",
+        header: "Thao tác",
         cell: ({ row }) => (
             <ColumnAction
                 id={row.original.id}

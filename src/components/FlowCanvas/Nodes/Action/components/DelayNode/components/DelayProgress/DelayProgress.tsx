@@ -19,7 +19,7 @@ function DelayProgress({ rangeValue, onChange, onCommit }: Props) {
             onTouchEnd={(e) =>
                 onCommit(Number((e.target as HTMLInputElement).value))
             }
-            className="nodrag mt-4 w-full cursor-pointer"
+            className="nodrag mt-4 w-full cursor-pointer accent-black"
         />
     );
 }

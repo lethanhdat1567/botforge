@@ -26,7 +26,7 @@ function TimeoutCustomFields({
     onChangeUnit,
 }: Props) {
     return (
-        <div className="flex items-center gap-2 pl-32">
+        <div className="flex items-center gap-2">
             <Input
                 type="number"
                 min={1}

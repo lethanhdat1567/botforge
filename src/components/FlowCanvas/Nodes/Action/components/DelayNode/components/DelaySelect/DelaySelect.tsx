@@ -14,7 +14,7 @@ type Props = {
 function DelaySelect({ unit, onChangeUnit }: Props) {
     return (
         <Select value={unit} onValueChange={onChangeUnit}>
-            <SelectTrigger className="w-30">
+            <SelectTrigger className="w-30 bg-white">
                 <SelectValue placeholder="Time unit" />
             </SelectTrigger>
             <SelectContent>

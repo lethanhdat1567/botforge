@@ -26,12 +26,12 @@ function Options({ onDestroy }: Props) {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="end">
-                    <DropdownMenuLabel>Action</DropdownMenuLabel>
+                    <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem
                         variant="destructive"
                         onClick={() => setShowAlert(true)}
                     >
-                        Delete
+                        Xóa mẫu
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -15,7 +15,7 @@ function ShareBtn() {
                 </Button>
             </TooltipTrigger>
             <TooltipContent>
-                <p>Share this template</p>
+                <p>Chia sẻ mẫu công khai</p>
             </TooltipContent>
         </Tooltip>
     );

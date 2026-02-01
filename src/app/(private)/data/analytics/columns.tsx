@@ -2,12 +2,6 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { FileText } from "lucide-react";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Status from "@/app/(private)/data/analytics/components/Status";
 import VariableDialog from "@/app/(private)/data/analytics/components/VariableDialog/VariableDialog";
 import StepHistory from "@/app/(private)/data/analytics/components/StepHistory/StepHistory";
@@ -38,14 +32,14 @@ export const columns: ColumnDef<TrackingFlow>[] = [
                 onCheckedChange={(value) =>
                     table.toggleAllPageRowsSelected(!!value)
                 }
-                aria-label="Select all"
+                aria-label="Chọn tất cả"
             />
         ),
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
+                aria-label="Chọn dòng"
             />
         ),
         enableSorting: false,
@@ -54,49 +48,45 @@ export const columns: ColumnDef<TrackingFlow>[] = [
 
     {
         accessorKey: "platformUserId",
-        header: "Platform User ID",
+        header: "ID người dùng nền tảng",
     },
     {
         accessorKey: "flowId",
-        header: "Flow ID",
+        header: "ID kịch bản",
     },
     {
         accessorKey: "currentStep",
-        header: "Current Step",
+        header: "Bước hiện tại",
     },
     {
         accessorKey: "stepHistory",
-        header: "Step History",
+        header: "Lịch sử bước",
         cell: ({ getValue }) => {
             const value = getValue<any>();
-
             if (!value) return null;
-
             return <StepHistory history={value} />;
         },
     },
     {
         accessorKey: "variables",
-        header: "Variables",
+        header: "Biến",
         cell: ({ getValue }) => {
             const value = getValue<any>();
-
             if (!value) return null;
-
             return <VariableDialog variable={value} />;
         },
     },
-
     {
         accessorKey: "status",
-        header: "Status",
+        header: "Trạng thái",
         cell: ({ getValue }) => {
             return <Status status={getValue<string>() as any} />;
         },
     },
     {
         accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ getValue }) => new Date(getValue<Date>()).toLocaleString(),
+        header: "Thời điểm tạo",
+        cell: ({ getValue }) =>
+            new Date(getValue<Date>()).toLocaleString("vi-VN"),
     },
 ];

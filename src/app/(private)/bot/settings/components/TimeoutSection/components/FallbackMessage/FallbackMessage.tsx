@@ -34,21 +34,23 @@ function FallbackMessage({ value, onChange }: Props) {
     };
 
     return (
-        <div className="max-w-md space-y-2">
-            <label className="text-sm font-medium">Tin nhắn fallback</label>
+        <div className="w-full space-y-2">
+            <label className="text-md mb-2 block font-medium">
+                Tin nhắn khi hết thời gian chờ
+            </label>
 
             <Textarea
                 value={localMessage}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="Nhập nội dung bot sẽ gửi khi người dùng không phản hồi..."
-                className="min-h-[100px] resize-none"
+                placeholder="Nhập nội dung bot sẽ gửi nếu người dùng không phản hồi trong thời gian quy định..."
+                className="min-h-25 w-full resize-none"
             />
 
             <div className="text-muted-foreground flex justify-between text-xs">
                 <span>
                     {localMessage?.length === 0
-                        ? "Fallback sẽ được gửi khi hết thời gian chờ"
+                        ? "Tin nhắn này sẽ được gửi khi người dùng không phản hồi."
                         : " "}
                 </span>
                 <span>

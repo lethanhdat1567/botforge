@@ -20,8 +20,11 @@ function CreateCondition({ onCreate }: Props) {
     }
 
     return (
-        <Button className="w-full" onClick={handleCreateNewCondition}>
-            <Plus /> Create new condition
+        <Button
+            className="w-full rounded-none"
+            onClick={handleCreateNewCondition}
+        >
+            <Plus /> Thêm điều kiện mới
         </Button>
     );
 }

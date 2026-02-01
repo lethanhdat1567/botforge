@@ -42,6 +42,7 @@ function AskBlock({
                 value={text}
                 onCommit={commitText}
                 setErrors={setErrors}
+                placeholder="Thêm nội dung..."
             />
 
             <ButtonList
