@@ -1,5 +1,7 @@
 "use client";
 
+import VariableDropdown from "@/components/FlowCanvas/Nodes/BasicComp/TextArea/VariableDropdown";
+import { renderHighlightedText } from "@/components/FlowCanvas/Nodes/BasicComp/TextArea/helpers";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -20,15 +22,16 @@ function TextArea({
     placeholder,
 }: Props) {
     const [inputValue, setInputValue] = useState(value);
+    const [showSuggest, setShowSuggest] = useState(false);
 
     const isError = setErrors && !inputValue.trim();
 
-    // sync khi parent đổi value (undo / redo)
+    /* sync khi parent đổi value */
     useEffect(() => {
         setInputValue(value);
     }, [value]);
 
-    // validation realtime
+    /* validation realtime */
     useEffect(() => {
         if (!setErrors) return;
 
@@ -57,24 +60,61 @@ function TextArea({
         }
     }, [inputValue, setErrors]);
 
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const val = e.target.value;
+        const pos = e.target.selectionStart;
+
+        setInputValue(val);
+
+        const beforeCursor = val.slice(0, pos);
+
+        const open =
+            beforeCursor.lastIndexOf("{{") > beforeCursor.lastIndexOf("}}");
+
+        setShowSuggest(open);
+    };
+
     const handleBlur = () => {
-        if (inputValue === value) return; // không đổi → không commit
-        onCommit(inputValue.trim());
+        if (inputValue !== value) {
+            onCommit(inputValue.trim());
+        }
+        setShowSuggest(false);
     };
 
     return (
-        <Textarea
-            className={cn(
-                className,
-                "bg-background w-full resize-none ring-0!",
-                isError && "border-red-300 focus:border-red-500!",
+        <div className="relative w-full">
+            {/* Highlight layer – GIỮ NGUYÊN */}
+            <div className="pointer-events-none absolute inset-0 bg-white px-3 py-2 text-sm break-words whitespace-pre-wrap">
+                {renderHighlightedText(inputValue)}
+            </div>
+
+            {/* Real textarea */}
+            <Textarea
+                className={cn(
+                    className,
+                    "relative w-full resize-none",
+                    "caret-foreground bg-transparent text-transparent",
+                    "ring-0!",
+                    isError && "border-red-300 focus:border-red-500!",
+                )}
+                rows={4}
+                value={inputValue}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder={placeholder}
+            />
+
+            {/* Dropdown – chỉ nằm dưới textarea */}
+            {showSuggest && (
+                <VariableDropdown
+                    value={inputValue}
+                    onSelect={(value: string) => {
+                        setInputValue(inputValue + value);
+                        setShowSuggest(false);
+                    }}
+                />
             )}
-            rows={4}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onBlur={handleBlur}
-            placeholder={placeholder}
-        />
+        </div>
     );
 }
 

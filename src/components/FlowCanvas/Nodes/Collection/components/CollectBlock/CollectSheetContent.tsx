@@ -8,6 +8,7 @@ import equal from "fast-deep-equal";
 import TimeoutField from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/components/Timeout/TimeoutField";
 import FallbackField from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/components/Fallback/FallbackField";
 import { Separator } from "@/components/ui/separator";
+import SuggestVariable from "@/components/SuggestVariableInput/SuggestVariable";
 
 type Props = {
     variable: VariableData;
@@ -68,12 +69,22 @@ function CollectSheetContent({ variable, nodeId, fieldId, setErrors }: Props) {
             {/* Variable */}
             <div>
                 <label className="mb-1 block font-medium">Biến</label>
-                <Input
+                <SuggestVariable
                     value={localVariable.key}
-                    onChange={handleChangeVariableKey}
-                    onBlur={handleBlurVariableKey}
-                    placeholder="Biến..."
-                />
+                    onSelect={(value: string) => {
+                        setLocalVariable((prev) => ({
+                            ...prev,
+                            key: value,
+                        }));
+                    }}
+                >
+                    <Input
+                        value={localVariable.key}
+                        onChange={handleChangeVariableKey}
+                        onBlur={handleBlurVariableKey}
+                        placeholder="Biến..."
+                    />
+                </SuggestVariable>
             </div>
 
             {/* Regex */}

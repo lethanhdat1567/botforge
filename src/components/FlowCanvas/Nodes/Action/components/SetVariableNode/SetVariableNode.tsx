@@ -3,6 +3,7 @@
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
 import { SetVariableActionData } from "@/components/FlowCanvas/types/node/action.type";
+import SuggestVariable from "@/components/SuggestVariableInput/SuggestVariable";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
@@ -39,13 +40,20 @@ function SetVariableNode({ nodeId, payload }: Props) {
     return (
         <BaseContent nodeId={nodeId} payloadId={payload.id}>
             <div className="space-y-2">
-                <Input
-                    placeholder="Biến..."
+                <SuggestVariable
                     value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    onBlur={commitChange}
-                    className="bg-white"
-                />
+                    onSelect={(value: string) => {
+                        setKey(value);
+                    }}
+                >
+                    <Input
+                        placeholder="Biến..."
+                        value={key}
+                        onChange={(e) => setKey(e.target.value)}
+                        onBlur={commitChange}
+                        className="bg-white"
+                    />
+                </SuggestVariable>
                 <Input
                     placeholder="Giá trị..."
                     value={value}

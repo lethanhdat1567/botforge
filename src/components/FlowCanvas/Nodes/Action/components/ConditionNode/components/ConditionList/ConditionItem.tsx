@@ -2,6 +2,7 @@
 
 import { formatConditionOperator } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
 import { ConditionItem as ConditionType } from "@/components/FlowCanvas/types/node/action.type";
+import SuggestVariable from "@/components/SuggestVariableInput/SuggestVariable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash } from "lucide-react";
@@ -30,6 +31,8 @@ function ConditionItem({ condition, onCommit, onDestroy, ordinal }: Props) {
     }, [condition.value]);
 
     const commitChange = () => {
+        console.log("alo??");
+
         if (key === condition.field && value === condition.value) return;
 
         onCommit({
@@ -56,12 +59,14 @@ function ConditionItem({ condition, onCommit, onDestroy, ordinal }: Props) {
             </div>
 
             {/* Field */}
-            <Input
-                placeholder="Biến..."
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
-                onBlur={commitChange}
-            />
+            <SuggestVariable value={key} onSelect={setKey}>
+                <Input
+                    placeholder="Biến..."
+                    value={key}
+                    onChange={(e) => setKey(e.target.value)}
+                    onBlur={commitChange}
+                />
+            </SuggestVariable>
 
             {/* Operator */}
             <div className="text-center text-sm">
