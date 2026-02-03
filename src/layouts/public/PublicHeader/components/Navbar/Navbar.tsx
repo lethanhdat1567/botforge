@@ -1,22 +1,35 @@
-import styles from "./Navbar.module.css";
-import { navItems } from "@/layouts/public/PublicHeader/components/Navbar/data";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 function Navbar() {
+    const navData = [
+        {
+            title: "Home",
+            link: "/",
+        },
+        {
+            title: "About",
+            link: "/about",
+        },
+        {
+            title: "Guides",
+            link: "/guides",
+        },
+        {
+            title: "Contact",
+            link: "/contact",
+        },
+    ];
+
     return (
         <nav>
-            <ul className="text-md flex items-center">
-                {navItems.map((item) => (
-                    <li key={item.name}>
+            <ul className="flex items-center gap-2">
+                {navData.map((item) => (
+                    <li key={item.title}>
                         <Link
-                            href={{ pathname: item.href }}
-                            className={cn(
-                                styles.item,
-                                "px-4 py-1 font-medium text-neutral-300 transition duration-300 hover:text-(--primary-color)",
-                            )}
+                            href={item.link as any}
+                            className="rounded-lg border border-transparent px-4 py-1.5 text-[14px] font-medium transition-all duration-300 hover:border-white hover:hover:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.6)]"
                         >
-                            {item.name}
+                            {item.title}
                         </Link>
                     </li>
                 ))}

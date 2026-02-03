@@ -1,0 +1,38 @@
+.liveDot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    display: inline-flex;
+}
+
+.liveDotCore {
+    position: relative;
+    z-index: 2;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: #6d28d9; /* purple-700 */
+    box-shadow: 0 0 12px rgba(109, 40, 217, 0.8);
+}
+
+.liveDotPulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: rgba(168, 85, 247, 0.6); /* purple-500 */
+    animation: pulse 1.6s ease-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    70% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}

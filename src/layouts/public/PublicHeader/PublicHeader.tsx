@@ -1,58 +1,48 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+
+import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
 import Navbar from "@/layouts/public/PublicHeader/components/Navbar/Navbar";
-import { Rocket } from "lucide-react";
-import Link from "next/link";
+import StartBtn from "@/layouts/public/PublicHeader/components/StartBtn/StartBtn";
+import clsx from "clsx";
 
 function PublicHeader() {
-    const [showHeader, setShowHeader] = useState(true);
-    const [isHero, setIsHero] = useState(true);
-    const prevScroll = useRef(0);
+    const [hidden, setHidden] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            const currentScroll = window.scrollY;
+            const currentScrollY = window.scrollY;
 
-            // Hide/show header
-            if (currentScroll > prevScroll.current && currentScroll > 100) {
-                setShowHeader(false);
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                // scroll xuống
+                setHidden(true);
             } else {
-                setShowHeader(true);
+                // scroll lên
+                setHidden(false);
             }
 
-            // Kiểm tra hero section
-            setIsHero(currentScroll < window.innerHeight); // hero full screen
-
-            prevScroll.current = currentScroll;
+            setLastScrollY(currentScrollY);
         };
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    }, [lastScrollY]);
 
     return (
-        <header
-            className={`fixed top-0 left-0 z-40 flex h-(--header-h) w-screen items-center transition-transform duration-500 ${
-                showHeader ? "translate-y-0" : "-translate-y-full"
-            } ${
-                isHero ? "bg-transparent" : "bg-black backdrop-blur-sm" // background khi ra khỏi hero
-            }`}
+        <div
+            className={clsx(
+                "fixed top-10 left-1/2 z-50 flex w-4xl -translate-x-1/2 items-center justify-between rounded-lg border border-white bg-[#f6f6f6f0] px-8 py-1.5 backdrop-blur-md",
+                "transition-all duration-500 ease-out",
+                hidden
+                    ? "-translate-y-32 opacity-0"
+                    : "translate-y-0 opacity-100 shadow-[0_12px_24px_-8px_rgba(0,0,0,0.25)]",
+            )}
         >
-            <div className="app-container flex items-center justify-between">
-                <Logo />
-                <Navbar />
-                <Link href={{ pathname: "/login" }}>
-                    <button className="group flex cursor-pointer items-center gap-2 rounded-full bg-(--primary-color) px-6 py-2.5 text-lg font-medium transition hover:opacity-70">
-                        <Rocket
-                            size={24}
-                            className="transition group-hover:translate-x-1 group-hover:-translate-y-1"
-                        />
-                        Get Started
-                    </button>
-                </Link>
-            </div>
-        </header>
+            <Logo />
+            <Navbar />
+            <StartBtn />
+        </div>
     );
 }
 

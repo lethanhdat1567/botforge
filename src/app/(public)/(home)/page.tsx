@@ -1,21 +1,20 @@
 "use client";
 
-import CTA from "@/app/(public)/(home)/components/CTA/CTA";
-import Features from "@/app/(public)/(home)/components/Features/Features";
-import FounderNote from "@/app/(public)/(home)/components/FounderNote/FouderNode";
+import Analysh from "@/app/(public)/(home)/components/Analysh/Analysh";
 import Hero from "@/app/(public)/(home)/components/Hero/Hero";
-import HowItWork from "@/app/(public)/(home)/components/HowItWork/page";
-import Question from "@/app/(public)/(home)/components/Question/Question";
+import Problem from "@/app/(public)/(home)/components/Problem/Problem";
+import Questions from "@/app/(public)/(home)/components/Questions/Questions";
+import WhyChoiceUs from "@/app/(public)/(home)/components/WhyChoiceUs/WhyChoiceUs";
 
 function Home() {
     return (
-        <div>
+        <div className="bg-[#f6f6f6]">
             <Hero />
-            <FounderNote />
-            <Features />
-            <HowItWork />
-            <Question />
-            <CTA />
+            <Problem />
+            <WhyChoiceUs />
+            <Analysh />
+            <Questions />
+            <div className="h-20"></div>
         </div>
     );
 }
