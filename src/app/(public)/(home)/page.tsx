@@ -14,7 +14,7 @@ function Home() {
             <WhyChoiceUs />
             <Analysh />
             <Questions />
-            <div className="h-20"></div>
+            <div className="pb-30" />
         </div>
     );
 }

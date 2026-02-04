@@ -3,19 +3,19 @@ import Link from "next/link";
 function Navbar() {
     const navData = [
         {
-            title: "Home",
+            title: "Trang chủ",
             link: "/",
         },
         {
-            title: "About",
+            title: "Giới thiệu",
             link: "/about",
         },
         {
-            title: "Guides",
+            title: "Hướng dẫn",
             link: "/guides",
         },
         {
-            title: "Contact",
+            title: "Liên hệ",
             link: "/contact",
         },
     ];

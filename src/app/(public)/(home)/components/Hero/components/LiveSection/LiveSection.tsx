@@ -13,7 +13,7 @@ function LiveSection() {
                 <span className="text-xs font-semibold">Live now</span>
             </div>
             <p className="pr-2 text-[14px] font-medium">
-                Used by SaaS & AI leaders
+                Sử dụng hoàn toàn miễn phí
             </p>
         </div>
     );
