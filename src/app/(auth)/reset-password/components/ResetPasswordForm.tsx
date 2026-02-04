@@ -20,11 +20,13 @@ import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
 import { authService } from "@/services/authService";
 import { toast } from "sonner";
 import { setFormErrors } from "@/app/(auth)/helpers";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Logo from "@/components/Logo";
 
 export function ResetPasswordForm({ className }: { className?: string }) {
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
+    const router = useRouter();
 
     const {
         register,
@@ -38,13 +40,14 @@ export function ResetPasswordForm({ className }: { className?: string }) {
     const onSubmit = async (data: ResetPasswordFormValues) => {
         try {
             await authService.resetPassword({ ...data, token: token || "" });
-            toast.success("Password has been reset successfully!");
+            toast.success("Đặt lại mật khẩu thành công!");
+            router.push("/login" as any);
         } catch (err: any) {
             const backendErrors = err.response?.data?.data?.errors;
             if (backendErrors && Array.isArray(backendErrors)) {
                 setFormErrors<ResetPasswordFormValues>(backendErrors, setError);
             } else {
-                toast.error("An error occurred. Please try again!");
+                toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
             }
         }
     };
@@ -54,31 +57,23 @@ export function ResetPasswordForm({ className }: { className?: string }) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FieldGroup>
                     <div className="flex flex-col items-center gap-2 text-center">
-                        <a
-                            href="#"
-                            className="flex flex-col items-center gap-2 font-medium"
-                        >
-                            <div className="flex size-8 items-center justify-center rounded-md">
-                                <GalleryVerticalEnd className="size-6" />
-                            </div>
-                            <span className="sr-only">Acme Inc.</span>
-                        </a>
-                        <h1 className="text-xl font-bold">Reset Password</h1>
+                        <Logo />
+                        <h1 className="text-xl font-bold">Đặt lại mật khẩu</h1>
                         <FieldDescription>
-                            Enter your new password below to reset your account
-                            password.
+                            Nhập mật khẩu mới bên dưới để đặt lại mật khẩu cho
+                            tài khoản của bạn.
                         </FieldDescription>
                     </div>
 
                     {/* New Password */}
                     <Field>
                         <FieldLabel htmlFor="newPassword">
-                            New Password
+                            Mật khẩu mới
                         </FieldLabel>
                         <Input
                             type="password"
                             id="newPassword"
-                            placeholder="Enter new password"
+                            placeholder="Nhập mật khẩu mới"
                             {...register("newPassword")}
                         />
                         <ErrorText message={errors.newPassword?.message} />
@@ -87,12 +82,12 @@ export function ResetPasswordForm({ className }: { className?: string }) {
                     {/* Confirm Password */}
                     <Field>
                         <FieldLabel htmlFor="confirmPassword">
-                            Confirm Password
+                            Xác nhận mật khẩu
                         </FieldLabel>
                         <Input
                             type="password"
                             id="confirmPassword"
-                            placeholder="Confirm new password"
+                            placeholder="Nhập lại mật khẩu mới"
                             {...register("confirmPassword")}
                         />
                         <ErrorText message={errors.confirmPassword?.message} />
@@ -101,16 +96,15 @@ export function ResetPasswordForm({ className }: { className?: string }) {
                     {/* Submit */}
                     <Field>
                         <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Changing..." : "Change Password"}
+                            {isSubmitting ? "Đang thay đổi..." : "Đổi mật khẩu"}
                         </Button>
                     </Field>
                 </FieldGroup>
             </form>
 
             <FieldDescription className="px-6 text-center">
-                By clicking continue, you agree to our{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>.
+                Khi tiếp tục, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a>{" "}
+                và <a href="#">Chính sách bảo mật</a> của chúng tôi.
             </FieldDescription>
         </div>
     );

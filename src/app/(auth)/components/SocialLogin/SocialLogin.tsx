@@ -38,18 +38,18 @@ function SocialLogin() {
                 onClick={loginWithGoogle}
             >
                 {googleIcon}
-                Sign up with Google
+                Đăng nhập bằng Google
             </Button>
 
             {/* Facebook Signup */}
             <Button
                 variant="outline"
                 type="button"
-                className="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+                className="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 hover:text-white"
                 onClick={loginWithFacebook}
             >
                 {facebookIcon}
-                Sign up with Facebook
+                Đăng nhập bằng Facebook
             </Button>
         </Field>
     );

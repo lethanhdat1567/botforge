@@ -21,10 +21,10 @@ import { setFormErrors } from "@/app/(auth)/helpers";
 import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
 import { useState } from "react";
 import SendMailAlert from "@/app/(auth)/forgot-password/SendMailAlert";
-import { set } from "zod";
 
 export function SendMailForm({ className }: { className?: string }) {
     const [success, setSuccess] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -37,7 +37,9 @@ export function SendMailForm({ className }: { className?: string }) {
     const onSubmit = async (data: ForgotPasswordFormValues) => {
         try {
             await authService.forgotPassword(data);
-            toast.success("Password reset link has been sent to your email!");
+            toast.success(
+                "Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!",
+            );
             setSuccess(true);
         } catch (err: any) {
             const backendErrors = err.response?.data?.data?.errors;
@@ -48,7 +50,7 @@ export function SendMailForm({ className }: { className?: string }) {
                     setError,
                 );
             } else {
-                toast.error("Something went wrong. Please try again!");
+                toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
             }
         }
     };
@@ -58,10 +60,10 @@ export function SendMailForm({ className }: { className?: string }) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FieldGroup>
                     <div className="flex flex-col items-center gap-2 text-center">
-                        <h1 className="text-xl font-bold">Forgot Password</h1>
+                        <h1 className="text-xl font-bold">Quên mật khẩu</h1>
                         <FieldDescription>
-                            Enter your email address and we&apos;ll send you a
-                            link to reset your password.
+                            Nhập địa chỉ email của bạn, chúng tôi sẽ gửi cho bạn
+                            liên kết để đặt lại mật khẩu.
                         </FieldDescription>
                     </div>
 
@@ -71,7 +73,7 @@ export function SendMailForm({ className }: { className?: string }) {
                         <>
                             <Field>
                                 <FieldLabel htmlFor="email">
-                                    Email address
+                                    Địa chỉ email
                                 </FieldLabel>
                                 <Input
                                     type="email"
@@ -81,16 +83,16 @@ export function SendMailForm({ className }: { className?: string }) {
                                 />
                                 <ErrorText message={errors.email?.message} />
                                 <FieldDescription className="text-center">
-                                    We will send a password reset link to this
-                                    email.
+                                    Chúng tôi sẽ gửi liên kết đặt lại mật khẩu
+                                    đến email này.
                                 </FieldDescription>
                             </Field>
 
                             <Field>
                                 <Button type="submit" disabled={isSubmitting}>
                                     {isSubmitting
-                                        ? "Sending..."
-                                        : "Send Reset Link"}
+                                        ? "Đang gửi..."
+                                        : "Gửi liên kết đặt lại"}
                                 </Button>
                             </Field>
                         </>
@@ -99,9 +101,8 @@ export function SendMailForm({ className }: { className?: string }) {
             </form>
 
             <FieldDescription className="px-6 text-center">
-                By clicking continue, you agree to our{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>.
+                Khi tiếp tục, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a>{" "}
+                và <a href="#">Chính sách bảo mật</a> của chúng tôi.
             </FieldDescription>
         </div>
     );

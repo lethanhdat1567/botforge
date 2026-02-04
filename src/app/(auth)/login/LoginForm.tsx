@@ -38,6 +38,7 @@ export function LoginForm({ className }: { className?: string }) {
             const res = await authService.login(data);
             const user = res.data.user;
             const token = res.data.token;
+
             setUser(
                 user,
                 token.access_token,
@@ -50,7 +51,9 @@ export function LoginForm({ className }: { className?: string }) {
                 expiredIn: token.expired_in,
                 role: user.role,
             });
+
             toast.success("Đăng nhập thành công!");
+
             if (user.role === "admin") {
                 router.push("/admin/dashboard" as any);
             } else if (user.role === "user") {
@@ -61,7 +64,7 @@ export function LoginForm({ className }: { className?: string }) {
 
             if (code === "LOCAL_ACCOUNT_ONLY") {
                 toast.error(
-                    "Tài khoản này đã đăng ký bằng email & mật khẩu. Vui lòng đăng nhập thủ công.",
+                    "Tài khoản này đã đăng ký bằng email và mật khẩu. Vui lòng đăng nhập thủ công.",
                 );
                 router.replace("/login" as any);
                 return;
@@ -75,7 +78,7 @@ export function LoginForm({ className }: { className?: string }) {
                 return;
             }
 
-            toast.error("Đăng nhập Google thất bại. Vui lòng thử lại.");
+            toast.error("Đăng nhập thất bại. Vui lòng thử lại.");
             router.replace("/login" as any);
         }
     };
@@ -86,24 +89,24 @@ export function LoginForm({ className }: { className?: string }) {
             onSubmit={handleSubmit(onSubmit)}
         >
             <FieldGroup className="gap-4">
-                <div className="flex flex-col items-center gap-1 text-center">
+                <div className="mb-2 flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">
-                        Login to your account
+                        Đăng nhập vào tài khoản
                     </h1>
                     <p className="text-muted-foreground text-sm text-balance">
-                        Enter your email or username and password to login
+                        Nhập email hoặc tên người dùng và mật khẩu để đăng nhập
                     </p>
                 </div>
 
                 {/* Email or Username */}
                 <Field>
                     <FieldLabel htmlFor="emailOrUsername">
-                        Email or Username
+                        Email hoặc Tên người dùng
                     </FieldLabel>
                     <Input
                         id="emailOrUsername"
                         type="text"
-                        placeholder="you@example.com or yourusername"
+                        placeholder="you@example.com hoặc tennguoidung"
                         {...register("emailOrUsername")}
                     />
                     <ErrorText message={errors.emailOrUsername?.message} />
@@ -112,18 +115,18 @@ export function LoginForm({ className }: { className?: string }) {
                 {/* Password */}
                 <Field>
                     <div className="flex items-center">
-                        <FieldLabel htmlFor="password">Password</FieldLabel>
+                        <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
                         <Link
                             href={{ pathname: "/forgot-password" }}
                             className="ml-auto text-sm underline-offset-4 hover:underline"
                         >
-                            Forgot your password?
+                            Quên mật khẩu?
                         </Link>
                     </div>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="Enter your password"
+                        placeholder="Nhập mật khẩu của bạn"
                         {...register("password")}
                     />
                     <ErrorText message={errors.password?.message} />
@@ -132,18 +135,20 @@ export function LoginForm({ className }: { className?: string }) {
                 {/* Submit */}
                 <Field>
                     <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Logging in..." : "Login"}
+                        {isSubmitting ? "Đang đăng nhập..." : "Đăng nhập"}
                     </Button>
                 </Field>
 
-                <FieldSeparator>Or continue with</FieldSeparator>
+                <FieldSeparator className="my-1">
+                    Hoặc đăng nhập bằng
+                </FieldSeparator>
 
                 {/* Social login */}
                 <SocialLogin />
 
                 <FieldDescription className="px-6 text-center">
-                    Don&apos;t have an account?{" "}
-                    <Link href={{ pathname: "/register" }}>Sign up</Link>
+                    Chưa có tài khoản?{" "}
+                    <Link href={{ pathname: "/register" }}>Đăng ký ngay</Link>
                 </FieldDescription>
             </FieldGroup>
         </form>

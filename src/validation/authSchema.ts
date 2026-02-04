@@ -4,43 +4,43 @@ export const signupSchema = z
     .object({
         username: z
             .string()
-            .min(3, "Username must be at least 3 characters")
-            .max(20, "Username must be at most 20 characters"),
-        displayName: z.string().min(1, "Full Name is required"),
-        email: z.string().email("Invalid email address"),
-        password: z.string().min(6, "Password must be at least 6 characters"),
-        confirmPassword: z.string().min(6, "Please confirm your password"),
+            .min(3, "Tên người dùng phải có ít nhất 3 ký tự")
+            .max(20, "Tên người dùng tối đa 20 ký tự"),
+        displayName: z.string().min(1, "Họ và tên không được để trống"),
+        email: z.string().email("Địa chỉ email không hợp lệ"),
+        password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+        confirmPassword: z.string().min(6, "Vui lòng xác nhận mật khẩu"),
     })
     .refine((data) => data.password === data.confirmPassword, {
         path: ["confirmPassword"],
-        message: "Passwords do not match",
+        message: "Mật khẩu xác nhận không khớp",
     });
 
 export type SignupFormValues = z.infer<typeof signupSchema>;
 
 export const loginSchema = z.object({
-    emailOrUsername: z.string().min(1, "Email or Username is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    emailOrUsername: z
+        .string()
+        .min(1, "Email hoặc tên người dùng không được để trống"),
+    password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const forgotPasswordSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    email: z.string().email("Địa chỉ email không hợp lệ"),
 });
 
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export const resetPasswordSchema = z
     .object({
-        newPassword: z
-            .string()
-            .min(6, "Password must be at least 6 characters"),
-        confirmPassword: z.string().min(6, "Please confirm your password"),
+        newPassword: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+        confirmPassword: z.string().min(6, "Vui lòng xác nhận mật khẩu"),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
         path: ["confirmPassword"],
-        message: "Passwords do not match",
+        message: "Mật khẩu xác nhận không khớp",
     });
 
 export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

@@ -40,6 +40,7 @@ export function SignupForm({ className }: { className?: string }) {
             const res = await authService.register(data);
             const user = res.data.user;
             const token = res.data.token;
+
             setUser(
                 user,
                 token.access_token,
@@ -52,7 +53,9 @@ export function SignupForm({ className }: { className?: string }) {
                 expiredIn: token.expired_in,
                 role: user.role,
             });
-            toast.success("Đăng ký tài khoản thành công!");
+
+            toast.success("Tạo tài khoản thành công!");
+
             if (user.role === "admin") {
                 router.push("/admin/dashboard" as any);
             } else if (user.role === "user") {
@@ -76,18 +79,20 @@ export function SignupForm({ className }: { className?: string }) {
         >
             <FieldGroup className="gap-4">
                 <div className="flex flex-col items-center gap-1 text-center">
-                    <h1 className="text-2xl font-bold">Create your account</h1>
+                    <h1 className="text-2xl font-bold">
+                        Tạo tài khoản của bạn
+                    </h1>
                     <p className="text-muted-foreground text-sm text-balance">
-                        Fill in the form below to start your journey with us
+                        Điền thông tin bên dưới để bắt đầu sử dụng dịch vụ
                     </p>
                 </div>
 
                 {/* Username */}
                 <Field>
-                    <FieldLabel htmlFor="username">Username</FieldLabel>
+                    <FieldLabel htmlFor="username">Tên người dùng</FieldLabel>
                     <Input
                         id="username"
-                        placeholder="Choose a unique username"
+                        placeholder="Chọn một tên người dùng duy nhất"
                         {...register("username")}
                     />
                     <ErrorText message={errors.username?.message} />
@@ -95,10 +100,10 @@ export function SignupForm({ className }: { className?: string }) {
 
                 {/* Full Name */}
                 <Field>
-                    <FieldLabel htmlFor="displayName">Full Name</FieldLabel>
+                    <FieldLabel htmlFor="displayName">Họ và tên</FieldLabel>
                     <Input
                         id="displayName"
-                        placeholder="Enter your full name"
+                        placeholder="Nhập họ và tên của bạn"
                         {...register("displayName")}
                     />
                     <ErrorText message={errors.displayName?.message} />
@@ -118,26 +123,25 @@ export function SignupForm({ className }: { className?: string }) {
 
                 {/* Password */}
                 <Field>
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="Create a strong password"
+                        placeholder="Tạo mật khẩu mạnh"
                         {...register("password")}
                     />
-
                     <ErrorText message={errors.password?.message} />
                 </Field>
 
                 {/* Confirm Password */}
                 <Field>
                     <FieldLabel htmlFor="confirmPassword">
-                        Confirm Password
+                        Xác nhận mật khẩu
                     </FieldLabel>
                     <Input
                         id="confirmPassword"
                         type="password"
-                        placeholder="Re-enter your password"
+                        placeholder="Nhập lại mật khẩu"
                         {...register("confirmPassword")}
                     />
                     <ErrorText message={errors.confirmPassword?.message} />
@@ -146,17 +150,21 @@ export function SignupForm({ className }: { className?: string }) {
                 {/* Submit */}
                 <Field>
                     <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Creating..." : "Create Account"}
+                        {isSubmitting
+                            ? "Đang tạo tài khoản..."
+                            : "Tạo tài khoản"}
                     </Button>
                 </Field>
 
-                <FieldSeparator>Or continue with</FieldSeparator>
+                <FieldSeparator className="my-1">
+                    Hoặc tiếp tục với
+                </FieldSeparator>
 
                 <SocialLogin />
 
                 <FieldDescription className="px-6 text-center">
-                    Already have an account?{" "}
-                    <Link href={{ pathname: "/login" }}>Sign in</Link>
+                    Đã có tài khoản?{" "}
+                    <Link href={{ pathname: "/login" }}>Đăng nhập</Link>
                 </FieldDescription>
             </FieldGroup>
         </form>
