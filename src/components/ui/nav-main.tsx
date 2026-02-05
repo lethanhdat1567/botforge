@@ -24,6 +24,7 @@ type NavItem = {
     title: string;
     icon: LucideIcon;
     isActive?: boolean;
+    url?: string;
     items?: {
         title: string;
         url: string;
@@ -33,7 +34,7 @@ type NavItem = {
 export function NavMain({ items }: { items: NavItem[] }) {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel>Menu</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item, index) => {
                     const hasChildren = !!item.items?.length;
@@ -51,8 +52,27 @@ export function NavMain({ items }: { items: NavItem[] }) {
                                     className="cursor-pointer"
                                 >
                                     <SidebarMenuButton tooltip={item.title}>
-                                        <item.icon />
-                                        <span>{item.title}</span>
+                                        {item.url ? (
+                                            <Link
+                                                href={item.url}
+                                                className="flex w-full items-center gap-2"
+                                                onClick={(e) => {
+                                                    // nếu có children → cho phép click link
+                                                    // nhưng KHÔNG trigger collapse
+                                                    if (hasChildren) {
+                                                        e.stopPropagation();
+                                                    }
+                                                }}
+                                            >
+                                                <item.icon size={16} />
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        ) : (
+                                            <>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </>
+                                        )}
                                     </SidebarMenuButton>
                                 </CollapsibleTrigger>
 
