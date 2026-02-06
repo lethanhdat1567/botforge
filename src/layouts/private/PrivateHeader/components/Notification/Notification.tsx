@@ -67,8 +67,6 @@ function Notification() {
         setOpen(false);
     }
 
-    if (!notifications.length) return null;
-
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
@@ -99,15 +97,21 @@ function Notification() {
 
                 <Separator />
 
-                <div className="h-[calc(100%-52px)] overflow-auto">
-                    {notifications.map((notification) => (
-                        <NotificationItem
-                            key={notification.id}
-                            notification={notification}
-                            onClick={handleCheckNoti}
-                        />
-                    ))}
-                </div>
+                {notifications.length === 0 ? (
+                    <div className="text-muted-foreground p-4 text-center text-sm">
+                        No notifications
+                    </div>
+                ) : (
+                    <div className="h-[calc(100%-52px)] overflow-auto">
+                        {notifications.map((notification) => (
+                            <NotificationItem
+                                key={notification.id}
+                                notification={notification}
+                                onClick={handleCheckNoti}
+                            />
+                        ))}
+                    </div>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );

@@ -50,8 +50,6 @@ function Dashboard() {
         fetchDashboard(range);
     }, [range]);
 
-    console.log(chartData);
-
     return (
         <div>
             <div className="mb-6 flex items-center justify-between">

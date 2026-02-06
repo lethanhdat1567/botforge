@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Dialog,
     DialogContent,
@@ -5,18 +7,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
-import { Copy, Check, Hexagon } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useNodeStore } from "@/store/nodeStore";
+import { Check, Copy, NotepadText } from "lucide-react";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import { useState } from "react";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-function NodeJsonBtn() {
-    const nodes = useNodeStore((s) => s.nodes);
+function JsonPanel({ jsonData }: { jsonData: any }) {
+    const json = JSON.stringify(jsonData, null, 2);
     const [copied, setCopied] = useState(false);
-
-    const json = JSON.stringify(nodes, null, 2);
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(json);
@@ -28,8 +28,7 @@ function NodeJsonBtn() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline">
-                    <Hexagon />
-                    Xem JSON node
+                    <NotepadText />
                 </Button>
             </DialogTrigger>
 
@@ -73,4 +72,4 @@ function NodeJsonBtn() {
     );
 }
 
-export default NodeJsonBtn;
+export default JsonPanel;
