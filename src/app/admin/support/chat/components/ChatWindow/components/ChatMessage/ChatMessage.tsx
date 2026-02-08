@@ -15,7 +15,7 @@ function ChatMessages({ userId }: { userId?: string }) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
 
     const user = useAuthStore((state) => state.user);
-    const targetUserId = userId || user.id;
+    const targetUserId = userId || user?.id;
     const isAdminPage = Boolean(userId);
 
     const fetchConversation = async () => {
@@ -34,7 +34,7 @@ function ChatMessages({ userId }: { userId?: string }) {
         fetchConversation();
     }, [userId]);
 
-    useChatSocket(targetUserId, () => {
+    useChatSocket(targetUserId, isAdminPage ? "admin" : "user", () => {
         fetchConversation();
     });
 
@@ -69,7 +69,7 @@ function ChatMessages({ userId }: { userId?: string }) {
                                 isMine ? "justify-end" : "justify-start",
                             )}
                         >
-                            {isAdminPage && isMine && !isRevoked && (
+                            {isMine && !isRevoked && (
                                 <Actions
                                     onDestroy={() => handleDestroy(m.id)}
                                 />

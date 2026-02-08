@@ -1,9 +1,10 @@
 import CoreValueItem from "@/app/(public)/about/components/CoreValue/CoreValueItem";
 import { CORE_VALUES } from "@/app/(public)/about/components/CoreValue/data";
+import AnimatedContent from "@/components/AnimatedContent";
 
 function CoreValue() {
     return (
-        <div className="mt-30">
+        <AnimatedContent className="mt-30">
             <h2 className="text-center text-5xl font-medium">
                 Giá trị cốt lõi
             </h2>
@@ -22,7 +23,7 @@ function CoreValue() {
                     />
                 ))}
             </div>
-        </div>
+        </AnimatedContent>
     );
 }
 

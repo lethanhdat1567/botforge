@@ -39,7 +39,7 @@ function GuideCreatePage() {
             });
 
             toast.success("Guide created successfully");
-            router.push("/guides" as any);
+            router.push("/admin/guides" as any);
         } catch (error) {
             console.error(error);
             toast.error("Failed to create guide");

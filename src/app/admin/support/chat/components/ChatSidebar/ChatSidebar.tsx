@@ -3,16 +3,21 @@
 import ChatSearching from "@/app/admin/support/chat/components/ChatSidebar/ChatSearching";
 import ChatSidebarItem from "@/app/admin/support/chat/components/ChatSidebar/ChatSidebarItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 import { AdminConversationItem, chatService } from "@/services/livechatService";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function ChatSidebar() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const userId = searchParams.get("userId");
     const [chats, setChats] = useState<AdminConversationItem[]>([]);
 
-    const handleSelect = (userId: string) => {
+    const handleSelect = async (userId: string) => {
+        await chatService.markRead({ userId });
         router.push(`/admin/support/chat?userId=${userId}`);
+        fetchChats();
     };
 
     const fetchChats = async (searchValue?: string) => {
@@ -33,6 +38,15 @@ function ChatSidebar() {
         fetchChats();
     }, []);
 
+    useChatSocket("admin:sidebar", "admin", async () => {
+        if (userId) {
+            await chatService.markRead({ userId });
+            await fetchChats();
+        } else {
+            fetchChats();
+        }
+    });
+
     return (
         <div className="flex h-full w-90 shrink-0 flex-col overflow-hidden">
             <ChatSearching onSearching={handleSearching} />
@@ -42,7 +56,7 @@ function ChatSidebar() {
                     {chats.map((c, i) => (
                         <ChatSidebarItem
                             key={c.id}
-                            active={i === 0}
+                            active={userId === c.userId}
                             displayName={c.displayName}
                             lastMessage={c.lastMessage}
                             lastMessageAt={c.lastMessageAt}

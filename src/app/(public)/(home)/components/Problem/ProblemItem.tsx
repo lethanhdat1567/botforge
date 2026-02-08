@@ -1,14 +1,19 @@
+import AnimatedContent from "@/components/AnimatedContent";
 import Image from "next/image";
 
 type ProblemItemProps = {
     title: string;
     description: string;
     image: any;
+    index: number;
 };
 
-function ProblemItem({ title, description, image }: ProblemItemProps) {
+function ProblemItem({ title, description, image, index }: ProblemItemProps) {
     return (
-        <div className="overflow-hidden rounded-xl border border-white shadow-2xl">
+        <AnimatedContent
+            delay={index * 0.2}
+            className="bg-background h-full overflow-hidden rounded-xl border border-white shadow-2xl"
+        >
             <Image
                 alt="fallback"
                 src={image}
@@ -20,7 +25,7 @@ function ProblemItem({ title, description, image }: ProblemItemProps) {
                 <h3 className="text-xl font-semibold">{title}</h3>
                 <p className="text-md mt-2 text-neutral-600">{description}</p>
             </div>
-        </div>
+        </AnimatedContent>
     );
 }
 

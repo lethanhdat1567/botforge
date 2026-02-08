@@ -1,14 +1,19 @@
 import { images } from "@/assets/images";
+import AnimatedContent from "@/components/AnimatedContent";
+import SplitText from "@/components/SplitText";
 import Image from "next/image";
 
 function FounderSection() {
     return (
         <div className="grid grid-cols-2 gap-20">
             <div>
-                <h1 className="text-4xl font-semibold">
-                    Từ những ý tưởng đầu tiên
-                </h1>
-                <div className="mt-4 text-sm text-neutral-900">
+                <SplitText
+                    text="Từ những ý tưởng đầu tiên"
+                    tag="h1"
+                    className="text-4xl font-semibold"
+                    duration={1}
+                />
+                <AnimatedContent className="mt-4 text-sm text-neutral-900">
                     <p>
                         Botforge bắt đầu từ một vấn đề rất quen thuộc: trả lời
                         tin nhắn quá nhiều, lặp đi lặp lại mỗi ngày, nhưng vẫn
@@ -29,13 +34,13 @@ function FounderSection() {
                         cải thiện dựa trên phản hồi của người dùng, từng chút
                         một, để trở thành công cụ thực sự hữu ích.
                     </p>
-                </div>
-                <div className="mt-10 flex flex-col gap-1">
+                </AnimatedContent>
+                <AnimatedContent className="mt-10 flex flex-col gap-1">
                     <span className="text-sm font-medium">Lê Thành Đạt</span>
                     <span className="text-sm">Founder & Builder</span>
-                </div>
+                </AnimatedContent>
             </div>
-            <div>
+            <AnimatedContent direction="horizontal">
                 <Image
                     alt="Le Thanh Dat"
                     src={images.avatar}
@@ -43,7 +48,7 @@ function FounderSection() {
                     height={600}
                     className="ml-auto h-120 w-[90%] rounded-md object-cover"
                 />
-            </div>
+            </AnimatedContent>
         </div>
     );
 }

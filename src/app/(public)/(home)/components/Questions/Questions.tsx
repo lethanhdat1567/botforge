@@ -5,6 +5,8 @@ import {
     AccordionContent,
     AccordionHeader,
 } from "@/components/animate-ui/primitives/radix/accordion";
+import AnimatedContent from "@/components/AnimatedContent";
+import SplitText from "@/components/SplitText";
 import { Plus } from "lucide-react";
 
 function Questions() {
@@ -43,10 +45,13 @@ function Questions() {
 
     return (
         <div className="mx-auto flex w-5xl flex-col items-center pt-30">
-            <h1 className="w-2xl text-center text-5xl font-medium">
-                Có thắc mắc? <br /> Chúng tôi sẵn sàng giải đáp
-            </h1>
-            <div className="mt-10 w-4xl">
+            <SplitText
+                text="Chúng tôi sẵn sàng giải đáp thắc mắc của bạn"
+                tag="h1"
+                className="w-xl pb-2 text-center text-5xl font-medium"
+                duration={1}
+            />
+            <AnimatedContent className="mt-10 w-4xl">
                 <Accordion type={"multiple"} className="w-full space-y-4">
                     {ITEMS.map((item, index) => (
                         <AccordionItem
@@ -68,7 +73,7 @@ function Questions() {
                         </AccordionItem>
                     ))}
                 </Accordion>
-            </div>
+            </AnimatedContent>
         </div>
     );
 }

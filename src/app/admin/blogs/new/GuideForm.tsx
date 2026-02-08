@@ -1,7 +1,7 @@
 "use client";
 
-import SelectStatus from "@/app/(private)/community/store/components/SharedForm/components/SelectStatus/SelectStatus";
 import UploadThumbnail from "@/app/(private)/components/UploadThumbnail/UploadThumbnail";
+import SelectStatus from "@/app/admin/blogs/new/components/SelectStatus/SelectStatus";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -22,11 +22,13 @@ function GuideForm({ form }: Props) {
                     control={form.control}
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                            <FieldLabel htmlFor={field.name}>
+                                Tiêu đề
+                            </FieldLabel>
                             <Input
                                 {...field}
                                 id={field.name}
-                                placeholder="Guide title"
+                                placeholder="Tiêu đề"
                                 autoComplete="off"
                                 className="rounded-none"
                             />
@@ -66,7 +68,7 @@ function GuideForm({ form }: Props) {
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor={field.name}>
-                                    Status
+                                    Trạng thái
                                 </FieldLabel>
                                 <SelectStatus
                                     value={field.value}
@@ -85,7 +87,7 @@ function GuideForm({ form }: Props) {
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel>Thumbnail</FieldLabel>
+                                <FieldLabel>Hình ảnh</FieldLabel>
                                 <UploadThumbnail
                                     value={
                                         typeof field.value === "string"
@@ -114,12 +116,12 @@ function GuideForm({ form }: Props) {
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={field.name}>
-                                Summary
+                                Mô tả ngắn
                             </FieldLabel>
                             <Input
                                 {...field}
                                 id={field.name}
-                                placeholder="Short description for this guide"
+                                placeholder="Mô tả ngắn..."
                                 className="rounded-none"
                             />
                             {fieldState.error && (
@@ -137,7 +139,7 @@ function GuideForm({ form }: Props) {
                     control={form.control}
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel>Content</FieldLabel>
+                            <FieldLabel>Nội dung</FieldLabel>
                             <SimpleEditor
                                 value={field.value}
                                 onChange={(value) => {
