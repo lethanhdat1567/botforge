@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { accessToken, role, accessTokenExpiresIn } = body;
+        const { accessToken, refreshToken, role, accessTokenExpiresIn } = body;
 
-        if (!accessToken || !role) {
+        if (!accessToken || !role || !accessTokenExpiresIn || !refreshToken) {
             return NextResponse.json(
-                { error: "accessToken or role not found" },
+                { error: "Missing required fields" },
                 { status: 400 },
             );
         }
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: "/",
-            maxAge: accessTokenExpiresIn,
+            sameSite: "lax" as const,
         };
 
         response.cookies.set({
@@ -34,6 +34,13 @@ export async function POST(request: NextRequest) {
             name: "role",
             value: role,
             ...cookieOptions,
+        });
+
+        response.cookies.set({
+            name: "refreshToken",
+            value: refreshToken,
+            ...cookieOptions,
+            maxAge: 60 * 60 * 24 * 30,
         });
 
         return response;

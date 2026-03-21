@@ -1,5 +1,7 @@
 import envConfig from "@/config/envConfig";
+import { authCode } from "@/constants/auth";
 import { getAuthToken, HttpError } from "@/http/helpers";
+import { redirect } from "next/navigation";
 
 const API_URL = envConfig.BE_URL;
 
@@ -31,6 +33,8 @@ export const request = async <T>(
         ? `${base}${url}${queryString}`
         : `${base}/${url}${queryString}`;
 
+    console.log(fullUrl);
+
     // 1. Tự động thêm Header (giống Axios Interceptor)
     const headers = {
         "Content-Type": "application/json",
@@ -50,6 +54,16 @@ export const request = async <T>(
     if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
 
+        if (
+            errorData.data.code === authCode.Unauthorized &&
+            res.status === 401
+        ) {
+            if (typeof window !== "undefined") {
+                window.location.href = "/auth-logout";
+            } else {
+                redirect("/auth-logout");
+            }
+        }
         throw new HttpError({
             status: res.status,
             payload: errorData,

@@ -9,8 +9,10 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 function SocialLogin() {
+    const router = useRouter();
     const setAuth = useAuthStore((state) => state.setAuth);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -20,8 +22,12 @@ function SocialLogin() {
             setIsLoading(true);
             try {
                 const res = await authService.googleLogin(codeResponse.code);
-                console.log(res);
-
+                await authService.loginFromNextClientToNextServer({
+                    accessToken: res.accessToken,
+                    role: res.user.role,
+                    accessTokenExpiresIn: res.accessTokenExpiresIn,
+                    refreshToken: res.refreshToken,
+                });
                 setAuth({
                     user: res.user,
                     accessToken: res.accessToken,
@@ -29,9 +35,10 @@ function SocialLogin() {
                     accessTokenExpiresIn: res.accessTokenExpiresIn,
                 });
                 toast.success("Đăng nhập thành công!");
+                console.log("run here");
+                router.push("/dashboard");
             } catch (error) {
                 console.log(error);
-
                 toast.error("Đăng nhập thất bại.");
             } finally {
                 setIsLoading(false);

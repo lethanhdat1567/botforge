@@ -18,20 +18,19 @@ function UserDropdownContent({
     align?: "start" | "end" | "center";
     side?: "top" | "bottom" | "left" | "right";
 }) {
-    const accessToken = useAuthStore((state) => state.accessToken);
     const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.logout);
+    const clearAuth = useAuthStore((state) => state.clearAuth);
     const router = useRouter();
 
     async function handleLogout() {
         try {
-            await authService.logoutFromClientToServer(accessToken || "");
+            await authService.logoutFromNextClientToNextServer();
             toast.success("Bạn đã đăng xuất thành công");
-            router.push("/login" as any);
         } catch (error) {
             console.log(error);
         } finally {
-            logout();
+            clearAuth();
+            router.push("/login");
         }
     }
 

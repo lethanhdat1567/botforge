@@ -15,7 +15,7 @@ function PrivateHeader() {
                 />
             </div>
             <div className="flex items-center gap-4">
-                <Notification />
+                {/* <Notification /> */}
                 <ToggleTheme />
                 <Separator
                     orientation="vertical"

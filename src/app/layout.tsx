@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import envConfig from "@/config/envConfig";
+import SliceSession from "@/components/SliceSession/SliceSession";
 
 const inter = Inter({
     subsets: ["latin", "vietnamese"],
@@ -36,6 +37,7 @@ export default async function RootLayout({
                         {children}
                     </ThemeProvider>
                     <Toaster />
+                    <SliceSession />
                 </GoogleOAuthProvider>
             </body>
         </html>

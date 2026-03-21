@@ -22,7 +22,10 @@ interface AuthState {
     }) => void;
 
     clearAuth: () => void;
-    updateAccessToken: (token: string) => void;
+    updateAccessTokenAndTokenExpiresIn: (
+        token: string,
+        tokenExpiresIn: number,
+    ) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -41,7 +44,11 @@ export const useAuthStore = create<AuthState>()(
                     accessTokenExpiresIn: payload.accessTokenExpiresIn,
                 }),
 
-            updateAccessToken: (token) => set({ accessToken: token }),
+            updateAccessTokenAndTokenExpiresIn: (token, tokenExpiresIn) =>
+                set({
+                    accessToken: token,
+                    accessTokenExpiresIn: tokenExpiresIn,
+                }),
 
             clearAuth: () =>
                 set({

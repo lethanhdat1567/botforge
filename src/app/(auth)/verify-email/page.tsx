@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
@@ -5,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Loader2, CheckCircle2, XCircle, MailQuestion } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { HttpError } from "@/http/helpers";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
@@ -13,6 +14,7 @@ import { useAuthStore } from "@/store/authStore";
 type VerifyStatus = "loading" | "success" | "error";
 
 function VerifyEmail() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
     const setAuth = useAuthStore((state) => state.setAuth);
@@ -30,6 +32,7 @@ function VerifyEmail() {
                     accessToken: res.accessToken,
                     role: res.user.role,
                     accessTokenExpiresIn: res.accessTokenExpiresIn,
+                    refreshToken: res.refreshToken,
                 });
                 setAuth({
                     user: res.user,
@@ -38,6 +41,10 @@ function VerifyEmail() {
                     accessTokenExpiresIn: res.accessTokenExpiresIn,
                 });
                 setStatus("success");
+
+                res.user.role === "user"
+                    ? router.push("/dashboard")
+                    : router.push("/admin/dashboard");
             } catch (error) {
                 console.error("ERROR:", error);
 

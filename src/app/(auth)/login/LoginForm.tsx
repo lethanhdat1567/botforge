@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -20,8 +21,10 @@ import { HttpError } from "@/http/helpers";
 import { toast } from "sonner";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({ className }: { className?: string }) {
+    const router = useRouter();
     const setAuth = useAuthStore((state) => state.setAuth);
 
     const {
@@ -43,6 +46,7 @@ export function LoginForm({ className }: { className?: string }) {
                 accessToken: res.accessToken,
                 role: res.user.role,
                 accessTokenExpiresIn: res.accessTokenExpiresIn,
+                refreshToken: res.refreshToken,
             });
             setAuth({
                 user: res.user,
@@ -50,6 +54,10 @@ export function LoginForm({ className }: { className?: string }) {
                 refreshToken: res.refreshToken,
                 accessTokenExpiresIn: res.accessTokenExpiresIn,
             });
+
+            res.user.role === "user"
+                ? router.push("/dashboard")
+                : router.push("/admin/dashboard");
             toast.success("Đăng nhập thành công!");
         } catch (error) {
             if (error instanceof HttpError) {

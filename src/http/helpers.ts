@@ -29,3 +29,13 @@ export const getAuthToken = async () => {
         return null;
     }
 };
+
+export const getRefreshToken = async () => {
+    if (typeof window !== "undefined") {
+        return localStorage.getItem("refreshToken");
+    }
+
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    return cookieStore.get("refreshToken")?.value;
+};

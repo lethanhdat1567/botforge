@@ -23,6 +23,12 @@ interface ServerPayload {
     accessToken: string;
     role: string;
     accessTokenExpiresIn: number;
+    refreshToken: string;
+}
+
+interface RefreshResponse {
+    accessToken: string;
+    accessTokenExpiresIn: number;
 }
 
 export const authService = {
@@ -75,9 +81,14 @@ export const authService = {
         return res;
     },
 
-    refreshToken: async (payload: { refreshToken: string }) => {
-        const res = await http.post(`${AUTH_BASE_URL}/refresh-token`, payload);
-        return res;
+    refreshToken: async (payload: {
+        refreshToken: string;
+    }): Promise<RefreshResponse> => {
+        const res: baseResponse<RefreshResponse> = await http.post(
+            `${AUTH_BASE_URL}/refresh-token`,
+            payload,
+        );
+        return res.data;
     },
     resetPassword: async (payload: {
         userId: string;
@@ -119,5 +130,30 @@ export const authService = {
             baseUrl: envConfig.BASE_URL,
         });
         return res;
+    },
+
+    logoutFromNextClientToNextServer: async () => {
+        const res = await http.post(
+            `${AUTH_BASE_URL}/logout`,
+            {},
+            {
+                baseUrl: envConfig.BASE_URL,
+            },
+        );
+
+        return res;
+    },
+
+    sliceSessionFromNextClientToNextServer: async (payload: {
+        refreshToken: string;
+    }): Promise<{ accessToken: string; accessTokenExpiresIn: number }> => {
+        const res: baseResponse<{
+            accessToken: string;
+            accessTokenExpiresIn: number;
+        }> = await http.post(`${AUTH_BASE_URL}/slice-session`, payload, {
+            baseUrl: envConfig.BASE_URL,
+        });
+
+        return res.data;
     },
 };
