@@ -1,12 +1,10 @@
-// app/api/auth/set-token/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { accessToken, role, expiredIn } = body;
+        const { accessToken, role, accessTokenExpiresIn } = body;
 
-        // Kiểm tra dữ liệu đầu vào
         if (!accessToken || !role) {
             return NextResponse.json(
                 { error: "accessToken or role not found" },
@@ -20,20 +18,18 @@ export async function POST(request: NextRequest) {
 
         // Cấu hình cookie chung
         const cookieOptions = {
-            httpOnly: true, // Bảo mật, tránh XSS
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: "/",
-            maxAge: expiredIn / 1000, // Chuyển đổi ms sang s
+            maxAge: accessTokenExpiresIn,
         };
 
-        // 1. Set cookie cho access_token
         response.cookies.set({
-            name: "access_token",
+            name: "accessToken",
             value: accessToken,
             ...cookieOptions,
         });
 
-        // 2. Set cookie cho role
         response.cookies.set({
             name: "role",
             value: role,

@@ -2,10 +2,6 @@ import { z } from "zod";
 
 export const signupSchema = z
     .object({
-        username: z
-            .string()
-            .min(3, "Tên người dùng phải có ít nhất 3 ký tự")
-            .max(20, "Tên người dùng tối đa 20 ký tự"),
         displayName: z.string().min(1, "Họ và tên không được để trống"),
         email: z.string().email("Địa chỉ email không hợp lệ"),
         password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
@@ -19,9 +15,10 @@ export const signupSchema = z
 export type SignupFormValues = z.infer<typeof signupSchema>;
 
 export const loginSchema = z.object({
-    emailOrUsername: z
+    email: z
         .string()
-        .min(1, "Email hoặc tên người dùng không được để trống"),
+        .min(1, "Email không được để trống")
+        .email("Định dạng email không hợp lệ"),
     password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 

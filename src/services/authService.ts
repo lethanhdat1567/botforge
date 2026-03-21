@@ -1,92 +1,123 @@
-import api from "@/config/axios";
+import envConfig from "@/config/envConfig";
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
+
+const AUTH_BASE_URL = "/api/auth";
+
+interface User {
+    id: string;
+    email: string;
+    role: string;
+}
+
+type DataResponse = {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpiresIn: number;
+};
+
+type authResponse = baseResponse<DataResponse>;
+
+interface ServerPayload {
+    accessToken: string;
+    role: string;
+    accessTokenExpiresIn: number;
+}
 
 export const authService = {
-    // Client
-    login: async (payload: { emailOrUsername: string; password: string }) => {
-        const res = await api.post("/auth/login", payload);
+    me: async () => {
+        const res = await http.get(`${AUTH_BASE_URL}/me`);
+
+        return res;
+    },
+
+    login: async (payload: {
+        email: string;
+        password: string;
+    }): Promise<DataResponse> => {
+        const res: authResponse = await http.post(
+            `${AUTH_BASE_URL}/login`,
+            payload,
+        );
+        return res.data;
+    },
+
+    googleLogin: async (code: string): Promise<DataResponse> => {
+        const res: authResponse = await http.post(`${AUTH_BASE_URL}/google`, {
+            code,
+        });
+
         return res.data;
     },
     register: async (payload: {
         email: string;
         password: string;
-        username: string;
         displayName: string;
     }) => {
-        const res = await api.post("/auth/register", payload);
-        return res.data;
-    },
-    forgotPassword: async (payload: { email: string }) => {
-        const res = await api.post("/auth/forgot-password", payload);
-        return res.data;
-    },
-    checkResetToken: async (token: string) => {
-        const res = await api.get("/auth/check-reset-token", {
-            params: { token },
-        });
-        return res.data;
+        const res = await http.post(`${AUTH_BASE_URL}/register`, payload);
+        return res;
     },
 
-    resetPassword: async (payload: { token: string; newPassword: string }) => {
-        const res = await api.post(
-            "/auth/reset-password",
-            { newPassword: payload.newPassword },
-            { params: { token: payload.token } },
+    verifyEmail: async (payload: { token: string }): Promise<DataResponse> => {
+        const res: authResponse = await http.post(
+            `${AUTH_BASE_URL}/verify-email`,
+            payload,
         );
         return res.data;
     },
-    logout: async (accessToken: string) => {
-        const res = await api.post("/auth/logout", { accessToken });
-        return res.data;
-    },
-    logoutFromClientToServer: async (accessToken: string) => {
-        const res = await api.post("/api/auth/logout", { accessToken }, {
-            isFetchClientToServerNext: true,
-        } as any);
-        return res.data;
-    },
-    me: async () => {
-        const res = await api.get("/auth/me");
-        return res.data;
+
+    sendTokenForgotPassword: async (payload: { email: string }) => {
+        const res = await http.post(
+            `${AUTH_BASE_URL}/forgot-password`,
+            payload,
+        );
+        return res;
     },
 
-    // Server
-    setTokenFromClientToServer: async (data: {
-        accessToken: string;
-        expiredIn: number;
-        role: "admin" | "user";
+    refreshToken: async (payload: { refreshToken: string }) => {
+        const res = await http.post(`${AUTH_BASE_URL}/refresh-token`, payload);
+        return res;
+    },
+    resetPassword: async (payload: {
+        userId: string;
+        newPassword: string;
+        token: string;
     }) => {
-        const res = await api.post("/api/auth", data, {
-            isFetchClientToServerNext: true,
-        } as any);
+        const res = await http.post(
+            `${AUTH_BASE_URL}/reset-password`,
+            payload,
+            {
+                params: {
+                    token: payload.token,
+                },
+            },
+        );
 
-        return res.data;
+        return res;
     },
 
-    refreshTokenFromClientToServer: async (refreshToken: string) => {
-        const res = await api.post(
-            "/api/auth/slice-session",
-            { refreshToken },
-            {
-                isFetchClientToServerNext: true,
-            } as any,
+    verifyResetPassword: async (payload: {
+        token: string;
+    }): Promise<{ userId: string }> => {
+        const res: baseResponse<{ userId: string }> = await http.post(
+            `${AUTH_BASE_URL}/verify-reset-password`,
+            payload,
         );
         return res.data;
     },
 
-    refreshToken: async (refreshToken: string) => {
-        const res = await api.post("/auth/refresh-token", {
-            refresh_token: refreshToken,
+    logout: async (refreshToken: string) => {
+        const res = await http.post(`${AUTH_BASE_URL}/logout`, {
+            refreshToken,
         });
-        return res.data;
+        return res;
     },
 
-    socialGoogleLogin: async (code: string) => {
-        const res = await api.post("/auth/social/google", { code });
-        return res.data;
-    },
-
-    socialFacebookLogin: async (code: string) => {
-        const res = await api.post("/auth/social/facebook", { code });
-        return res.data;
+    loginFromNextClientToNextServer: async (payload: ServerPayload) => {
+        const res = await http.post(`${AUTH_BASE_URL}`, payload, {
+            baseUrl: envConfig.BASE_URL,
+        });
+        return res;
     },
 };

@@ -1,76 +1,59 @@
-"use client";
-
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-export interface IUser {
+interface User {
     id: string;
-    username: string;
-    displayName?: string | null;
     email: string;
-    avatar?: string | null;
-    role: string; // hoặc Role
-    provider: string; // hoặc Provider
-    providerId?: string | null;
-    createdAt: Date;
-    updatedAt: Date;
+    role: string;
 }
 
 interface AuthState {
-    user: IUser | null;
+    user: User | null;
     accessToken: string | null;
     refreshToken: string | null;
-    expiredIn: number | null;
-    setUser: (
-        user: IUser,
-        accessToken: string,
-        refreshToken: string,
-        expiredIn: number,
-    ) => void;
-    setToken: (token: string, refreshToken: string, expiredIn: number) => void;
-    logout: () => void;
+    accessTokenExpiresIn: number | null;
+
+    // Actions
+    setAuth: (payload: {
+        user: User;
+        accessToken: string;
+        refreshToken: string;
+        accessTokenExpiresIn: number;
+    }) => void;
+
+    clearAuth: () => void;
+    updateAccessToken: (token: string) => void;
 }
 
-const isClient = typeof window !== "undefined";
-
-export const useAuthStore = create<AuthState>((set) => ({
-    user: isClient ? JSON.parse(localStorage.getItem("user") || "null") : null,
-
-    accessToken: isClient ? localStorage.getItem("accessToken") : null,
-
-    refreshToken: isClient ? localStorage.getItem("refreshToken") : null,
-
-    expiredIn: isClient ? Number(localStorage.getItem("expiredIn")) : null,
-
-    setUser: (user, accessToken, refreshToken, expiredIn) => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("user", JSON.stringify(user));
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
-            localStorage.setItem("expiredIn", expiredIn?.toString());
-        }
-        set({ user, accessToken, refreshToken, expiredIn });
-    },
-
-    setToken: (token: string, refreshToken: string, expiredIn: number) => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("accessToken", token);
-            localStorage.setItem("refreshToken", refreshToken);
-            localStorage.setItem("expiredIn", expiredIn?.toString());
-        }
-    },
-
-    logout: () => {
-        if (typeof window !== "undefined") {
-            localStorage.removeItem("user");
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            localStorage.removeItem("expiredIn");
-        }
-        set({
+export const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
             user: null,
             accessToken: null,
             refreshToken: null,
-            expiredIn: null,
-        });
-    },
-}));
+            accessTokenExpiresIn: null,
+
+            setAuth: (payload) =>
+                set({
+                    user: payload.user,
+                    accessToken: payload.accessToken,
+                    refreshToken: payload.refreshToken,
+                    accessTokenExpiresIn: payload.accessTokenExpiresIn,
+                }),
+
+            updateAccessToken: (token) => set({ accessToken: token }),
+
+            clearAuth: () =>
+                set({
+                    user: null,
+                    accessToken: null,
+                    refreshToken: null,
+                    accessTokenExpiresIn: null,
+                }),
+        }),
+        {
+            name: "auth-storage",
+            storage: createJSONStorage(() => localStorage),
+        },
+    ),
+);

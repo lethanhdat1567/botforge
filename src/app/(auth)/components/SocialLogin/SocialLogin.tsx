@@ -1,55 +1,65 @@
-import { facebookIcon, googleIcon } from "@/assets/icons";
+"use client";
+
+import { googleIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import envConfig from "@/config/envConfig";
+import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { authService } from "@/services/authService";
+import { useAuthStore } from "@/store/authStore";
 
 function SocialLogin() {
-    // utils/google.ts
-    const loginWithGoogle = () => {
-        const params = new URLSearchParams({
-            client_id: envConfig.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-            redirect_uri: `${envConfig.BASE_URL}/auth/google/callback`,
-            response_type: "code",
-            scope: "openid email profile",
-            prompt: "select_account",
-        });
+    const setAuth = useAuthStore((state) => state.setAuth);
+    const [isLoading, setIsLoading] = useState(false);
 
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-    };
+    const loginWithGoogle = useGoogleLogin({
+        flow: "auth-code",
+        onSuccess: async (codeResponse) => {
+            setIsLoading(true);
+            try {
+                const res = await authService.googleLogin(codeResponse.code);
+                console.log(res);
 
-    const loginWithFacebook = () => {
-        const params = new URLSearchParams({
-            client_id: envConfig.NEXT_PUBLIC_FACEBOOK_APP_ID!,
-            redirect_uri: `${envConfig.BASE_URL}/auth/facebook/callback`,
-            response_type: "code",
-            scope: "email,public_profile",
-        });
+                setAuth({
+                    user: res.user,
+                    accessToken: res.accessToken,
+                    refreshToken: res.refreshToken,
+                    accessTokenExpiresIn: res.accessTokenExpiresIn,
+                });
+                toast.success("Đăng nhập thành công!");
+            } catch (error) {
+                console.log(error);
 
-        window.location.href = `https://www.facebook.com/v19.0/dialog/oauth?${params.toString()}`;
-    };
+                toast.error("Đăng nhập thất bại.");
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        onError: () => {
+            toast.error("Kết nối Google thất bại");
+            setIsLoading(false);
+        },
+    });
 
     return (
         <Field className="flex flex-col gap-3">
-            {/* Google Signup */}
             <Button
                 variant="outline"
                 type="button"
-                className="flex items-center justify-center gap-2"
-                onClick={loginWithGoogle}
+                className="w-full gap-2 transition-all active:scale-95"
+                onClick={() => loginWithGoogle()}
+                disabled={isLoading}
             >
-                {googleIcon}
-                Đăng nhập bằng Google
-            </Button>
-
-            {/* Facebook Signup */}
-            <Button
-                variant="outline"
-                type="button"
-                className="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 hover:text-white"
-                onClick={loginWithFacebook}
-            >
-                {facebookIcon}
-                Đăng nhập bằng Facebook
+                {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                    googleIcon
+                )}
+                <span>
+                    {isLoading ? "Đang xử lý..." : "Đăng nhập bằng Google"}
+                </span>
             </Button>
         </Field>
     );

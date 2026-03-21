@@ -1,5 +1,4 @@
 import api from "@/config/axios";
-import { AdminGuideListParams, GuidePayload } from "./types";
 
 /* ================== TYPES ================== */
 
@@ -13,6 +12,7 @@ export type AdminGuideListParams = {
 };
 
 export type GuidePayload = {
+    id?: string;
     slug: string;
     title: string;
     summary?: string;
@@ -58,6 +58,7 @@ export const guideService = {
      */
     publicDetail: async (slug: string) => {
         const res = await api.get(`/guides/${slug}`);
+
         return res.data;
     },
 

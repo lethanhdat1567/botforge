@@ -15,19 +15,19 @@ import { Input } from "@/components/ui/input";
 import SocialLogin from "@/app/(auth)/components/SocialLogin/SocialLogin";
 import Link from "next/link";
 import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
-import { authService } from "@/services/authService";
-import { toast } from "sonner";
 import { LoginFormValues, loginSchema } from "@/validation/authSchema";
+import { HttpError } from "@/http/helpers";
+import { toast } from "sonner";
+import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
 
 export function LoginForm({ className }: { className?: string }) {
-    const setUser = useAuthStore((state) => state.setUser);
-    const router = useRouter();
+    const setAuth = useAuthStore((state) => state.setAuth);
 
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
@@ -35,51 +35,37 @@ export function LoginForm({ className }: { className?: string }) {
 
     const onSubmit = async (data: LoginFormValues) => {
         try {
-            const res = await authService.login(data);
-            const user = res.data.user;
-            const token = res.data.token;
-
-            setUser(
-                user,
-                token.access_token,
-                token.refresh_token,
-                token.expired_in,
-            );
-
-            await authService.setTokenFromClientToServer({
-                accessToken: token.access_token,
-                expiredIn: token.expired_in,
-                role: user.role,
+            const res = await authService.login({
+                email: data.email,
+                password: data.password,
             });
-
+            await authService.loginFromNextClientToNextServer({
+                accessToken: res.accessToken,
+                role: res.user.role,
+                accessTokenExpiresIn: res.accessTokenExpiresIn,
+            });
+            setAuth({
+                user: res.user,
+                accessToken: res.accessToken,
+                refreshToken: res.refreshToken,
+                accessTokenExpiresIn: res.accessTokenExpiresIn,
+            });
             toast.success("Đăng nhập thành công!");
-
-            if (user.role === "admin") {
-                router.push("/admin/dashboard" as any);
-            } else if (user.role === "user") {
-                router.push("/dashboard" as any);
-            }
-        } catch (error: any) {
-            const code = error?.response?.data?.data?.code;
-
-            if (code === "LOCAL_ACCOUNT_ONLY") {
-                toast.error(
-                    "Tài khoản này đã đăng ký bằng email và mật khẩu. Vui lòng đăng nhập thủ công.",
-                );
-                router.replace("/login" as any);
-                return;
+        } catch (error) {
+            if (error instanceof HttpError) {
+                if (error.status === 409) {
+                    setError("email", {
+                        message:
+                            "Email này đã được liên kết với Google. Để thiết lập mật khẩu, vui lòng sử dụng tính năng 'Quên mật khẩu'.",
+                    });
+                } else if (error.status === 401) {
+                    setError("email", {
+                        message: "Email hoặc mật khẩu không chính xác.",
+                    });
+                }
             }
 
-            if (code === "GOOGLE_ACCOUNT_MISMATCH") {
-                toast.error(
-                    "Email này đã được đăng ký với một tài khoản Google khác.",
-                );
-                router.replace("/login" as any);
-                return;
-            }
-
-            toast.error("Đăng nhập thất bại. Vui lòng thử lại.");
-            router.replace("/login" as any);
+            toast.error("Đăng nhập thất bại!");
         }
     };
 
@@ -94,22 +80,20 @@ export function LoginForm({ className }: { className?: string }) {
                         Đăng nhập vào tài khoản
                     </h1>
                     <p className="text-muted-foreground text-sm text-balance">
-                        Nhập email hoặc tên người dùng và mật khẩu để đăng nhập
+                        Nhập emai và mật khẩu để đăng nhập
                     </p>
                 </div>
 
                 {/* Email or Username */}
                 <Field>
-                    <FieldLabel htmlFor="emailOrUsername">
-                        Email hoặc Tên người dùng
-                    </FieldLabel>
+                    <FieldLabel htmlFor="emailOrUsername">Email</FieldLabel>
                     <Input
                         id="emailOrUsername"
                         type="text"
-                        placeholder="you@example.com hoặc tennguoidung"
-                        {...register("emailOrUsername")}
+                        placeholder="you@example.com"
+                        {...register("email")}
                     />
-                    <ErrorText message={errors.emailOrUsername?.message} />
+                    <ErrorText message={errors.email?.message} />
                 </Field>
 
                 {/* Password */}

@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import envConfig from "@/config/envConfig";
 
 const inter = Inter({
     subsets: ["latin", "vietnamese"],
@@ -24,15 +26,17 @@ export default async function RootLayout({
     return (
         <html lang="vi" suppressHydrationWarning>
             <body className={`${inter.className} antialiased`}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                </ThemeProvider>
-                <Toaster />
+                <GoogleOAuthProvider clientId={envConfig.GOOGLE_CLIENT_ID}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                    </ThemeProvider>
+                    <Toaster />
+                </GoogleOAuthProvider>
             </body>
         </html>
     );

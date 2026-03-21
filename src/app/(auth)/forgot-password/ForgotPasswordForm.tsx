@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,19 +15,19 @@ import {
     forgotPasswordSchema,
     ForgotPasswordFormValues,
 } from "@/validation/authSchema";
-import { authService } from "@/services/authService";
-import { setFormErrors } from "@/app/(auth)/helpers";
 import ErrorText from "@/app/(auth)/components/ErrorText/ErrorText";
 import { useState } from "react";
 import SendMailAlert from "@/app/(auth)/forgot-password/SendMailAlert";
+import Link from "next/link";
+import { authService } from "@/services/authService";
 
 export function SendMailForm({ className }: { className?: string }) {
     const [success, setSuccess] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
 
     const {
         register,
         handleSubmit,
-        setError,
         formState: { errors, isSubmitting },
     } = useForm<ForgotPasswordFormValues>({
         resolver: zodResolver(forgotPasswordSchema),
@@ -36,41 +35,41 @@ export function SendMailForm({ className }: { className?: string }) {
 
     const onSubmit = async (data: ForgotPasswordFormValues) => {
         try {
-            await authService.forgotPassword(data);
-            toast.success(
-                "Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!",
-            );
-            setSuccess(true);
-        } catch (err: any) {
-            const backendErrors = err.response?.data?.data?.errors;
+            await authService.sendTokenForgotPassword({
+                email: data.email,
+            });
 
-            if (backendErrors && Array.isArray(backendErrors)) {
-                setFormErrors<ForgotPasswordFormValues>(
-                    backendErrors,
-                    setError,
-                );
-            } else {
-                toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
-            }
+            setUserEmail(data.email);
+            setSuccess(true);
+        } catch (error) {
+            console.error(error);
         }
     };
 
     return (
         <div className={cn("flex flex-col gap-6", className)}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <FieldGroup>
-                    <div className="flex flex-col items-center gap-2 text-center">
-                        <h1 className="text-xl font-bold">Quên mật khẩu</h1>
-                        <FieldDescription>
-                            Nhập địa chỉ email của bạn, chúng tôi sẽ gửi cho bạn
-                            liên kết để đặt lại mật khẩu.
-                        </FieldDescription>
+                {success ? (
+                    /* HIỂN THỊ KHI GỬI MAIL THÀNH CÔNG */
+                    /* Đồng bộ hiệu ứng zoom-in-95 với shadcn */
+                    <div className="animate-in fade-in zoom-in-95 duration-300">
+                        <SendMailAlert email={userEmail} />
                     </div>
+                ) : (
+                    /* HIỂN THỊ FORM NHẬP EMAIL */
+                    <FieldGroup className="gap-6">
+                        {/* Header của Form: Chuẩn typography của shadcn */}
+                        <div className="flex flex-col space-y-2 text-center">
+                            <h1 className="text-2xl font-semibold tracking-tight">
+                                Quên mật khẩu
+                            </h1>
+                            <p className="text-muted-foreground text-sm text-balance">
+                                Nhập địa chỉ email của bạn, chúng tôi sẽ gửi
+                                liên kết để đặt lại mật khẩu.
+                            </p>
+                        </div>
 
-                    {success ? (
-                        <SendMailAlert />
-                    ) : (
-                        <>
+                        <div className="space-y-4">
                             <Field>
                                 <FieldLabel htmlFor="email">
                                     Địa chỉ email
@@ -78,32 +77,56 @@ export function SendMailForm({ className }: { className?: string }) {
                                 <Input
                                     type="email"
                                     id="email"
-                                    placeholder="you@example.com"
+                                    placeholder="name@example.com"
                                     {...register("email")}
+                                    disabled={isSubmitting}
                                 />
                                 <ErrorText message={errors.email?.message} />
-                                <FieldDescription className="text-center">
-                                    Chúng tôi sẽ gửi liên kết đặt lại mật khẩu
-                                    đến email này.
-                                </FieldDescription>
                             </Field>
 
-                            <Field>
-                                <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting
-                                        ? "Đang gửi..."
-                                        : "Gửi liên kết đặt lại"}
-                                </Button>
-                            </Field>
-                        </>
-                    )}
-                </FieldGroup>
+                            <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full"
+                            >
+                                {isSubmitting
+                                    ? "Đang gửi..."
+                                    : "Gửi liên kết đặt lại"}
+                            </Button>
+                        </div>
+
+                        <div className="text-center">
+                            <Button
+                                variant="link"
+                                className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+                                asChild
+                            >
+                                <Link href="/login">Quay lại đăng nhập</Link>
+                            </Button>
+                        </div>
+                    </FieldGroup>
+                )}
             </form>
 
-            <FieldDescription className="px-6 text-center">
-                Khi tiếp tục, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a>{" "}
-                và <a href="#">Chính sách bảo mật</a> của chúng tôi.
-            </FieldDescription>
+            {!success && (
+                <FieldDescription className="text-muted-foreground px-8 text-center text-sm">
+                    Khi tiếp tục, bạn đồng ý với{" "}
+                    <a
+                        href="#"
+                        className="hover:text-primary underline underline-offset-4 transition-colors"
+                    >
+                        Điều khoản dịch vụ
+                    </a>{" "}
+                    và{" "}
+                    <a
+                        href="#"
+                        className="hover:text-primary underline underline-offset-4 transition-colors"
+                    >
+                        Chính sách bảo mật
+                    </a>{" "}
+                    của chúng tôi.
+                </FieldDescription>
+            )}
         </div>
     );
 }
