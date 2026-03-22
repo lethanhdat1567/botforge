@@ -1,14 +1,38 @@
 "use client";
 
-import FolderList from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/FolderList";
+import { Button } from "@/components/ui/button";
+import useDebounce from "@/hooks/use-debounce";
+import CreateInput from "@/layouts/dragdrop/DragdropSidebar/components/CreateInput/CreateInput";
+import FlowList from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/FlowList";
 import Heading from "@/layouts/dragdrop/DragdropSidebar/components/Heading/Heading";
-import SearchFolder from "@/layouts/dragdrop/DragdropSidebar/components/SearchFolder/SearchFolder";
-import { ChevronsRight } from "lucide-react";
-import { useState } from "react";
+import SearchInput from "@/layouts/dragdrop/DragdropSidebar/components/SearchInput/SearchInput";
+import { FlowList as FlowListType, flowService } from "@/services/flowService";
+import { ChevronsRight, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 
 function DragdropSidebar() {
     const [expand, setExpand] = useState(true);
-    const [searchValue, setSearchValue] = useState("");
+    const [isCreate, setIsCreate] = useState(false);
+    const [search, setSearch] = useState("");
+    const [flows, setFlows] = useState<FlowListType[]>([]);
+    const debounceSearch = useDebounce(search, 500);
+
+    const fetchFlows = async () => {
+        try {
+            const res = await flowService.getFlows({
+                q: debounceSearch,
+            });
+
+            setFlows(res.flows);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchFlows();
+    }, [debounceSearch]);
 
     return (
         <div
@@ -16,22 +40,35 @@ function DragdropSidebar() {
                 expand ? "w-100 p-4" : "w-10 p-0"
             } border-r transition-all duration-300`}
         >
-            {/* CONTENT */}
             <div className={`${expand ? "block" : "hidden"}`}>
                 <Heading setExpand={setExpand} />
-                <div className="my-4 flex items-center gap-2">
-                    <SearchFolder
-                        searchValue={searchValue}
-                        setSearchValue={setSearchValue}
+                <div className="mt-4 flex items-center gap-2">
+                    {/* Search */}
+                    <SearchInput
+                        searchValue={search}
+                        setSearchValue={setSearch}
                     />
+                    {/* Create Flow */}
+                    <Button
+                        variant={"outline"}
+                        onClick={() => {
+                            setIsCreate(true);
+                        }}
+                    >
+                        <Plus />
+                    </Button>
                 </div>
-                {/* FolderList */}
-                <div className="h-[calc(100vh-160px)] overflow-y-auto">
-                    <FolderList searchValue={searchValue} />
-                </div>
+                {isCreate && (
+                    <CreateInput
+                        onCreate={() => {
+                            setIsCreate(false);
+                            fetchFlows();
+                        }}
+                    />
+                )}
+                <FlowList flows={flows} fetchFlows={fetchFlows} />
             </div>
 
-            {/* EXPAND BUTTON */}
             {!expand && (
                 <div
                     onClick={() => setExpand(true)}

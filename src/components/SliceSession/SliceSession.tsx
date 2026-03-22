@@ -31,7 +31,7 @@ function SliceSession() {
                     console.log(error);
                 }
             },
-            15 * 60 * 1000,
+            30 * 60 * 1000,
         );
 
         return () => clearInterval(intervalId);

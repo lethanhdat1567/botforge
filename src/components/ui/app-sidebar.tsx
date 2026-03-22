@@ -56,6 +56,7 @@ const data = {
                     title: "Quản lý trang kết nối",
                     url: "/data/pages",
                 },
+                ,
                 {
                     title: "Mẫu kịch bản",
                     url: "/data/templates",
@@ -112,7 +113,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
+                <NavMain items={data.navMain as any} />
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>

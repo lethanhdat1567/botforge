@@ -1,3 +1,5 @@
+import { useAuthStore } from "@/store/authStore";
+
 export class HttpError extends Error {
     status: number;
     payload: {
@@ -17,7 +19,7 @@ export class HttpError extends Error {
 
 export const getAuthToken = async () => {
     if (typeof window !== "undefined") {
-        return localStorage.getItem("accessToken");
+        return useAuthStore.getState().accessToken;
     }
 
     try {

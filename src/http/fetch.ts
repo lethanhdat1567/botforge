@@ -33,22 +33,23 @@ export const request = async <T>(
         ? `${base}${url}${queryString}`
         : `${base}/${url}${queryString}`;
 
-    console.log(fullUrl);
-
-    // 1. Tự động thêm Header (giống Axios Interceptor)
     const headers = {
         "Content-Type": "application/json",
         ...options?.headers,
     } as any;
 
     const token = await getAuthToken();
+
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     const res = await fetch(fullUrl, {
         ...options,
         method,
-        headers,
         body,
+        headers: {
+            ...headers,
+            ...options?.headers,
+        },
     });
 
     if (!res.ok) {
@@ -81,6 +82,9 @@ export const http = {
         request<T>("POST", url, { ...options, body }),
     put: <T>(url: string, body: any, options?: Omit<CustomOptions, "body">) =>
         request<T>("PUT", url, { ...options, body }),
+
+    patch: <T>(url: string, body: any, options?: Omit<CustomOptions, "body">) =>
+        request<T>("PATCH", url, { ...options, body }),
     delete: <T>(url: string, options?: Omit<CustomOptions, "body">) =>
         request<T>("DELETE", url, options),
 };

@@ -1,40 +1,121 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
+// --- Types ---
+export type FlowStatus = "active" | "inactive";
+
+export interface ListQuery {
+    status?: FlowStatus;
+    q?: string;
+    page?: string | number;
+    limit?: string | number;
+}
+
+export interface CreateFlowPayload {
+    name: string;
+    description?: string;
+    status?: FlowStatus;
+    logicJson?: any;
+    layoutJson?: any;
+    timeoutJson?: any;
+    pageId?: string;
+}
+
+// Giả định cấu trúc Response chung của bạn
+interface ApiResponse<T> {
+    data: T;
+    message: string;
+    status: number;
+}
+
+export interface FlowList {
+    id: string;
+    name: string;
+    description: string | null;
+    pageId: string | null;
+    status: FlowStatus;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// --- Service ---
 export const flowService = {
-    getFlows: async ({
-        platform,
-    }: {
-        platform?: "facebook" | "instagram" | "zalo";
-    }) => {
-        const response = await api.get("/flows", { params: { platform } });
-        return response.data;
-    },
-    getFlowById: async (id: string) => {
-        const response = await api.get(`/flows/${id}`);
-        return response.data;
+    getFlows: async (query?: ListQuery) => {
+        const res = await http.get<ApiResponse<{ flows: FlowList[] }>>(
+            "/api/flows",
+            {
+                params: query as any,
+            },
+        );
+
+        return res.data;
     },
 
-    createFlow: async (data: {
-        name: string;
-        folderId: string;
-        platform: string;
-    }) => {
-        const response = await api.post("/flows", data);
-        return response.data;
+    /**
+     * Lấy chi tiết 1 Flow
+     * BE: FlowController.detail -> FlowService.detail
+     */
+    getFlowDetail: (id: string) => {
+        return http.get<ApiResponse<any>>(`/api/flows/${id}`);
     },
 
-    duplicateFlow: async (id: string) => {
-        const response = await api.post(`/flows/${id}/duplicate`);
-        return response.data;
+    /**
+     * Tạo mới Flow
+     * BE: FlowController.create -> FlowService.create
+     */
+    createFlow: (payload: CreateFlowPayload) => {
+        return http.post<ApiResponse<any>>("/api/flows", payload);
     },
 
-    updateFlow: async (id: string, data: any) => {
-        const response = await api.patch(`/flows/${id}`, data);
-        return response.data;
+    /**
+     * Cập nhật Flow (Partial update)
+     * BE: FlowController.update -> FlowService.update
+     */
+    updateFlow: (id: string, payload: Partial<CreateFlowPayload>) => {
+        return http.patch<ApiResponse<any>>(`/api/flows/${id}`, payload);
     },
 
-    destroyFlow: async (id: string) => {
-        const response = await api.delete(`/flows/${id}`);
-        return response.data;
+    /**
+     * Xóa 1 Flow
+     * BE: FlowController.remove -> FlowService.remove
+     */
+    removeFlow: (id: string) => {
+        return http.delete<ApiResponse<any>>(`/api/flows/${id}`);
+    },
+
+    /**
+     * Xóa nhiều Flow cùng lúc
+     * BE: FlowController.removeMany (nhận req.body.ids)
+     */
+    removeManyFlows: (ids: string[]) => {
+        // Vì helper http.delete của bạn không nhận tham số body thứ 2,
+        // chúng ta truyền thông qua options
+        return http.delete<ApiResponse<any>>("/api/flows", {
+            body: { ids },
+        } as any);
+    },
+
+    /**
+     * Nhân bản Flow
+     * BE: FlowController.duplicate -> FlowService.duplicate
+     */
+    duplicateFlow: (id: string) => {
+        return http.post<ApiResponse<any>>(`/api/flows/${id}/duplicate`, {});
+    },
+
+    /**
+     * Danh sách dành cho Admin
+     * BE: FlowController.listForAdmin
+     */
+    getFlowsForAdmin: (query?: ListQuery) => {
+        return http.get<ApiResponse<FlowList>>("/api/flows/admin/list", {
+            params: query as any,
+        });
+    },
+
+    toggleActive: (id: string) => {
+        return http.patch<ApiResponse<FlowList>>(
+            `/api/flows/toggle-active/${id}`,
+            {},
+        );
     },
 };

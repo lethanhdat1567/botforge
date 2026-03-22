@@ -10,11 +10,11 @@ type Props = {
     setSearchValue: (value: string) => void;
 };
 
-function SearchFolder({ searchValue, setSearchValue }: Props) {
+function SearchInput({ searchValue, setSearchValue }: Props) {
     return (
         <InputGroup>
             <InputGroupInput
-                placeholder="Tìm kiếm thư mục..."
+                placeholder="Search..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
             />
@@ -25,4 +25,4 @@ function SearchFolder({ searchValue, setSearchValue }: Props) {
     );
 }
 
-export default SearchFolder;
+export default SearchInput;
