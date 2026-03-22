@@ -4,6 +4,7 @@ import ConnectAlert from "@/layouts/dragdrop/DragdropSidebar/components/FlowList
 import NameBlock from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/NameBlock/NameBlock";
 import StatusBadge from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/StatusBadge/StatusBadge";
 import { FlowList, flowService } from "@/services/flowService";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -13,7 +14,10 @@ type Props = {
 };
 
 function FlowItem({ flow, onRefresh }: Props) {
+    const router = useRouter();
+    const pathname = usePathname();
     const [isRename, setIsRename] = useState(false);
+    const params = new URLSearchParams(window.location.search);
 
     async function handleDestroy() {
         try {
@@ -52,6 +56,11 @@ function FlowItem({ flow, onRefresh }: Props) {
         }
     }
 
+    function handleConnectPage() {
+        params.set("connectFlowId", flow.id);
+        router.push(`${pathname}?${params.toString()}`);
+    }
+
     return (
         <div className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-sm p-2 transition hover:bg-slate-100">
             <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -79,6 +88,7 @@ function FlowItem({ flow, onRefresh }: Props) {
                 onDuplicate={handleDuplicate}
                 onDestroy={handleDestroy}
                 onChangeStatus={handleChangeStatus}
+                onConnectPage={handleConnectPage}
             />
         </div>
     );

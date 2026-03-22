@@ -5,6 +5,7 @@ import useDebounce from "@/hooks/use-debounce";
 import CreateInput from "@/layouts/dragdrop/DragdropSidebar/components/CreateInput/CreateInput";
 import FlowList from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/FlowList";
 import Heading from "@/layouts/dragdrop/DragdropSidebar/components/Heading/Heading";
+import PageModel from "@/layouts/dragdrop/DragdropSidebar/components/PageModel/PageModel";
 import SearchInput from "@/layouts/dragdrop/DragdropSidebar/components/SearchInput/SearchInput";
 import { FlowList as FlowListType, flowService } from "@/services/flowService";
 import { ChevronsRight, Plus } from "lucide-react";
@@ -77,6 +78,7 @@ function DragdropSidebar() {
                     <ChevronsRight size={20} />
                 </div>
             )}
+            <PageModel />
         </div>
     );
 }

@@ -16,9 +16,16 @@ type Props = {
     onDuplicate: () => void;
     onRename: () => void;
     onChangeStatus: () => void;
+    onConnectPage: () => void;
 };
 
-function Action({ onDestroy, onDuplicate, onRename, onChangeStatus }: Props) {
+function Action({
+    onDestroy,
+    onDuplicate,
+    onRename,
+    onChangeStatus,
+    onConnectPage,
+}: Props) {
     const [destroyAlert, setDestroyAlert] = useState(false);
 
     return (
@@ -31,7 +38,9 @@ function Action({ onDestroy, onDuplicate, onRename, onChangeStatus }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>Kết nối page</DropdownMenuItem>
+                        <DropdownMenuItem onClick={onConnectPage}>
+                            Kết nối page
+                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={onChangeStatus}>
                             Đổi trạng thái
                         </DropdownMenuItem>
