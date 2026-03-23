@@ -18,7 +18,9 @@ export function compileMessageNode(
 ): MessageNode {
     const data = node.data as MessageNodeData;
     const messages = data.messages ?? [];
-    const next = childrenMap[`node-source-${node.id}`];
+    const getNextForHandle = (prefix: string, id: string) => {
+        return childrenMap[`${prefix}${id}`] || null;
+    };
 
     const payload = messages
         .map((item): MessageDataEngine | null => {
@@ -31,9 +33,18 @@ export function compileMessageNode(
                         type: "text",
                         field: {
                             text: item.fields?.text ?? "",
-                            ...(item.fields?.buttons?.length
-                                ? { buttons: item.fields.buttons }
-                                : {}),
+                            buttons: (item.fields?.buttons ?? []).map(
+                                (btn: any) => ({
+                                    ...btn,
+                                    payload: {
+                                        ...btn.payload,
+                                        next: getNextForHandle(
+                                            "btn-source-",
+                                            btn.id,
+                                        ),
+                                    },
+                                }),
+                            ),
                         },
                     } as TextMessageData;
 
@@ -54,7 +65,23 @@ export function compileMessageNode(
                         type: "generic_template",
                         field: {
                             template_type: "generic",
-                            elements: item.fields?.elements ?? [],
+                            elements: (item.fields?.elements ?? []).map(
+                                (el: any) => ({
+                                    ...el,
+                                    buttons: (el.buttons ?? []).map(
+                                        (btn: any) => ({
+                                            ...btn,
+                                            payload: {
+                                                ...btn.payload,
+                                                next: getNextForHandle(
+                                                    "btn-source-",
+                                                    btn.id,
+                                                ),
+                                            },
+                                        }),
+                                    ),
+                                }),
+                            ),
                         },
                     } as GenericTemplateData;
 
@@ -65,7 +92,18 @@ export function compileMessageNode(
                         field: {
                             attachment_type: item.fields?.media_type ?? "image",
                             url: item.fields?.url ?? "",
-                            buttons: item.fields?.buttons ?? [],
+                            buttons: (item.fields?.buttons ?? []).map(
+                                (btn: any) => ({
+                                    ...btn,
+                                    payload: {
+                                        ...btn.payload,
+                                        next: getNextForHandle(
+                                            "btn-source-",
+                                            btn.id,
+                                        ),
+                                    },
+                                }),
+                            ),
                         },
                     } as MediaTemplateData;
 
@@ -78,6 +116,6 @@ export function compileMessageNode(
     return {
         id: node.id,
         payload,
-        ...(next && { next }),
+        next: getNextForHandle("node-source-", node.id) || "",
     };
 }

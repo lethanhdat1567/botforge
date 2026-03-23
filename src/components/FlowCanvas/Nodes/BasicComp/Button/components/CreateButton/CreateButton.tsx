@@ -10,23 +10,14 @@ type Props = {
 
 function CreateButton({ onCreateNewBtn, variable }: Props) {
     function handleCreateBtn() {
-        let btnData: ButtonNode = {
+        const btnData: ButtonNode = {
             id: uuid(),
             type: "continue",
             title: "",
-            payload: {},
+            payload: {
+                next: "",
+            },
         };
-
-        if (variable) {
-            btnData = {
-                ...btnData,
-                type: "postback",
-                payload: {
-                    variable,
-                    value: "",
-                },
-            };
-        }
 
         onCreateNewBtn(btnData);
     }

@@ -30,7 +30,7 @@ function DelayNode({ nodeId, payload }: Props) {
         });
     }
 
-    function handleChangeUnit(unit: "second" | "minute" | "hour") {
+    function handleChangeUnit(unit: "s" | "m" | "h") {
         FlowController.updateNodePayload(nodeId, payload.id, { unit });
     }
 

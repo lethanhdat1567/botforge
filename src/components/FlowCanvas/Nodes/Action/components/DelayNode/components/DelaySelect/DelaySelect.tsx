@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/select";
 
 type Props = {
-    unit: "second" | "minute" | "hour";
-    onChangeUnit: (unit: "second" | "minute" | "hour") => void;
+    unit: "s" | "m" | "h";
+    onChangeUnit: (unit: "s" | "m" | "h") => void;
 };
 
 function DelaySelect({ unit, onChangeUnit }: Props) {
@@ -18,9 +18,9 @@ function DelaySelect({ unit, onChangeUnit }: Props) {
                 <SelectValue placeholder="Time unit" />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="second">Giây</SelectItem>
-                <SelectItem value="minute">Phút</SelectItem>
-                <SelectItem value="hour">Giờ</SelectItem>
+                <SelectItem value="s">Giây</SelectItem>
+                <SelectItem value="m">Phút</SelectItem>
+                <SelectItem value="h">Giờ</SelectItem>
             </SelectContent>
         </Select>
     );

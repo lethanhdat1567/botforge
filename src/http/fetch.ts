@@ -15,8 +15,14 @@ export const request = async <T>(
     url: string,
     options?: CustomOptions,
 ): Promise<T> => {
-    const body = options?.body ? JSON.stringify(options.body) : undefined;
     const base = options?.baseUrl ?? API_URL;
+    const isFormData = options?.body instanceof FormData;
+
+    const body = isFormData
+        ? (options.body as FormData)
+        : options?.body
+          ? JSON.stringify(options.body)
+          : undefined;
 
     let queryString = "";
     if (options?.params) {
@@ -33,10 +39,11 @@ export const request = async <T>(
         ? `${base}${url}${queryString}`
         : `${base}/${url}${queryString}`;
 
-    const headers = {
-        "Content-Type": "application/json",
-        ...options?.headers,
-    } as any;
+    const headers = { ...options?.headers } as any;
+
+    if (!isFormData) {
+        headers["Content-Type"] = "application/json";
+    }
 
     const token = await getAuthToken();
 

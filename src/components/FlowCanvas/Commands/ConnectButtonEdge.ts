@@ -1,78 +1,127 @@
 import { Command } from "@/components/FlowCanvas/Commands/Command";
-import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { NodeRegistryMap } from "@/components/FlowCanvas/Registry";
+import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { useEdgeStore } from "@/store/edgeStore";
 import { useNodeStore } from "@/store/nodeStore";
 import { Connection, MarkerType } from "@xyflow/react";
+import next from "next";
 import { v4 as uuid } from "uuid";
 
-export class ConnectButtonEdge implements Command {
-    private oldNode?: FlowNode;
-    private oldEdge?: any;
+export interface ButtonConnectionData {
+    sourceNodeId: string;
+    targetNodeId: string;
+    buttonId: string; // Chính là sourceHandle sau khi đã replace prefix
+}
 
-    constructor(private connection: Connection) {}
+export class ConnectButtonEdge implements Command {
+    private backupNode?: FlowNode;
+    private createdEdgeId?: string;
+
+    // Chỉ nhận vào những gì thực sự cần để xử lý logic
+    constructor(private data: ButtonConnectionData) {}
 
     execute() {
-        if (!this.connection.sourceHandle?.startsWith("btn-source-")) return;
+        const { sourceNodeId, targetNodeId, buttonId } = this.data;
+        const nodeStore = useNodeStore.getState();
 
-        const btnId = this.connection.sourceHandle.replace("btn-source-", "");
-        const nodeId = this.connection.source;
-        const targetNodeId = this.connection.target;
-        if (!nodeId || !targetNodeId) return false;
+        // 1. Tìm Node nguồn
+        const sourceNode = nodeStore.nodes.find((n) => n.id === sourceNodeId);
+        if (!sourceNode || !Array.isArray(sourceNode.data?.messages))
+            return false;
 
-        const store = useNodeStore.getState();
-        const node = store.nodes.find((n) => n.id === nodeId);
-        if (!node || !Array.isArray(node.data?.messages)) return false;
+        // Lưu backup để undo
+        this.backupNode = structuredClone(sourceNode);
 
-        this.oldNode = structuredClone(node);
+        // 2. Tìm message chứa button đang được kéo
+        const targetMessage = sourceNode.data.messages.find((msg: any) => {
+            const hasInFields = msg.fields?.buttons?.some(
+                (btn: any) => btn.id === buttonId,
+            );
+            if (hasInFields) return true;
 
-        const payload = node.data.messages.find(
-            (m: any) =>
-                Array.isArray(m.fields?.buttons) &&
-                m.fields.buttons.some((b: any) => b.id === btnId),
-        );
-        if (!payload) return false;
+            const hasInElements = msg.fields?.elements?.some((el: any) =>
+                el.buttons?.some((btn: any) => btn.id === buttonId),
+            );
 
-        const buttons = (payload.fields as any).buttons;
-        const btn = buttons.find((b: any) => b.id === btnId);
-        if (!btn || btn.next === targetNodeId) return false;
-
-        const newButtons = buttons.map((b: any) =>
-            b.id === btnId ? { ...b, next: targetNodeId } : b,
-        );
-
-        // Update payload
-        const registry = NodeRegistryMap[node.type];
-        if (!registry.updatePayload) return false;
-
-        const newNode = registry.updatePayload(node as any, payload.id, {
-            buttons: newButtons,
+            return hasInElements;
         });
-        store.updateNode(nodeId, newNode);
 
-        // Connect edge
+        if (!targetMessage) return false;
+
+        let fieldsToUpdate: any = {};
+        const isGeneric = targetMessage.type === "generic_template";
+
+        if (isGeneric) {
+            fieldsToUpdate = {
+                elements: targetMessage.fields.elements.map((el: any) => ({
+                    ...el,
+                    buttons: (el.buttons || []).map((btn: any) =>
+                        btn.id === buttonId
+                            ? {
+                                  ...btn,
+                                  payload: {
+                                      ...btn.payload,
+                                      next: targetNodeId,
+                                  },
+                              }
+                            : btn,
+                    ),
+                })),
+            };
+        } else {
+            fieldsToUpdate = {
+                buttons: ((targetMessage.fields as any).buttons || []).map(
+                    (btn: any) =>
+                        btn.id === buttonId
+                            ? {
+                                  ...btn,
+                                  payload: {
+                                      ...btn.payload,
+                                      next: targetNodeId,
+                                  },
+                              }
+                            : btn,
+                ),
+            };
+        }
+
+        // 4. Update Node thông qua Registry (Data Layer)
+        const registry = NodeRegistryMap[sourceNode.type];
+        if (!registry?.updatePayload) return false;
+
+        const newNode = registry.updatePayload(
+            sourceNode as any,
+            targetMessage.id,
+            fieldsToUpdate,
+        );
+
+        nodeStore.updateNode(sourceNodeId, newNode);
+
+        // 5. Thêm dây nối (UI Layer)
         const edgeStore = useEdgeStore.getState();
+        this.createdEdgeId = uuid();
 
-        this.oldEdge = {
-            id: uuid(),
-            ...this.connection,
-            markerEnd: { type: MarkerType.Arrow },
+        edgeStore.addEdge({
+            id: this.createdEdgeId,
+            source: sourceNodeId,
+            target: targetNodeId,
+            sourceHandle: `btn-source-${buttonId}`,
             type: "custom-edge",
-        };
-
-        edgeStore.addEdge(this.oldEdge);
+            markerEnd: { type: MarkerType.Arrow },
+        });
 
         return true;
     }
 
     undo() {
-        if (!this.oldNode) return;
-
-        useNodeStore.getState().updateNode(this.oldNode.id, this.oldNode);
-
-        if (this.oldEdge) {
-            useEdgeStore.getState().removeEdge(this.oldEdge.id);
+        if (this.backupNode) {
+            useNodeStore
+                .getState()
+                .updateNode(this.backupNode.id, this.backupNode);
+        }
+        if (this.createdEdgeId) {
+            useEdgeStore.getState().removeEdge(this.createdEdgeId);
         }
     }
 }

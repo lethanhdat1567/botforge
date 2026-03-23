@@ -1,7 +1,10 @@
 "use client";
 
 import CollectSheetContent from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/CollectSheetContent";
-import { VariableData } from "@/components/FlowCanvas/types/node/collection.type";
+import {
+    FallbackData,
+    VariableData,
+} from "@/components/FlowCanvas/types/node/collection.type";
 import {
     Sheet,
     SheetContent,
@@ -16,9 +19,16 @@ type Props = {
     nodeId: string;
     fieldId: string;
     setErrors: any;
+    fallback: FallbackData;
 };
 
-function CollectBlock({ variable, nodeId, fieldId, setErrors }: Props) {
+function CollectBlock({
+    variable,
+    fallback,
+    nodeId,
+    fieldId,
+    setErrors,
+}: Props) {
     useEffect(() => {
         if (!variable.key.trim()) {
             setErrors((prev: any[]) => {
@@ -66,6 +76,7 @@ function CollectBlock({ variable, nodeId, fieldId, setErrors }: Props) {
                     <SheetTitle>Cấu hình node thu thập</SheetTitle>
                 </SheetHeader>
                 <CollectSheetContent
+                    fallback={fallback}
                     variable={variable}
                     nodeId={nodeId}
                     fieldId={fieldId}

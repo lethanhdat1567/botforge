@@ -15,6 +15,7 @@ import CreateCondition from "@/components/FlowCanvas/Nodes/Action/components/Con
 import { FlowController } from "@/components/FlowCanvas/Controller/FlowController";
 import { renderConditionText } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
 import { Handle, Position } from "@xyflow/react";
+import ConditionBaseItem from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionBaseItem/ConditionBaseItem";
 
 type Props = { nodeId: string; payload: ConditionActionData };
 
@@ -38,7 +39,7 @@ function ConditionNode({ nodeId, payload }: Props) {
                                 className="rounded-sm bg-white p-2"
                             >
                                 <div className="text-foreground text-sm">
-                                    {renderConditionText(item)}
+                                    <ConditionBaseItem item={item} />
                                 </div>
                             </div>
                         ))}

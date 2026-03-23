@@ -1,11 +1,10 @@
 "use client";
 
-import { formatConditionOperator } from "@/components/FlowCanvas/Nodes/Action/components/ConditionNode/components/ConditionList/helpers";
 import { ConditionItem as ConditionType } from "@/components/FlowCanvas/types/node/action.type";
 import SuggestVariable from "@/components/SuggestVariableInput/SuggestVariable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -16,70 +15,83 @@ type Props = {
 };
 
 function ConditionItem({ condition, onCommit, onDestroy, ordinal }: Props) {
-    const [key, setKey] = useState(condition.field);
-    const [value, setValue] = useState(condition.value);
+    // Sử dụng state local để input mượt mà
+    const [localKey, setLocalKey] = useState(condition.key);
+    const [localValue, setLocalValue] = useState(condition.value);
 
-    // sync undo / redo
+    // Sync lại state khi dữ liệu từ store thay đổi (Undo/Redo)
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setKey(condition.field);
-    }, [condition.field]);
+        setLocalKey(condition.key);
+        setLocalValue(condition.value);
+    }, [condition.key, condition.value]);
 
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setValue(condition.value);
-    }, [condition.value]);
-
-    const commitChange = () => {
-        console.log("alo??");
-
-        if (key === condition.field && value === condition.value) return;
+    const handleCommit = () => {
+        // Chỉ commit nếu thực sự có thay đổi
+        if (localKey === condition.key && localValue === condition.value)
+            return;
 
         onCommit({
             ...condition,
-            field: key,
-            value,
+            key: localKey,
+            value: localValue,
         });
     };
 
     return (
-        <div className="grid grid-cols-[40px_40px_1fr_auto_1fr] items-center gap-2">
-            {/* Delete */}
+        <div className="group flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-slate-50">
+            {/* STT / Logic Label */}
+            <div className="min-w-[45px] text-xs font-bold text-slate-400 uppercase">
+                {ordinal === 0 ? (
+                    <span className="text-blue-600">Nếu</span>
+                ) : (
+                    <span>Và</span>
+                )}
+            </div>
+
+            {/* Field Input với Suggestion */}
+            <div className="flex-1">
+                <SuggestVariable
+                    value={localKey}
+                    onSelect={(val) => {
+                        setLocalKey(val);
+                        // Vì onSelect thường là click chuột, nên commit luôn
+                        onCommit({ ...condition, key: val });
+                    }}
+                >
+                    <Input
+                        placeholder="Biến (Ví dụ: customer_name)"
+                        value={localKey}
+                        onChange={(e) => setLocalKey(e.target.value)}
+                        onBlur={handleCommit}
+                        className="h-9 bg-white shadow-sm focus-visible:ring-blue-400"
+                    />
+                </SuggestVariable>
+            </div>
+
+            {/* Operator giả lập - Vì bạn nói không có operator nên để dấu '=' hoặc icon nhẹ */}
+            <div className="font-mono font-bold text-slate-300">=</div>
+
+            {/* Value Input */}
+            <div className="flex-1">
+                <Input
+                    placeholder="Giá trị so sánh..."
+                    value={localValue}
+                    onChange={(e) => setLocalValue(e.target.value)}
+                    onBlur={handleCommit}
+                    className="h-9 bg-white shadow-sm focus-visible:ring-blue-400"
+                />
+            </div>
+
+            {/* Delete Button - Chỉ hiện rõ khi hover vào row cho gọn */}
             <Button
                 size="icon"
-                variant="destructive"
+                variant="ghost"
+                className="h-8 w-8 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-red-600"
                 onClick={() => onDestroy(condition)}
             >
-                <Trash className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" />
             </Button>
-
-            {/* Nếu / Và */}
-            <div className="text-sm font-medium">
-                {ordinal > 0 ? "Và" : "Nếu"}
-            </div>
-
-            {/* Field */}
-            <SuggestVariable value={key} onSelect={setKey}>
-                <Input
-                    placeholder="Biến..."
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    onBlur={commitChange}
-                />
-            </SuggestVariable>
-
-            {/* Operator */}
-            <div className="text-center text-sm">
-                {formatConditionOperator(condition.operator)}
-            </div>
-
-            {/* Value */}
-            <Input
-                placeholder="Giá trị..."
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                onBlur={commitChange}
-            />
         </div>
     );
 }

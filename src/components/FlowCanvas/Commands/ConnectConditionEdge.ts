@@ -3,65 +3,72 @@ import { NodeRegistryMap } from "@/components/FlowCanvas/Registry";
 import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
 import { useEdgeStore } from "@/store/edgeStore";
 import { useNodeStore } from "@/store/nodeStore";
-import { Connection, MarkerType } from "@xyflow/react";
+import { MarkerType } from "@xyflow/react";
 import { v4 as uuid } from "uuid";
 
-export class ConnectConditionEdgeCommand implements Command {
-    private oldNode?: FlowNode;
-    private oldEdge?: any;
+export interface ConditionConnectionData {
+    sourceNodeId: string;
+    targetNodeId: string;
+    conditionId: string;
+}
 
-    constructor(private connection: Connection) {}
+export class ConnectConditionEdgeCommand implements Command {
+    private backupNode?: FlowNode;
+    private addedEdgeId?: string;
+
+    constructor(private data: ConditionConnectionData) {}
 
     execute(): boolean {
-        if (!this.connection.sourceHandle?.startsWith("condition-source-"))
+        const { sourceNodeId, targetNodeId, conditionId } = this.data;
+        const nodeStore = useNodeStore.getState();
+
+        // 1. Tìm Node nguồn
+        const sourceNode = nodeStore.nodes.find((n) => n.id === sourceNodeId);
+        if (!sourceNode || !Array.isArray(sourceNode.data?.messages))
             return false;
 
-        const payloadId = this.connection.sourceHandle.replace(
-            "condition-source-",
-            "",
-        );
-        const nodeId = this.connection.source;
-        const targetNodeId = this.connection.target;
-        if (!nodeId || !targetNodeId) return false;
+        // Lưu snapshot để phục vụ Undo
+        this.backupNode = structuredClone(sourceNode);
 
-        const store = useNodeStore.getState();
-        const node = store.nodes.find((n) => n.id === nodeId);
-        if (!node || !Array.isArray(node.data?.messages)) return false;
+        // 2. Tìm registry để update payload
+        // Logic này giả định conditionId chính là payloadId cần update
+        const registry = NodeRegistryMap[sourceNode.type];
+        if (!registry?.updatePayload) return false;
 
-        // ✅ snapshot để undo
-        this.oldNode = structuredClone(node);
-
-        // tìm payload chứa condition
-
-        // ✅ immutable update
-
-        const registry = NodeRegistryMap[node.type];
-        if (!registry.updatePayload) return false;
-
-        const newNode = registry.updatePayload(node as any, payloadId, {
+        // Tiến hành update: Gán node đích (targetNodeId) vào thuộc tính 'next' của condition
+        const newNode = registry.updatePayload(sourceNode as any, conditionId, {
             next: targetNodeId,
         });
-        store.updateNode(nodeId, newNode);
 
-        this.oldEdge = {
-            id: uuid(),
-            ...this.connection,
-            markerEnd: { type: MarkerType.Arrow },
+        console.log(newNode);
+
+        nodeStore.updateNode(sourceNodeId, newNode);
+
+        // 3. Thêm dây nối vào UI
+        const edgeStore = useEdgeStore.getState();
+        this.addedEdgeId = uuid();
+
+        edgeStore.addEdge({
+            id: this.addedEdgeId,
+            source: sourceNodeId,
+            target: targetNodeId,
+            sourceHandle: `condition-source-${conditionId}`,
             type: "custom-edge",
-        };
-
-        useEdgeStore.getState().addEdge(this.oldEdge);
+            markerEnd: { type: MarkerType.Arrow },
+        });
 
         return true;
     }
 
     undo() {
-        if (!this.oldNode) return;
+        if (this.backupNode) {
+            useNodeStore
+                .getState()
+                .updateNode(this.backupNode.id, this.backupNode);
+        }
 
-        useNodeStore.getState().updateNode(this.oldNode.id, this.oldNode);
-
-        if (this.oldEdge) {
-            useEdgeStore.getState().removeEdge(this.oldEdge.id);
+        if (this.addedEdgeId) {
+            useEdgeStore.getState().removeEdge(this.addedEdgeId);
         }
     }
 }

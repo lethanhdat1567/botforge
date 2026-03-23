@@ -15,7 +15,7 @@ type Props = {
 function MediaNode({ nodeId, payload }: Props) {
     const [errors, setErrors] = useState([]);
     const [srcType, setSrcType] = useState<"image" | "video">("image");
-    const { media_url, buttons } = payload.fields;
+    const { url, buttons } = payload.fields;
 
     async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -23,9 +23,10 @@ function MediaNode({ nodeId, payload }: Props) {
 
         try {
             const res = await uploadService.uploadFile(file);
-            setSrcType(res.data.type);
+
+            setSrcType(res.type as "image" | "video");
             FlowController.updateNodePayload(nodeId, payload.id, {
-                media_url: res.data.path,
+                url: res.path,
             });
         } catch (error) {
             console.error(error);
@@ -34,9 +35,8 @@ function MediaNode({ nodeId, payload }: Props) {
 
     async function handleDestroy() {
         try {
-            await uploadService.deleteFile(media_url);
             FlowController.updateNodePayload(nodeId, payload.id, {
-                media_url: "",
+                url: "",
             });
         } catch (error) {
             console.log(error);
@@ -52,12 +52,8 @@ function MediaNode({ nodeId, payload }: Props) {
     return (
         <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
             <div className="space-y-4 p-2">
-                {media_url ? (
-                    <View
-                        type={srcType}
-                        src={media_url}
-                        onDestroy={handleDestroy}
-                    />
+                {url ? (
+                    <View type={srcType} src={url} onDestroy={handleDestroy} />
                 ) : (
                     <UploadBtn
                         payloadId={payload.id}

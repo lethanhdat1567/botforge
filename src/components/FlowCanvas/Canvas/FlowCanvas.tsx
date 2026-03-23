@@ -37,7 +37,7 @@ function FlowCanvas() {
     const flowId = searchParams.get("flowId");
     const [status, setStatus] = useState<FlowStatus>("idle");
 
-    const { handleConnect, handleEndConnect } = useFlowConnect();
+    const { handleEndConnect } = useFlowConnect();
     const { handleEdgeChange } = useFlowEdges();
 
     const openMenu = useContextMenuStore((s) => s.openAt);
@@ -102,7 +102,6 @@ function FlowCanvas() {
                 onNodesChange={onNodesChange}
                 onEdgesChange={handleEdgeChange}
                 onConnectStart={onConnectStart}
-                onConnect={handleConnect}
                 onConnectEnd={handleEndConnect}
                 connectionMode={ConnectionMode.Strict}
                 fitView

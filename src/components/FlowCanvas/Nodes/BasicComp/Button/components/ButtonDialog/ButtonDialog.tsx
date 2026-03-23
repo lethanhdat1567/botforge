@@ -42,7 +42,6 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
             ...btn,
             type: selectValue,
             payload: payloadData,
-            children: null,
         };
 
         onChange(newBtn);

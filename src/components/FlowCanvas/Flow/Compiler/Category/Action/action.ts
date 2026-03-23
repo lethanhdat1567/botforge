@@ -12,6 +12,9 @@ export function compileActionNode(
     const data = node.data as ActionNodeData;
     const actions = data.messages ?? [];
     const next = childrenMap[`node-source-${node.id}`];
+    const getNextForHandle = (prefix: string, id: string) => {
+        return childrenMap[`${prefix}${id}`] || null;
+    };
 
     const payload = actions
         .map((item): ActionPayloadItem | null => {
@@ -47,13 +50,10 @@ export function compileActionNode(
                                 field: cond.key,
                                 value: cond.value,
                             })),
-                            ...(childrenMap[
-                                `${node.id}-condition-${item.type}`
-                            ] && {
-                                next: childrenMap[
-                                    `${node.id}-condition-${item.type}`
-                                ],
-                            }),
+                            next: getNextForHandle(
+                                "condition-source-",
+                                item.id,
+                            ),
                         },
                     } as ActionPayloadItem;
 

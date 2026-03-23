@@ -20,7 +20,7 @@ function AudioNode({ nodeId, payload }: Props) {
         try {
             const res = await uploadService.uploadFile(file);
             FlowController.updateNodePayload(nodeId, payload.id, {
-                url: res.data.path,
+                url: res.path,
             });
         } catch (error) {
             console.error(error);
@@ -29,7 +29,6 @@ function AudioNode({ nodeId, payload }: Props) {
 
     async function handleDestroy() {
         try {
-            await uploadService.deleteFile(url);
             FlowController.updateNodePayload(nodeId, payload.id, {
                 url: "",
             });

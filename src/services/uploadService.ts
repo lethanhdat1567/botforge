@@ -1,23 +1,29 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
+
+interface File {
+    type: string;
+    filename: string;
+    path: string;
+}
 
 export const uploadService = {
-    uploadFile: async (file: File) => {
+    uploadFile: async (file: any): Promise<File> => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await api.post("/upload/file", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const res: baseResponse<File> = await http.post(
+            "/api/upload/file",
+            formData,
+        );
 
         return res.data;
     },
 
     uploadMutipleFiles: async (files: File[]) => {
-        await api.post("/upload/files", files);
+        await http.post("/api/upload/files", files);
     },
     deleteFile: async (path: string) => {
-        await api.delete(`/upload`, { params: { path } });
+        await http.delete(`/api/upload`, { params: { path } });
     },
 };

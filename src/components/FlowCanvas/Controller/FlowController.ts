@@ -1,8 +1,14 @@
 // FlowController.ts
 import { AddNodeCommand } from "@/components/FlowCanvas/Commands/AddNodeCommand";
 import { commandManager } from "@/components/FlowCanvas/Commands/CommandManager";
-import { ConnectButtonEdge } from "@/components/FlowCanvas/Commands/ConnectButtonEdge";
-import { ConnectConditionEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectConditionEdge";
+import {
+    ButtonConnectionData,
+    ConnectButtonEdge,
+} from "@/components/FlowCanvas/Commands/ConnectButtonEdge";
+import {
+    ConditionConnectionData,
+    ConnectConditionEdgeCommand,
+} from "@/components/FlowCanvas/Commands/ConnectConditionEdge";
 import { ConnectEdgeCommand } from "@/components/FlowCanvas/Commands/ConnectEdgeCommand";
 import { DuplicateNodeCommand } from "@/components/FlowCanvas/Commands/DuplicateNodeCommand";
 import { DuplicatePayloadCommand } from "@/components/FlowCanvas/Commands/DuplicatePayloadCommand";
@@ -75,12 +81,12 @@ export const FlowController = {
         commandManager.execute(new ConnectEdgeCommand(connection));
     },
 
-    connectByButtonHandle(connection: Connection) {
-        commandManager.execute(new ConnectButtonEdge(connection));
+    connectByButtonHandle(data: ButtonConnectionData) {
+        commandManager.execute(new ConnectButtonEdge(data));
     },
 
-    connectByConditionHandle(connection: Connection) {
-        commandManager.execute(new ConnectConditionEdgeCommand(connection));
+    connectByConditionHandle(data: ConditionConnectionData) {
+        commandManager.execute(new ConnectConditionEdgeCommand(data));
     },
 
     resetFlow() {

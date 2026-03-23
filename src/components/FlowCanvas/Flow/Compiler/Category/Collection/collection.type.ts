@@ -43,5 +43,5 @@ export interface CollectionNodeData {
     label: string;
     note?: string;
     markStart?: boolean;
-    collection: CollectionPayloadItem;
+    messages: CollectionPayloadItem;
 }
