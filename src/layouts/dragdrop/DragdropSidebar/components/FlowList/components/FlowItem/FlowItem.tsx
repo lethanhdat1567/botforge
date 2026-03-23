@@ -1,10 +1,10 @@
+import { useQueryParams } from "@/hooks/use-query-params";
 import { HttpError } from "@/http/helpers";
 import Action from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/Action/Action";
 import ConnectAlert from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/ConnectAlert/ConnectAlert";
 import NameBlock from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/NameBlock/NameBlock";
 import StatusBadge from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/StatusBadge/StatusBadge";
 import { FlowList, flowService } from "@/services/flowService";
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -14,10 +14,9 @@ type Props = {
 };
 
 function FlowItem({ flow, onRefresh }: Props) {
-    const router = useRouter();
-    const pathname = usePathname();
+    const { getQueryParam, setQueryParams } = useQueryParams();
     const [isRename, setIsRename] = useState(false);
-    const params = new URLSearchParams(window.location.search);
+    const flowId = getQueryParam("flowId");
 
     async function handleDestroy() {
         try {
@@ -57,15 +56,27 @@ function FlowItem({ flow, onRefresh }: Props) {
     }
 
     function handleConnectPage() {
-        params.set("connectFlowId", flow.id);
-        router.push(`${pathname}?${params.toString()}`);
+        setQueryParams(
+            { connectFlowId: flow.id },
+            {
+                replace: true,
+                scroll: false,
+            },
+        );
+    }
+
+    function handleClickFlow() {
+        setQueryParams({ flowId: flow.id }, { replace: true, scroll: false });
     }
 
     return (
-        <div className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-sm p-2 transition hover:bg-slate-100">
+        <div
+            className={`group flex w-full cursor-pointer items-center justify-between gap-3 rounded-sm p-2 transition hover:bg-slate-100 ${flowId === flow.id ? "bg-slate-100" : ""}`}
+            onClick={handleClickFlow}
+        >
             <div className="flex min-w-0 flex-1 items-center gap-2">
                 <div className="shrink-0">
-                    <ConnectAlert pageUid={flow.pageId} />
+                    <ConnectAlert isConnected={flow.isConnected} />
                 </div>
 
                 <div className="shrink-0">

@@ -1,46 +1,41 @@
-//  Action node
+export type ActionType = "delay" | "set_variable" | "condition";
 
-export type ActionType = "condition" | "delay" | "set_variable";
+export interface DelayField {
+    unit: "s" | "m" | "h";
+    duration: number;
+}
 
-export type ActionDataEngine =
-    | ConditionActionData
-    | DelayActionData
-    | SetVariableActionData;
+export interface SetVariableField {
+    name: string;
+    value: string;
+}
+
+export interface ConditionItem {
+    field: string;
+    value: string;
+}
+
+export interface ConditionField {
+    items: ConditionItem[];
+    next?: string;
+}
+
+export type ActionPayloadItem =
+    | { category: "action"; type: "delay"; field: DelayField }
+    | { category: "action"; type: "set_variable"; field: SetVariableField }
+    | { category: "action"; type: "condition"; field: ConditionField };
+
+export type ActionField = DelayField | SetVariableField | ConditionField;
 
 export interface ActionNode {
     id: string;
-    category: "action";
-    payload: ActionDataEngine[];
-    children?: Record<string, string>;
+    payload: ActionPayloadItem[];
+    next?: string;
 }
 
-// Condition node
-export interface ConditionActionData {
-    type: "condition";
-    fields: {
-        items: {
-            field: string;
-            operator: "equals" | "not_equals" | "contains" | "regex";
-            value: any;
-        }[];
-        next?: string;
-    };
-}
-
-// Delay node
-export interface DelayActionData {
-    type: "delay";
-    fields: {
-        duration: string;
-        unit: "second" | "minute" | "hour";
-    };
-}
-
-// Set Variable node
-export interface SetVariableActionData {
-    type: "set_variable";
-    fields: {
-        key: string;
-        value: any;
-    };
+export interface ActionNodeData {
+    label: string;
+    note?: string;
+    markStart?: boolean;
+    actions: ActionPayloadItem[];
 }

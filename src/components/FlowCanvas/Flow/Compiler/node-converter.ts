@@ -13,11 +13,11 @@ export function convertNode(
         case "message":
             return compileMessageNode(node, childrenMap);
 
-        case "collection":
-            return compileCollectionNode(node, childrenMap);
-
         case "action":
             return compileActionNode(node, childrenMap);
+
+        case "collection":
+            return compileCollectionNode(node, childrenMap);
 
         default:
             throw new Error(`Unsupported category: ${(node as any).type}`);

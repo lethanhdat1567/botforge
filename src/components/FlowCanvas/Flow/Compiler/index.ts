@@ -21,5 +21,7 @@ export function compileFlow(
         flow[node.id] = engineNode;
     }
 
+    console.log(flow);
+
     return flow;
 }

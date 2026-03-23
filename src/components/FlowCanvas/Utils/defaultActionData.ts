@@ -13,8 +13,7 @@ export function getDefaultActionData(
                     items: [
                         {
                             id: uuid(),
-                            field: "",
-                            operator: "equals",
+                            key: "",
                             value: "",
                         },
                     ],
@@ -26,7 +25,7 @@ export function getDefaultActionData(
                 type: "delay",
                 fields: {
                     duration: 1,
-                    unit: "second",
+                    unit: "m",
                 },
             };
         case "set_variable":
@@ -42,7 +41,7 @@ export function getDefaultActionData(
             return {
                 id: uuid(),
                 type: "delay",
-                fields: { duration: 1, unit: "second" },
+                fields: { duration: 1, unit: "s" },
             };
     }
 }

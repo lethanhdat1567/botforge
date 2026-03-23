@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { useNodeStore } from "@/store/nodeStore";
 import { CircleAlert } from "lucide-react";
 import { useEffect, useState } from "react";

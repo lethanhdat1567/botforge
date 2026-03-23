@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Button } from "@/components/ui/button";
 import { FacebookResponse } from "@/services/facebookAuthService";
 import { Unplug } from "lucide-react";
@@ -7,9 +8,15 @@ type Props = {
     page: FacebookResponse;
     currentConnectedPageUid?: string;
     onConnect: (page: FacebookResponse) => void;
+    onDisconnect: () => void;
 };
 
-function PageItem({ page, currentConnectedPageUid, onConnect }: Props) {
+function PageItem({
+    page,
+    currentConnectedPageUid,
+    onConnect,
+    onDisconnect,
+}: Props) {
     const avatarSrc = `https://graph.facebook.com/${page.id}/picture?type=large`;
 
     return (
@@ -27,15 +34,25 @@ function PageItem({ page, currentConnectedPageUid, onConnect }: Props) {
                     {page.name}
                 </h3>
             </div>
-            <Button
-                size={"sm"}
-                onClick={() => {
-                    page.id !== currentConnectedPageUid && onConnect(page);
-                }}
-                disabled={page.id === currentConnectedPageUid}
-            >
-                Kết nối <Unplug className="h-4 w-4" />
-            </Button>
+            {currentConnectedPageUid !== page.id && (
+                <Button
+                    size={"sm"}
+                    onClick={() => {
+                        onConnect(page);
+                    }}
+                >
+                    Kết nối <Unplug className="h-4 w-4" />
+                </Button>
+            )}
+            {currentConnectedPageUid === page.id && (
+                <Button
+                    variant={"destructive"}
+                    size={"sm"}
+                    onClick={onDisconnect}
+                >
+                    Hủy kết nối <Unplug className="h-4 w-4" />
+                </Button>
+            )}
         </div>
     );
 }

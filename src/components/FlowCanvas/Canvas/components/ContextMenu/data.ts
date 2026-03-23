@@ -118,7 +118,7 @@ export const menuData = [
                 id: "collection-number",
                 type: "number",
                 title: "Số",
-                icon: Hash, // số / numeric
+                icon: Hash,
                 color: "#00C853",
             },
             {

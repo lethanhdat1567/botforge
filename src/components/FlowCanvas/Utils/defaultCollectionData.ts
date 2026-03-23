@@ -32,17 +32,15 @@ export function getDefaultCollectionData(
             type: variableType,
             variable: {
                 key: "",
-                value: "",
                 regex: getRegexByVariableType(variableType),
-                fallback: {
-                    mode: "default",
-                    value: "",
-                },
+                regexMessage: "Giá trị nhập vào không hợp lệ",
+            },
+            fallback: {
                 timeout: {
-                    mode: "default",
-                    duration: 5,
-                    unit: "second",
+                    duration: 10,
+                    unit: "m",
                 },
+                message: "Flow của bạn đã hết hạn",
             },
         },
     };

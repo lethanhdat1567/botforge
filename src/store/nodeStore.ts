@@ -52,13 +52,7 @@ export const useNodeStore = create<NodeState>((set, get) => ({
         });
     },
 
-    // ✅ delete node (sau này edgeStore hook vào đây)
     removeNode: (id) => {
-        const node = get().nodes.find((n) => n.id === id);
-        if (node) {
-            NodeRegistryMap[node.type]?.onDelete?.(node as any);
-        }
-
         set({
             nodes: get().nodes.filter((n) => n.id !== id),
         });

@@ -8,10 +8,11 @@ import {
     NodeType,
     typeNodeData,
 } from "@/components/FlowCanvas/Nodes/BaseNode/data";
+import { MessageNodeProps } from "@/components/FlowCanvas/types/node/node.type";
 
 type Props = {
     children?: React.ReactNode;
-    childProps: any;
+    childProps: MessageNodeProps | any;
     isContentDragging?: boolean;
 };
 

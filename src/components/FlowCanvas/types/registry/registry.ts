@@ -37,7 +37,6 @@ export interface NodeRegistry<
         payloadId: string,
     ): NodeOf<TType, TData>;
 
-    removeNode?(node: NodeOf<TType, TData>): void;
     removePayloadNode?: (
         data: any,
         payloadId: string,
@@ -46,6 +45,4 @@ export interface NodeRegistry<
         removedPayload: any | null;
         removedIndex: number;
     };
-
-    onDelete?(node: NodeOf<TType, any>): void;
 }

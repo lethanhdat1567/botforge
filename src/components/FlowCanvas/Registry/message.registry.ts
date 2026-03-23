@@ -3,7 +3,6 @@ import { MessageNodeData } from "@/components/FlowCanvas/types/node/node.type";
 import { NodeRegistry } from "@/components/FlowCanvas/types/registry/registry";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { getDefaultMessageData } from "@/components/FlowCanvas/Utils/defaultMessageData";
-import { removeMessageMedia } from "@/components/FlowCanvas/Registry/helpers";
 
 export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
     type: "message",
@@ -18,7 +17,7 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
             type: "message",
             position,
             data: {
-                label: "Message",
+                label: "Message Node",
                 messages: [defaultMessage],
             },
         };
@@ -59,8 +58,7 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
 
             // button / media_template
             if (
-                (newMsg.type === "button" ||
-                    newMsg.type === "media_template") &&
+                (newMsg.type === "text" || newMsg.type === "media_template") &&
                 Array.isArray(newMsg.fields?.buttons)
             ) {
                 newMsg.fields.buttons = newMsg.fields.buttons.map((btn) => ({
@@ -113,7 +111,7 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
 
                     // 1️⃣ button / media_template
                     if (
-                        (cloned.type === "button" ||
+                        (cloned.type === "text" ||
                             cloned.type === "media_template") &&
                         Array.isArray(cloned.fields?.buttons)
                     ) {
@@ -151,12 +149,6 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
         };
     },
 
-    removeNode(node) {
-        const messages = node?.data?.messages;
-        if (!Array.isArray(messages)) return;
-
-        messages.forEach(removeMessageMedia);
-    },
     removePayloadNode(data, payloadId) {
         const index = data.messages.findIndex(
             (m: MessageData) => m.id === payloadId,
@@ -171,9 +163,6 @@ export const MessageRegistry: NodeRegistry<"message", MessageNodeData> = {
         }
 
         const payload = data.messages[index];
-
-        // side-effect
-        removeMessageMedia(payload);
 
         return {
             nextData: {

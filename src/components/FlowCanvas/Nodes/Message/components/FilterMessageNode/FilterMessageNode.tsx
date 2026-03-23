@@ -13,7 +13,7 @@ type Props = {
 
 function FilterMessageNode({ payload, nodeId }: Props) {
     switch (payload.type) {
-        case "button":
+        case "text":
             return <TextNode payload={payload} nodeId={nodeId} />;
         case "image":
             return <ImageNode payload={payload} nodeId={nodeId} />;

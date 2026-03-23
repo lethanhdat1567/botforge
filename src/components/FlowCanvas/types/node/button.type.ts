@@ -9,25 +9,14 @@ type URLPayLoad = {
     next?: string;
 };
 
-// Kiểu cho button riêng lẻ
-export type ButtonNode =
-    | {
-          id: string;
-          type: "postback";
-          title: string;
-          payload: PostbackPayload;
-          children?: string;
-      }
-    | {
-          id: string;
-          type: "url";
-          title: string;
-          payload: URLPayLoad;
-      }
-    | {
-          id: string;
-          type: "continue";
-          title: string;
-          children?: string;
-          payload: { next?: string };
-      };
+type BaseButton = {
+    id: string;
+    title: string;
+};
+
+export type ButtonNode = (
+    | { type: "postback"; payload: PostbackPayload; children?: string }
+    | { type: "url"; payload: URLPayLoad }
+    | { type: "continue"; payload: { next?: string }; children?: string }
+) &
+    BaseButton;

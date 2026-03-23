@@ -105,7 +105,7 @@ export const ActionRegistry: NodeRegistry<"action", ActionNodeData> = {
         };
     },
     removePayloadNode(data, payloadId) {
-        const index = data.actions.findIndex(
+        const index = data.messages.findIndex(
             (a: ActionData) => a.id === payloadId,
         );
 
@@ -117,12 +117,12 @@ export const ActionRegistry: NodeRegistry<"action", ActionNodeData> = {
             };
         }
 
-        const payload = data.actions[index];
+        const payload = data.messages[index];
 
         return {
             nextData: {
                 ...data,
-                messages: data.actions.filter(
+                messages: data.messages.filter(
                     (a: ActionData) => a.id !== payloadId,
                 ),
             },

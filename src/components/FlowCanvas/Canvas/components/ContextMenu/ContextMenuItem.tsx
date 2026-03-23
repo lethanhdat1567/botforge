@@ -14,7 +14,7 @@ type MenuItem = {
 type Props = {
     item: MenuItem;
     onSelectNode?: (payload: { category: string; type: string }) => void;
-    parentCategory?: string; // category của parent
+    parentCategory?: string;
     isChild?: boolean;
 };
 
@@ -24,7 +24,7 @@ function ContextMenuItem({
     parentCategory,
     isChild = false,
 }: Props) {
-    const [open, setOpen] = useState(false); // state để mở submenu
+    const [open, setOpen] = useState(false);
     const Icon = item.icon;
 
     const handleClick = () => {
@@ -70,7 +70,7 @@ function ContextMenuItem({
                             key={child.id}
                             item={child}
                             onSelectNode={onSelectNode}
-                            parentCategory={item.category || parentCategory} // truyền đúng category
+                            parentCategory={item.category || parentCategory}
                             isChild={true}
                         />
                     ))}

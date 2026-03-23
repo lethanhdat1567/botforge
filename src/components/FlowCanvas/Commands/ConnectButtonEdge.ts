@@ -13,9 +13,8 @@ export class ConnectButtonEdge implements Command {
 
     constructor(private connection: Connection) {}
 
-    execute(): boolean {
-        if (!this.connection.sourceHandle?.startsWith("btn-source-"))
-            return false;
+    execute() {
+        if (!this.connection.sourceHandle?.startsWith("btn-source-")) return;
 
         const btnId = this.connection.sourceHandle.replace("btn-source-", "");
         const nodeId = this.connection.source;
@@ -26,7 +25,6 @@ export class ConnectButtonEdge implements Command {
         const node = store.nodes.find((n) => n.id === nodeId);
         if (!node || !Array.isArray(node.data?.messages)) return false;
 
-        // ✅ snapshot để undo
         this.oldNode = structuredClone(node);
 
         const payload = node.data.messages.find(
@@ -40,7 +38,6 @@ export class ConnectButtonEdge implements Command {
         const btn = buttons.find((b: any) => b.id === btnId);
         if (!btn || btn.next === targetNodeId) return false;
 
-        // ✅ immutable update
         const newButtons = buttons.map((b: any) =>
             b.id === btnId ? { ...b, next: targetNodeId } : b,
         );

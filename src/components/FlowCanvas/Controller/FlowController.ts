@@ -25,7 +25,7 @@ export const FlowController = {
         try {
             this.resetFlow();
 
-            const res = await flowService.getFlowById(flowId);
+            const res = await flowService.getFlowDetail(flowId);
 
             if (!res?.data?.layoutJson) {
                 throw new Error("FLOW_NOT_FOUND");

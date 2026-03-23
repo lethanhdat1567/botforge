@@ -1,5 +1,10 @@
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 
+export interface DelayField {
+    unit: "s" | "m" | "h";
+    duration: number;
+}
+
 export type CollectionType = "collection";
 
 export type CollectionVariableType =
@@ -11,26 +16,23 @@ export type CollectionVariableType =
 
 export type VariableData = {
     key: string;
-    value?: any;
     regex?: string;
-    fallback: {
-        mode: "default" | "custom";
-        value: string;
-    };
-    timeout: {
-        duration: number;
-        unit: "second" | "minute" | "hour";
-        mode: "default" | "custom";
-    };
+    regexMessage?: string;
+};
+
+export type FallbackData = {
+    timeout: DelayField;
+    message: string;
 };
 
 export interface CollectionData {
     id: string;
     type: CollectionType;
     fields: {
+        type: CollectionVariableType;
         text: string;
         buttons: ButtonNode[];
-        type: CollectionVariableType;
         variable: VariableData;
+        fallback: FallbackData;
     };
 }

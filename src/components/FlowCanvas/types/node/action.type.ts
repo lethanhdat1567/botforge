@@ -10,8 +10,7 @@ export type ActionData =
 // Condition node
 export interface ConditionItem {
     id: string;
-    field: string;
-    operator: "equals" | "not_equals" | "contains" | "regex";
+    key: string;
     value: any;
 }
 export interface ConditionActionData {
@@ -29,7 +28,7 @@ export interface DelayActionData {
     type: "delay";
     fields: {
         duration: number;
-        unit: "second" | "minute" | "hour";
+        unit: "s" | "m" | "h";
     };
 }
 

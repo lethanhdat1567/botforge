@@ -78,7 +78,7 @@ function DragdropSidebar() {
                     <ChevronsRight size={20} />
                 </div>
             )}
-            <PageModel />
+            <PageModel onRefresh={fetchFlows} />
         </div>
     );
 }

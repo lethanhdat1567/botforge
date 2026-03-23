@@ -3,7 +3,7 @@ import BaseContent from "@/components/FlowCanvas/Nodes/BaseContent/BaseContent";
 import ButtonList from "@/components/FlowCanvas/Nodes/BasicComp/Button/ButtonList";
 import TextArea from "@/components/FlowCanvas/Nodes/BasicComp/TextArea/TextArea";
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
-import { ButtonMessageData } from "@/components/FlowCanvas/types/node/message.type";
+import { TextMessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { useState } from "react";
 
 export type ErrorType = {
@@ -13,7 +13,7 @@ export type ErrorType = {
 
 type Props = {
     nodeId: string;
-    payload: ButtonMessageData;
+    payload: TextMessageData;
 };
 
 function TextNode({ nodeId, payload }: Props) {

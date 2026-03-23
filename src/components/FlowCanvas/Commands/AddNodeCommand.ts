@@ -25,7 +25,6 @@ export class AddNodeCommand {
     }
 
     undo() {
-        // xóa node nếu cần undo
         useNodeStore.getState().removeNode(this.newNode.id);
     }
 }

@@ -18,6 +18,7 @@ export interface CreateFlowPayload {
     layoutJson?: any;
     timeoutJson?: any;
     pageId?: string;
+    startNodeId?: string;
 }
 
 // Giả định cấu trúc Response chung của bạn
@@ -35,6 +36,11 @@ export interface FlowList {
     status: FlowStatus;
     createdAt: string;
     updatedAt: string;
+    page?: {
+        id: string;
+        pageUid: string;
+    };
+    isConnected: boolean;
 }
 
 // --- Service ---

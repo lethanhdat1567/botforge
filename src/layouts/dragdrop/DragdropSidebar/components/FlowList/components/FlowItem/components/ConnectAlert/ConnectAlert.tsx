@@ -5,8 +5,8 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-function ConnectAlert({ pageUid }: { pageUid?: string | null }) {
-    if (pageUid) return null;
+function ConnectAlert({ isConnected }: { isConnected: boolean }) {
+    if (isConnected) return null;
 
     return (
         <Tooltip>

@@ -1,78 +1,83 @@
-// compiler/category/message/index.ts
 import {
-    AttachmentMessageData,
+    MessageNode,
     MessageDataEngine,
-} from "@/components/FlowCanvas/Flow/Compiler/Category/Message/message.type";
+    AttachmentMessageData,
+    TextMessageData,
+    GenericTemplateData,
+    MediaTemplateData,
+} from "./message.type";
 import { ChildrenMap } from "@/components/FlowCanvas/Flow/Compiler/children-map";
-import { EngineNode } from "@/components/FlowCanvas/types/engine/node";
-import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
-import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
+import {
+    FlowNode,
+    MessageNodeData,
+} from "@/components/FlowCanvas/types/node/node.type";
 
 export function compileMessageNode(
     node: FlowNode,
     childrenMap: ChildrenMap,
-): EngineNode {
-    const messages = (node.data.messages as MessageData[]) ?? [];
+): MessageNode {
+    const data = node.data as MessageNodeData;
+    const messages = data.messages ?? [];
     const next = childrenMap[`node-source-${node.id}`];
 
-    const payload: MessageData[] = messages
-        .map((item: any): MessageDataEngine | null => {
-            switch (item.type) {
-                case "button": {
-                    const hasButtons =
-                        Array.isArray(item.fields?.buttons) &&
-                        item.fields.buttons.length > 0;
+    const payload = messages
+        .map((item): MessageDataEngine | null => {
+            const category = "message" as const;
 
+            switch (item.type) {
+                case "text":
                     return {
-                        type: hasButtons ? "button" : "text",
-                        fields: {
+                        category,
+                        type: "text",
+                        field: {
                             text: item.fields?.text ?? "",
-                            ...(hasButtons && {
-                                buttons: item.fields.buttons,
-                            }),
+                            ...(item.fields?.buttons?.length
+                                ? { buttons: item.fields.buttons }
+                                : {}),
                         },
-                    } as any;
-                }
+                    } as TextMessageData;
 
                 case "image":
                 case "video":
                 case "audio":
                     return {
-                        type: "attachment",
-                        fields: {
-                            attachmentType: item.type,
+                        category,
+                        type: item.type,
+                        field: {
                             url: item.fields?.url ?? "",
                         },
-                    } satisfies AttachmentMessageData;
+                    } as AttachmentMessageData;
 
                 case "generic_template":
                     return {
+                        category,
                         type: "generic_template",
-                        fields: {
+                        field: {
+                            template_type: "generic",
                             elements: item.fields?.elements ?? [],
                         },
-                    };
+                    } as GenericTemplateData;
 
                 case "media_template":
                     return {
+                        category,
                         type: "media_template",
-                        fields: {
-                            media_type: item.fields?.media_type,
-                            media_url: item.fields?.media_url,
+                        field: {
+                            attachment_type: item.fields?.media_type ?? "image",
+                            url: item.fields?.url ?? "",
                             buttons: item.fields?.buttons ?? [],
                         },
-                    };
+                    } as MediaTemplateData;
 
                 default:
                     return null;
             }
         })
-        .filter(Boolean) as MessageData[];
+        .filter((item): item is MessageDataEngine => item !== null);
 
     return {
         id: node.id,
-        category: "message",
         payload,
-        ...(next && { children: { next } }),
+        ...(next && { next }),
     };
 }

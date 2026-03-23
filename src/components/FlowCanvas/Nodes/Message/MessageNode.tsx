@@ -15,8 +15,9 @@ import { useEffect, useState } from "react";
 import { handleSortableDragEnd } from "@/lib/dnd";
 import FilterMessageNode from "@/components/FlowCanvas/Nodes/Message/components/FilterMessageNode/FilterMessageNode";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
+import { MessageNodeProps } from "@/components/FlowCanvas/types/node/node.type";
 
-function MessageNode(props: any) {
+function MessageNode(props: MessageNodeProps) {
     const [items, setItems] = useState(props.data.messages || []);
     const [isDragging, setIsDragging] = useState(false);
 

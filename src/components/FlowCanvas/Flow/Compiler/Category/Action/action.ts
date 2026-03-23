@@ -1,52 +1,71 @@
-// compiler/category/message/index.ts
-import { ActionDataEngine } from "@/components/FlowCanvas/Flow/Compiler/Category/Action/action.type";
+import { ActionNode, ActionPayloadItem, ActionField } from "./action.type";
 import { ChildrenMap } from "@/components/FlowCanvas/Flow/Compiler/children-map";
-import { EngineNode } from "@/components/FlowCanvas/types/engine/node";
-import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
-import { FlowNode } from "@/components/FlowCanvas/types/node/node.type";
+import {
+    FlowNode,
+    ActionNodeData,
+} from "@/components/FlowCanvas/types/node/node.type";
 
 export function compileActionNode(
     node: FlowNode,
     childrenMap: ChildrenMap,
-): EngineNode {
-    const payloads = (node.data.messages as ActionData[]) ?? [];
+): ActionNode {
+    const data = node.data as ActionNodeData;
+    const actions = data.messages ?? [];
     const next = childrenMap[`node-source-${node.id}`];
+
+    const payload = actions
+        .map((item): ActionPayloadItem | null => {
+            const category = "action" as const;
+
+            switch (item.type) {
+                case "delay":
+                    return {
+                        category,
+                        type: "delay",
+                        field: {
+                            duration: item.fields.duration,
+                            unit: item.fields.unit,
+                        },
+                    };
+
+                case "set_variable":
+                    return {
+                        category,
+                        type: "set_variable",
+                        field: {
+                            name: item.fields.key,
+                            value: item.fields.value,
+                        },
+                    };
+
+                case "condition":
+                    return {
+                        category,
+                        type: "condition",
+                        field: {
+                            items: item.fields.items.map((cond) => ({
+                                field: cond.key,
+                                value: cond.value,
+                            })),
+                            ...(childrenMap[
+                                `${node.id}-condition-${item.type}`
+                            ] && {
+                                next: childrenMap[
+                                    `${node.id}-condition-${item.type}`
+                                ],
+                            }),
+                        },
+                    } as ActionPayloadItem;
+
+                default:
+                    return null;
+            }
+        })
+        .filter((item): item is ActionPayloadItem => item !== null);
 
     return {
         id: node.id,
-        category: "action",
-        payload: (payloads as ActionDataEngine[])
-            .map((item) => {
-                switch (item.type) {
-                    case "delay":
-                        return {
-                            type: "delay",
-                            fields: {
-                                duration: item.fields.duration,
-                                unit: item.fields.unit,
-                            },
-                        };
-                    case "condition":
-                        return {
-                            type: "condition",
-                            fields: {
-                                items: item.fields.items,
-                                ...(item.fields.next && {
-                                    next: item.fields.next,
-                                }),
-                            },
-                        };
-                    case "set_variable":
-                        return {
-                            type: "set_variable",
-                            fields: {
-                                key: item.fields.key,
-                                value: item.fields.value,
-                            },
-                        };
-                }
-            })
-            .filter(Boolean),
-        ...(next && { children: { next } }),
+        payload,
+        ...(next && { next }),
     };
 }

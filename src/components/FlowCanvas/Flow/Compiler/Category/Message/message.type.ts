@@ -1,174 +1,77 @@
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
 
-// Overall message type
 export type MessageType =
     | "text"
-    | "button"
-    | "attachment"
-    | "quick_replies"
-    | "sender_actions"
-    | "welcome_screen"
-    | "persistent_menu"
+    | "image"
+    | "video"
+    | "audio"
     | "generic_template"
-    | "coupon_template"
-    | "media_template"
-    | "receipt_template";
+    | "media_template";
 
 export interface MessageNode {
     id: string;
-    category: "message";
     payload: MessageDataEngine[];
-    children?: Record<string, string>;
+    next?: string;
 }
 
 export type MessageDataEngine =
     | TextMessageData
-    | ButtonMessageData
     | AttachmentMessageData
-    // | QuickRepliesData
-    | SenderActionsData
-    | WelcomeScreenData
-    | PersistentMenuData
     | GenericTemplateData
-    | CouponTemplateData
-    | MediaTemplateData
-    | ReceiptTemplateData;
+    | MediaTemplateData;
 
-// Message types
-export interface TextMessageData {
-    type: "text";
-    fields: {
-        text: string;
-    };
+export interface MessageTextField {
+    text: string;
+    buttons?: ButtonNode[];
 }
 
-export interface ButtonMessageData {
-    type: "button";
-    fields: {
-        text: string;
-        buttons: ButtonNode[];
-    };
+export interface MediaField {
+    url: string;
 }
 
-export interface AttachmentMessageData {
-    type: "attachment";
-    fields: {
-        attachmentType: "image" | "video" | "audio" | "file";
-        url: string;
-    };
+export interface MediaTemplateField {
+    attachment_type: "image" | "video";
+    url: string;
+    buttons: ButtonNode[];
 }
 
-// export interface QuickRepliesData {
-//     type: "quick_replies";
-//     fields: {
-//         text: string;
-//         quickReplies: QuickReply[];
-//     };
-// }
-
-export interface SenderActionsData {
-    type: "sender_actions";
-    fields: {
-        action: "typing_on" | "typing_off" | "mark_seen";
-    };
-}
-
-export interface WelcomeScreenData {
-    type: "welcome_screen";
-    fields: {
-        text: string;
-        postback: string;
-        referral?: string | null;
-    };
-}
-
-export interface PersistentMenuData {
-    type: "persistent_menu";
-    fields: {
-        text: string;
-        menuItems: ButtonNode[];
-    };
-}
-
-export interface GenericTemplateElement {
+export interface GenericElement {
     title: string;
     subtitle?: string;
     image_url?: string;
     default_action?: {
         type: "web_url";
         url: string;
-        webview_height_ratio?: "compact" | "tall" | "full";
     };
     buttons?: ButtonNode[];
 }
+
+export interface GenericTemplateField {
+    template_type: "generic";
+    image_aspect_ratio?: "square" | "horizontal";
+    elements: GenericElement[];
+}
+
+export interface TextMessageData {
+    category: "message";
+    type: "text";
+    field: MessageTextField;
+}
+
+export interface AttachmentMessageData {
+    category: "message";
+    type: "image" | "video" | "audio";
+    field: MediaField;
+}
+
 export interface GenericTemplateData {
+    category: "message";
     type: "generic_template";
-    fields: {
-        elements: GenericTemplateElement[];
-    };
+    field: GenericTemplateField;
 }
 
-export interface CouponTemplateElement {
-    title: string;
-    coupon_code?: string;
-    coupon_pre_message?: string;
-    subtitle?: string;
-    image_url?: string;
-    coupon_url?: string;
-    coupon_url_button_title?: string;
-    payload?: string;
-}
-
-export interface CouponTemplateData {
-    type: "coupon_template";
-    fields: CouponTemplateElement;
-}
-
-// 2️⃣ Data/Node của Media Template
 export interface MediaTemplateData {
+    category: "message";
     type: "media_template";
-    fields: {
-        media_type: "image" | "video";
-        media_url: string;
-        buttons?: ButtonNode[];
-    };
-}
-export interface ReceiptTemplateElement {
-    recipient_name: string;
-    order_number: string;
-    currency: string;
-    payment_method: string;
-    timestamp?: string;
-    elements: Array<{
-        title: string;
-        subtitle?: string;
-        quantity?: number;
-        price: number;
-        currency?: string;
-        image_url?: string;
-    }>;
-    address?: {
-        street_1: string;
-        street_2?: string;
-        city: string;
-        postal_code: string;
-        state: string;
-        country: string;
-    };
-    summary: {
-        subtotal?: number;
-        shipping_cost?: number;
-        total_tax?: number;
-        total_cost: number;
-    };
-    adjustments?: Array<{
-        name?: string;
-        amount: number;
-    }>;
-}
-
-// Receipt template data kiểu MessageNode
-export interface ReceiptTemplateData {
-    type: "receipt_template";
-    fields: ReceiptTemplateElement;
+    field: MediaTemplateField;
 }

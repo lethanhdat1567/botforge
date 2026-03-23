@@ -19,7 +19,6 @@ function FlowJsonBtn() {
     const edges = useEdgeStore((s) => s.edges);
     const [copied, setCopied] = useState(false);
 
-    // ✅ compile flow (memo để không recompute liên tục)
     const flowJson = useMemo(() => {
         try {
             return compileFlow(nodes, edges);

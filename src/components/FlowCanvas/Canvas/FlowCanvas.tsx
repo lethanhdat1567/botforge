@@ -35,11 +35,10 @@ type FlowStatus = "idle" | "loading" | "ready" | "error";
 function FlowCanvas() {
     const searchParams = useSearchParams();
     const flowId = searchParams.get("flowId");
+    const [status, setStatus] = useState<FlowStatus>("idle");
 
     const { handleConnect, handleEndConnect } = useFlowConnect();
     const { handleEdgeChange } = useFlowEdges();
-
-    const [status, setStatus] = useState<FlowStatus>("idle");
 
     const openMenu = useContextMenuStore((s) => s.openAt);
     const nodes = useNodeStore((s) => s.nodes);

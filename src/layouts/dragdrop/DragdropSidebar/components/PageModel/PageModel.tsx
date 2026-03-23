@@ -1,40 +1,79 @@
+"use client";
+
 /* eslint-disable react-hooks/set-state-in-effect */
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useQueryParams } from "@/hooks/use-query-params";
 import PageItem from "@/layouts/dragdrop/DragdropSidebar/components/PageModel/PageItem";
 import {
     facebookAuthService,
     FacebookResponse,
 } from "@/services/facebookAuthService";
 import { Page, pageService } from "@/services/pageService";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-function PageModel() {
+function PageModel({ onRefresh }: { onRefresh: () => void }) {
     const [open, setOpen] = useState(false);
     const [pages, setPages] = useState<FacebookResponse[]>([]);
     const [currentConnectedPage, setCurrentConnectedPage] = useState<Page>();
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const params = new URLSearchParams(window.location.search);
-    const flowId = searchParams.get("connectFlowId");
+    const { getQueryParam, deleteQueryParams } = useQueryParams();
+    const flowId = getQueryParam("connectFlowId");
 
     function handleSetOpen(value: boolean) {
         if (!value) {
-            params.delete("connectFlowId");
-            router.push(`${pathname}?${params.toString()}`);
+            deleteQueryParams("connectFlowId", {
+                scroll: false,
+                replace: true,
+            });
         }
 
         setOpen(value);
+    }
+
+    async function handleConnect(page: FacebookResponse) {
+        if (!flowId) return;
+        try {
+            await pageService.upsert(flowId, {
+                pageUid: page.id,
+                pageAccessToken: page.accessToken,
+            });
+
+            toast.success("Kết nối trang facebook thành công");
+            deleteQueryParams("connectFlowId", {
+                scroll: false,
+                replace: true,
+            });
+            setOpen(false);
+            onRefresh();
+        } catch (error) {
+            console.log(error);
+            toast.error("Kết nối thất bại, đã có lỗi xảy ra");
+        }
+    }
+
+    async function handleDisconnect() {
+        if (!flowId) return;
+        try {
+            await pageService.delete(flowId);
+
+            toast.success("Hủy Kết nối thành công");
+            deleteQueryParams("connectFlowId", {
+                scroll: false,
+                replace: true,
+            });
+            setOpen(false);
+            onRefresh();
+        } catch (error) {
+            console.log(error);
+            toast.error("Hủy kết nối thất bại, đã có lỗi xảy ra");
+        }
     }
 
     const fetchPages = async () => {
@@ -54,24 +93,6 @@ function PageModel() {
             console.log(error);
         }
     };
-
-    async function handleConnect(page: FacebookResponse) {
-        if (!flowId) return;
-        try {
-            await pageService.upsert(flowId, {
-                pageUid: page.id,
-                pageAccessToken: page.accessToken,
-            });
-
-            toast.success("Kết nối trang facebook thành công");
-            params.delete("connectFlowId");
-            router.push(`${pathname}?${params.toString()}`);
-            setOpen(false);
-        } catch (error) {
-            console.log(error);
-            toast.error("Kết nối thất bại, đã có lỗi xảy ra");
-        }
-    }
 
     useEffect(() => {
         if (flowId) {
@@ -98,6 +119,7 @@ function PageModel() {
                                 key={page.id}
                                 page={page}
                                 onConnect={handleConnect}
+                                onDisconnect={handleDisconnect}
                             />
                         ))}
                     </div>

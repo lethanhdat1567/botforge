@@ -1,33 +1,47 @@
 import { ButtonNode } from "@/components/FlowCanvas/types/node/button.type";
+import { DelayField } from "../Action/action.type";
 
-export type CollectionType = "collection";
-
-export type CollectionVariableType =
-    | "text"
-    | "number"
-    | "email"
-    | "phone"
-    | "custom";
-
-export interface CollectionDataEngine {
-    type: CollectionType;
-    fields: {
-        text: string;
-        buttons: ButtonNode[];
-        variable: {
-            type: CollectionVariableType;
-            key: string;
-            value?: any;
-            regex?: string;
-            fallback: {
-                mode: "default" | "custom";
-                value: string;
-            };
-            timeout: {
-                duration: number;
-                unit: "second" | "minute" | "hour";
-                mode: "default" | "custom";
-            };
-        };
+export interface WaitingVariable {
+    variable: {
+        key: string;
+        regex?: string;
+        regexMessage?: string;
     };
+    fallback: {
+        timeout: DelayField;
+        message: string;
+    };
+}
+
+export interface CollectionField {
+    text: string;
+    buttons?: ButtonNode[];
+    variable: {
+        key: string;
+        regex?: string;
+        regexMessage?: string;
+    };
+    fallback: {
+        timeout: DelayField;
+        message: string;
+    };
+}
+
+export type CollectionPayloadItem = {
+    category: "collection";
+    type: "text";
+    field: CollectionField;
+};
+
+export interface CollectionNode {
+    id: string;
+    payload: CollectionPayloadItem[];
+    next?: string;
+}
+
+export interface CollectionNodeData {
+    label: string;
+    note?: string;
+    markStart?: boolean;
+    collection: CollectionPayloadItem;
 }

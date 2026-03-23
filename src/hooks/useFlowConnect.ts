@@ -22,14 +22,14 @@ export function useFlowConnect() {
         const targetElement = event.target as HTMLElement | null;
         if (!targetElement) return;
 
-        const nodeEl = targetElement.closest("[data-node-id]");
+        const targetNode = targetElement.closest("[data-node-id]");
 
-        if (!nodeEl) {
+        if (!targetNode) {
             openMenu(event.clientX, event.clientY);
             return;
         }
 
-        const targetNodeId = nodeEl.getAttribute("data-node-id");
+        const targetNodeId = targetNode.getAttribute("data-node-id");
         if (!targetNodeId) return;
 
         if (targetNodeId === connectionState.fromNode.id) return;

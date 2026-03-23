@@ -1,7 +1,7 @@
 import { ActionData } from "@/components/FlowCanvas/types/node/action.type";
 import { CollectionData } from "@/components/FlowCanvas/types/node/collection.type";
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
-import type { Node } from "@xyflow/react";
+import type { Node, NodeProps } from "@xyflow/react";
 
 export type FlowNodeType = "message" | "action" | "collection";
 export type NodeOf<
@@ -33,3 +33,9 @@ export type FlowNode =
     | Node<MessageNodeData, "message">
     | Node<ActionNodeData, "action">
     | Node<CollectionNodeData, "collection">;
+
+export type MessageNodeProps = NodeProps<Node<MessageNodeData, "message">>;
+export type ActionNodeProps = NodeProps<Node<ActionNodeData, "action">>;
+export type CollectionNodeProps = NodeProps<
+    Node<CollectionNodeData, "collection">
+>;
