@@ -4,11 +4,11 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from "@/components/ui/input-group";
-import { flowSharedService, SharedType } from "@/services/flowSharedService";
+import flowShareService from "@/services/flowSharedService";
 import { SearchIcon } from "lucide-react";
 
 async function TemplatesPage() {
-    const res = await flowSharedService.getAllShared();
+    const res = await flowShareService.getList();
 
     return (
         <div>
@@ -23,11 +23,11 @@ async function TemplatesPage() {
                 </InputGroup>
             </div>
             {/* Content */}
-            <div className="mt-10 grid grid-cols-4 gap-4">
-                {res.data.data.map((item: SharedType) => (
+            {/* <div className="mt-10 grid grid-cols-4 gap-4">
+                {res.data.data.map((item: any) => (
                     <SharedItem key={item.id} sharedItem={item} />
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 }

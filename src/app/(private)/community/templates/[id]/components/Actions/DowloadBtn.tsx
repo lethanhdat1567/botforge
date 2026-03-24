@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import FolderWrapper from "@/app/(private)/community/templates/components/SharedItem/components/Actions/DowloadBtn/FolderWrapper";
-import { flowSharedService } from "@/services/flowSharedService";
+import { flowShareService } from "@/services/flowShareService";
 import { toast } from "sonner";
 
 type Props = { sharedTemplateId: string; flowId: string };
@@ -22,7 +22,7 @@ function DowloadBtn({ sharedTemplateId, flowId }: Props) {
 
     async function handleDowload(id: string) {
         try {
-            await flowSharedService.downloadShared(sharedTemplateId, {
+            await flowShareService.downloadShared(sharedTemplateId, {
                 flowId,
                 folderId: id,
                 pageId: null,

@@ -68,7 +68,7 @@ function Button({ btn, onCommit, onDestroyBtn, variable }: Props) {
                 placeholder="Nội dung..."
             />
 
-            {btn.type !== "url" && (
+            {btn.type !== "web_url" && (
                 <Handle
                     type="source"
                     position={Position.Right}

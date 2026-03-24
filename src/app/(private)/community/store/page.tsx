@@ -3,18 +3,19 @@
 import { columns } from "@/app/(private)/community/store/columns";
 import { DataTable } from "@/components/data-table/data-table";
 import { Button } from "@/components/ui/button";
-import { flowSharedService } from "@/services/flowSharedService";
+import flowShareService, { FlowShare } from "@/services/flowSharedService";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function StorePage() {
-    const [sharedTemplates, setSharedTemplates] = useState([]);
+    const [sharedTemplates, setSharedTemplates] = useState<FlowShare[]>([]);
     const fetchSharedTemplates = async () => {
         try {
-            const res = await flowSharedService.getMyShared();
-            setSharedTemplates(res.data.data);
+            const res = await flowShareService.getList();
+
+            setSharedTemplates(res.flowShares);
         } catch (error) {
             console.error("Error fetching shared templates:", error);
         }
@@ -27,7 +28,7 @@ function StorePage() {
 
     async function handleDestroy(id: string) {
         try {
-            await flowSharedService.removeShared(id);
+            await flowShareService.delete(id);
             toast.success("Template deleted successfully");
             fetchSharedTemplates();
         } catch (error) {
@@ -38,14 +39,14 @@ function StorePage() {
 
     async function handleDestroyMany(rows: any[]) {
         const ids = rows.map((row: any) => row.original.id);
-        try {
-            await flowSharedService.deleteManyShared(ids);
-            toast.success("Templates deleted successfully");
-            fetchSharedTemplates();
-        } catch (error) {
-            console.log(error);
-            toast.error("Failed to delete templates");
-        }
+        // try {
+        //     await flowShareService.deleteManyShared(ids);
+        //     toast.success("Templates deleted successfully");
+        //     fetchSharedTemplates();
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error("Failed to delete templates");
+        // }
     }
 
     return (
@@ -58,7 +59,7 @@ function StorePage() {
                     </Button>
                 </Link>
             </div>
-            <div>
+            {/* <div>
                 <DataTable
                     columns={columns({ onDestroy: handleDestroy })}
                     data={sharedTemplates}
@@ -67,7 +68,7 @@ function StorePage() {
                     }}
                     onDestroy={handleDestroyMany}
                 />
-            </div>
+            </div> */}
         </div>
     );
 }

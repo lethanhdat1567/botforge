@@ -35,7 +35,6 @@ function SocialLogin() {
                     accessTokenExpiresIn: res.accessTokenExpiresIn,
                 });
                 toast.success("Đăng nhập thành công!");
-                console.log("run here");
                 router.push("/dashboard");
             } catch (error) {
                 console.log(error);

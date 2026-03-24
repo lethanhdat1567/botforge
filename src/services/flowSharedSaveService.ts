@@ -1,5 +1,5 @@
 import api from "@/config/axios";
-import type { SharedUser } from "@/services/flowSharedService";
+import type { SharedUser } from "@/services/flowShareService";
 
 export type FlowSharedSaveUser = SharedUser & {
     createdAt: string;

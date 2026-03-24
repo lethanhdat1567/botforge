@@ -2,7 +2,7 @@
 
 import { columns } from "@/app/admin/community/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { flowSharedService } from "@/services/flowSharedService";
+import { flowShareService } from "@/services/flowShareService";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -11,7 +11,7 @@ function AdminCommunityPage() {
 
     const http = useCallback(async () => {
         try {
-            const res = await flowSharedService.getAllShared();
+            const res = await flowShareService.getAllShared();
             setSharedTemplates(res.data.data);
         } catch (error) {
             console.log(error);
@@ -27,7 +27,7 @@ function AdminCommunityPage() {
         const ids = rows.map((row: any) => row.original.id);
 
         try {
-            await flowSharedService.deleteManyShared(ids);
+            await flowShareService.deleteManyShared(ids);
             toast.success("Deleted successfully");
             http();
         } catch (error) {

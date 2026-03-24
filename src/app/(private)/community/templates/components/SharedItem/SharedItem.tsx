@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Actions from "@/app/(private)/community/templates/components/SharedItem/components/Actions/Actions";
-import { SharedType } from "@/services/flowSharedService";
+import { SharedType } from "@/services/flowShareService";
 import { resolveMediaSrc } from "@/lib/image";
 import { htmlToText } from "@/lib/format";
 import Link from "next/link";

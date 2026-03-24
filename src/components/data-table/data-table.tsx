@@ -1,16 +1,12 @@
 "use client";
 
+import React from "react";
 import {
     ColumnDef,
     flexRender,
-    SortingState,
-    ColumnFiltersState,
-    VisibilityState,
-    useReactTable,
     getCoreRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
-    getFilteredRowModel,
+    useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -22,106 +18,53 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table/pagination";
-import React from "react";
-import DataTableFilter from "@/components/data-table/Filter";
-import { DataTableViewOptions } from "@/components/data-table/Visibility";
-import DestroyBtn from "@/components/data-table/DestroyBtn";
-
-interface DataTableOptions {
-    filterColumn?: string;
-    enableColumnVisibility?: boolean;
-}
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    options?: DataTableOptions;
-    onDestroy: (rows: any) => void;
+    // Slot để chèn Filter hoặc Action Buttons từ bên ngoài
+    toolbar?: (table: any) => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
-    options = {
-        enableColumnVisibility: true,
-    },
-    onDestroy,
+    toolbar,
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] =
-        React.useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({});
-
     const [rowSelection, setRowSelection] = React.useState({});
 
-    // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data,
         columns,
-
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
             rowSelection,
         },
     });
 
     return (
-        <div>
-            <div className="flex items-center gap-2 py-4">
-                <div className="flex items-center gap-2">
-                    {options.filterColumn && (
-                        <DataTableFilter
-                            table={table}
-                            column={options.filterColumn}
-                        />
-                    )}
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                        <DestroyBtn
-                            table={table}
-                            onDestroy={() =>
-                                onDestroy(
-                                    table.getFilteredSelectedRowModel().rows,
-                                )
-                            }
-                        />
-                    )}
-                </div>
+        <div className="space-y-4">
+            {/* Toolbar: Nơi chứa Filter, Xóa, Thêm mới... */}
+            {toolbar && toolbar(table)}
 
-                {options.enableColumnVisibility !== false && (
-                    <DataTableViewOptions table={table} />
-                )}
-            </div>
-
-            <div className="container overflow-hidden rounded-md border">
+            <div className="bg-card rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext(),
-                                                  )}
-                                        </TableHead>
-                                    );
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                  header.column.columnDef
+                                                      .header,
+                                                  header.getContext(),
+                                              )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -150,7 +93,7 @@ export function DataTable<TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    Không có kết quả.
+                                    Không có dữ liệu.
                                 </TableCell>
                             </TableRow>
                         )}

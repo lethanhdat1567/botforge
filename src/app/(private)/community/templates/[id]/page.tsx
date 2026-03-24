@@ -2,7 +2,7 @@ import Actions from "@/app/(private)/community/templates/[id]/components/Actions
 import Comment from "@/app/(private)/community/templates/[id]/components/Comment/Comment";
 import Content from "@/app/(private)/community/templates/[id]/components/Content/Content";
 import Heading from "@/app/(private)/community/templates/[id]/components/Heading/Heading";
-import { flowSharedService, SharedType } from "@/services/flowSharedService";
+import { flowShareService, SharedType } from "@/services/flowShareService";
 
 type PageProps = {
     params: {
@@ -16,7 +16,7 @@ async function TemplateDetailPage({ params }: PageProps) {
     let sharedTemplate: SharedType | null = null;
 
     try {
-        const res = await flowSharedService.getSharedById(id);
+        const res = await flowShareService.getSharedById(id);
         sharedTemplate = res.data.data;
     } catch (error) {
         console.log(error);

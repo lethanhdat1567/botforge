@@ -1,135 +1,113 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
 
-export type SharedUser = {
-    id: string;
-    username: string;
-    displayName: string;
-    avatar: string;
-    email: string;
-};
+export type FlowShareStatus = "active" | "inactive";
 
-export type SharedType = {
+export interface FlowShare {
     id: string;
     flowId: string;
-    userId: string;
-
     name: string;
-    description: string;
-    thumbnail: string | null;
-
-    status: "active" | "inactive";
-    downloadCount: number;
-
+    description?: string;
+    thumbnail?: string;
+    status: FlowShareStatus;
     createdAt: string;
     updatedAt: string;
-
-    user: SharedUser;
-};
-
-export const flowSharedService = {
-    // GET /flows/shared
-    getAllShared: async () => {
-        const response = await api.get("/flows/shared");
-        return response.data;
-    },
-
-    // GET /flows/shared/me
-    getMyShared: async () => {
-        const response = await api.get("/flows/shared/me");
-        return response.data;
-    },
-
-    // GET /flows/shared/:id
-    getSharedById: async (id: string) => {
-        const response = await api.get(`/flows/shared/${id}`);
-        return response.data;
-    },
-
-    // POST /flows/shared
-    // có upload thumbnail => dùng FormData
-    createShared: async (data: {
-        flowId: string;
+    content?: string;
+    flow?: {
+        id: string;
         name: string;
-        description?: string;
-        thumbnail?: File;
+    };
+    user?: {
+        id: string;
+        username: string;
+        displayName: string;
+        avatar?: string;
+    };
+}
+
+export interface FlowShareListResponse {
+    flowShares: FlowShare[];
+    meta: {
+        total: number;
+        lastPage: number;
+        currentPage: number;
+        perPage: number;
+        prev: number | null;
+        next: number | null;
+    };
+}
+
+export interface CreateFlowShareBody {
+    flowId: string;
+    name: string;
+    description?: string;
+    thumbnail?: string;
+    content?: string;
+    status?: FlowShareStatus;
+}
+
+const flowShareService = {
+    // Lấy danh sách cho User (đã login)
+    getList: async (params?: {
+        q?: string;
+        status?: string;
+        page?: number;
+        limit?: number;
     }) => {
-        const formData = new FormData();
-        formData.append("flowId", data.flowId);
-        formData.append("name", data.name);
-
-        if (data.description) {
-            formData.append("description", data.description);
-        }
-
-        if (data.thumbnail) {
-            formData.append("thumbnail", data.thumbnail);
-        }
-
-        const response = await api.post("/flows/shared", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
+        const res: baseResponse<FlowShareListResponse> = await http.get(
+            "/api/flow-shares",
+            {
+                params,
             },
-        });
+        );
 
-        return response.data;
+        return res.data;
     },
 
-    // PATCH /flows/shared/:id
-    updateShared: async (
-        id: string,
-        data: {
-            flowId?: string;
-            name?: string;
-            description?: string;
-            thumbnail?: File;
-        },
-    ) => {
-        const formData = new FormData();
+    // Lấy danh sách cho Admin
+    getListForAdmin: (params?: {
+        q?: string;
+        status?: string;
+        page?: number;
+        limit?: number;
+    }) => http.get<FlowShareListResponse>("/api/flow-shares/admin", { params }),
 
-        if (data.name) {
-            formData.append("name", data.name);
-        }
+    // Lấy danh sách Public (không cần login)
+    getPublic: (params?: {
+        q?: string;
+        status?: string;
+        page?: number;
+        limit?: number;
+    }) =>
+        http.get<FlowShareListResponse>("/api/flow-shares/public", { params }),
 
-        if (data.description) {
-            formData.append("description", data.description);
-        }
+    // Chi tiết 1 flow
+    getDetail: async (id: string) => {
+        const res = await http.get<baseResponse<FlowShare>>(
+            `/api/flow-shares/${id}`,
+        );
 
-        if (data.thumbnail) {
-            formData.append("thumbnail", data.thumbnail);
-        }
-
-        const response = await api.patch(`/flows/shared/${id}`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        return response.data;
+        return res.data;
     },
 
-    // PATCH /flows/shared/:id/dowload
-    downloadShared: async (
-        id: string,
-        data: {
-            flowId: string;
-            folderId: string | null;
-            pageId: string | null;
-        },
-    ) => {
-        const response = await api.patch(`/flows/shared/${id}/download`, data);
-        return response.data;
-    },
+    // Lấy danh sách liên quan
+    getRelated: (id: string) =>
+        http.get<FlowShare[]>(`/api/flow-shares/related/${id}`),
 
-    // DELETE /flows/shared/:id
-    removeShared: async (id: string) => {
-        const response = await api.delete(`/flows/shared/${id}`);
-        return response.data;
-    },
+    // Tạo mới
+    create: (body: CreateFlowShareBody) =>
+        http.post<FlowShare>("/api/flow-shares", body),
 
-    deleteManyShared: async (ids: string[]) => {
-        const response = await api.post("/flows/shared/delete-many", {
-            ids,
-        });
-        return response.data;
-    },
+    // Cập nhật
+    update: (id: string, body: Partial<CreateFlowShareBody>) =>
+        http.put<FlowShare>(`/api/flow-shares/${id}`, body),
+
+    // Xóa 1
+    delete: (id: string) => http.delete<any>(`/api/flow-shares/${id}`),
+
+    // Xóa nhiều
+    deleteMany: (ids: string[]) =>
+        http.post<any>("/api/flow-shares/delete-many", { ids }),
 };
+
+export default flowShareService;

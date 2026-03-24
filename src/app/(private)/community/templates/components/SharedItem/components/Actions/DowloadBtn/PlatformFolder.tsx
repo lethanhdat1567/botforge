@@ -1,5 +1,4 @@
 import { images } from "@/assets/images";
-import { platformNames } from "@/layouts/dragdrop/DragdropSidebar/components/FolderList/data";
 import Image from "next/image";
 
 function PlatformFolder({
@@ -18,9 +17,6 @@ function PlatformFolder({
                     }
                     alt={platform}
                 />
-                <h3 className="truncate text-sm font-medium">
-                    {platformNames[platform] || platform}
-                </h3>
             </div>
         </div>
     );

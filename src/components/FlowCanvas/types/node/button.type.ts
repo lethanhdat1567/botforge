@@ -16,7 +16,7 @@ type BaseButton = {
 
 export type ButtonNode = (
     | { type: "postback"; payload: PostbackPayload }
-    | { type: "url"; payload: URLPayLoad }
+    | { type: "web_url"; payload: URLPayLoad }
     | { type: "continue"; payload: { next?: string } }
 ) &
     BaseButton;

@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "../styles/_variables.scss";
 @import "../styles/_keyframe-animations.scss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -131,12 +132,35 @@
     }
     body {
         @apply bg-background text-foreground;
-        overflow: hidden;
-    }
-
-    html,
-    body {
         overflow-x: hidden;
-        scroll-behavior: smooth;
+        overflow-y: auto;
+    }
+}
+
+@layer components {
+    .tiptap-content {
+        /* Ép các thuộc tính căn lề của Tiptap hoạt động */
+        & [style*="text-align: center"] {
+            text-align: center;
+            display: block;
+        }
+        & [style*="text-align: right"] {
+            text-align: right;
+            display: block;
+        }
+
+        /* Đảm bảo ảnh resize không bị vỡ layout */
+        & img {
+            display: inline-block;
+            height: auto;
+            max-width: 100%;
+        }
+
+        /* Nếu ảnh căn giữa, ép nó ra giữa */
+        & [style*="text-align: center"] img {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
     }
 }

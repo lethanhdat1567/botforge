@@ -41,10 +41,6 @@ const data = {
                     title: "Luồng hội thoại",
                     url: "/bot/flows",
                 },
-                {
-                    title: "Cấu hình bot",
-                    url: "/bot/settings",
-                },
             ],
         },
 
@@ -57,10 +53,6 @@ const data = {
                     url: "/data/pages",
                 },
                 ,
-                {
-                    title: "Mẫu kịch bản",
-                    url: "/data/templates",
-                },
                 {
                     title: "Thống kê hội thoại",
                     url: "/data/analytics",

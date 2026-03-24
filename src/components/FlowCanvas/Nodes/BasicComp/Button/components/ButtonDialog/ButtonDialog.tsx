@@ -32,7 +32,7 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
 
     function handleSelect(selectValue: string) {
         let payloadData = null;
-        if (selectValue === "url") {
+        if (selectValue === "web_url") {
             payloadData = { url: "" };
             FlowController.removeButtonEdge(btn.id);
         } else if (selectValue === "postback") {
@@ -62,7 +62,7 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
             </div>
             <div className="mt-4">
                 {selected === "continue" && <ButtonContinue />}
-                {selected === "url" && btn?.type === "url" && (
+                {selected === "web_url" && btn?.type === "web_url" && (
                     <ButtonUrl
                         onCommit={handleUrlChange}
                         urlValue={btn.payload.url}

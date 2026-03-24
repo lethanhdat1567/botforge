@@ -1,7 +1,7 @@
 import DowloadBtn from "@/app/(private)/community/templates/components/SharedItem/components/Actions/DowloadBtn/DowloadBtn";
 import LikeBtn from "@/app/(private)/community/templates/components/SharedItem/components/Actions/LikeBtn";
 import SaveBtn from "@/app/(private)/community/templates/components/SharedItem/components/Actions/SaveBtn";
-import { SharedType } from "@/services/flowSharedService";
+import { SharedType } from "@/services/flowShareService";
 
 type Props = {
     sharedItem: SharedType;

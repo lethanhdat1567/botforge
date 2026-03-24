@@ -13,7 +13,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import FolderWrapper from "@/app/(private)/community/templates/components/SharedItem/components/Actions/DowloadBtn/FolderWrapper";
-import { flowSharedService } from "@/services/flowSharedService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -27,22 +26,22 @@ function DowloadBtn({ flowId, sharedItemId, downloadCount }: Props) {
     const router = useRouter();
     const [open, setOpen] = useState(false);
 
-    async function handleDowload(id: string) {
-        try {
-            await flowSharedService.downloadShared(sharedItemId, {
-                flowId,
-                folderId: id,
-                pageId: null,
-            });
+    // async function handleDowload(id: string) {
+    //     try {
+    //         await flowShareService.downloadShared(sharedItemId, {
+    //             flowId,
+    //             folderId: id,
+    //             pageId: null,
+    //         });
 
-            toast.success("Download successfully");
-            setOpen(false);
-            router.refresh();
-        } catch (error) {
-            console.log(error);
-            toast.error("Failed to download");
-        }
-    }
+    //         toast.success("Download successfully");
+    //         setOpen(false);
+    //         router.refresh();
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error("Failed to download");
+    //     }
+    // }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -64,7 +63,7 @@ function DowloadBtn({ flowId, sharedItemId, downloadCount }: Props) {
                     </DialogDescription>
                 </DialogHeader>
 
-                <FolderWrapper onDowload={handleDowload} />
+                {/* <FolderWrapper onDowload={handleDowload} /> */}
             </DialogContent>
         </Dialog>
     );
