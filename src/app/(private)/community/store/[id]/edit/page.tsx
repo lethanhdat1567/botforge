@@ -1,6 +1,5 @@
 "use client";
 
-import { FlowShareType } from "@/app/(private)/community/store/columns";
 import SharedForm from "@/app/(private)/community/store/components/SharedForm/SharedForm";
 import formSchema, {
     FormSchemaType,

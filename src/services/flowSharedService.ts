@@ -23,6 +23,11 @@ export interface FlowShare {
         displayName: string;
         avatar?: string;
     };
+    _count: {
+        flowShareLikes: number;
+        flowShareComments: number;
+        flowShareDowloads: number;
+    };
 }
 
 export interface FlowShareListResponse {

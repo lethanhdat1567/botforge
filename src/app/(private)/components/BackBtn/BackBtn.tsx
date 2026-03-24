@@ -20,6 +20,7 @@ function BackBtn({ href }: { href?: string }) {
             variant="outline"
             className="rounded-none"
             onClick={handleClick}
+            type="button"
         >
             <ChevronLeft />
         </Button>

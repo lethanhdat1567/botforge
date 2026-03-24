@@ -1,4 +1,4 @@
-import { FlowShareType } from "./columns";
+import { FlowShareType } from "./sharedFlowColumns";
 
 export const mockFlowSharedData: FlowShareType[] = [
     {

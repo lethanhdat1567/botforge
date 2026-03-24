@@ -1,21 +1,36 @@
 "use client";
 
-import { columns } from "@/app/(private)/community/store/columns";
-import { DataTable } from "@/components/data-table/data-table";
+import { getSharedFlowColumns } from "@/app/(private)/community/store/sharedFlowColumns";
+import AlertDestroyDialog from "@/components/AlertDestroyDialog";
+import { DataTable } from "@/components/DataTable/DataTable";
+import { DataTablePagination } from "@/components/DataTable/Pagination";
+import SearchInput from "@/components/DataTable/SearchInput";
 import { Button } from "@/components/ui/button";
 import flowShareService, { FlowShare } from "@/services/flowSharedService";
+import { PaginationMeta } from "@/types/data-table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function StorePage() {
+    const router = useRouter();
     const [sharedTemplates, setSharedTemplates] = useState<FlowShare[]>([]);
-    const fetchSharedTemplates = async () => {
+    const [searchValue, setSearchValue] = useState("");
+    const [meta, setMeta] = useState<PaginationMeta | null>(null);
+    const [destroySelect, setDestroySelect] = useState<string[]>([]);
+    const [alertDestroy, setAlertDestroy] = useState(false);
+
+    const fetchSharedTemplates = async (page = 1) => {
         try {
-            const res = await flowShareService.getList();
+            const res = await flowShareService.getList({
+                q: searchValue,
+                page: page,
+            });
 
             setSharedTemplates(res.flowShares);
+            setMeta(res.meta as any);
         } catch (error) {
             console.error("Error fetching shared templates:", error);
         }
@@ -24,30 +39,40 @@ function StorePage() {
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchSharedTemplates();
-    }, []);
+    }, [searchValue]);
 
-    async function handleDestroy(id: string) {
+    const handleEdit = (id: string) => {
+        router.push(`/community/store/${id}/edit`);
+    };
+
+    const handleDelete = async (id: string) => {
         try {
             await flowShareService.delete(id);
-            toast.success("Template deleted successfully");
+            toast.success("Xóa thành công");
             fetchSharedTemplates();
         } catch (error) {
             console.log(error);
-            toast.error("Failed to delete template");
+            toast.error("Xóa thất bại");
         }
-    }
+    };
 
-    async function handleDestroyMany(rows: any[]) {
-        const ids = rows.map((row: any) => row.original.id);
-        // try {
-        //     await flowShareService.deleteManyShared(ids);
-        //     toast.success("Templates deleted successfully");
-        //     fetchSharedTemplates();
-        // } catch (error) {
-        //     console.log(error);
-        //     toast.error("Failed to delete templates");
-        // }
-    }
+    const handleDestroySelect = async () => {
+        try {
+            await flowShareService.deleteMany(destroySelect);
+            toast.success("Xóa thành công");
+            setDestroySelect([]);
+            fetchSharedTemplates();
+        } catch (error) {
+            console.log(error);
+            toast.error("Xóa thất bại");
+        }
+    };
+
+    const sharedColumns = getSharedFlowColumns({
+        onEdit: handleEdit,
+        onDelete: handleDelete,
+        onView: (id) => console.log("Xem:", id),
+    });
 
     return (
         <div>
@@ -59,16 +84,42 @@ function StorePage() {
                     </Button>
                 </Link>
             </div>
-            {/* <div>
+            <div className="mt-10">
                 <DataTable
-                    columns={columns({ onDestroy: handleDestroy })}
                     data={sharedTemplates}
-                    options={{
-                        filterColumn: "flowId",
-                    }}
-                    onDestroy={handleDestroyMany}
+                    columns={sharedColumns}
+                    onSelectionChange={(ids) => setDestroySelect(ids)}
+                    toolbar={
+                        <div className="flex items-center gap-4">
+                            <SearchInput
+                                onChange={(val) => setSearchValue(val)}
+                                placeholder="Tìm tên quy trình..."
+                            />
+                            {destroySelect.length > 0 && (
+                                <Button
+                                    variant={"destructive"}
+                                    onClick={() => setAlertDestroy(true)}
+                                >
+                                    Xóa ({destroySelect.length})
+                                </Button>
+                            )}
+                        </div>
+                    }
+                    pagination={
+                        meta && (
+                            <DataTablePagination
+                                meta={meta}
+                                onPageChange={fetchSharedTemplates}
+                            />
+                        )
+                    }
                 />
-            </div> */}
+            </div>
+            <AlertDestroyDialog
+                open={alertDestroy}
+                onOpenChange={setAlertDestroy}
+                onConfirm={handleDestroySelect}
+            />
         </div>
     );
 }

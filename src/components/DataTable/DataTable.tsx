@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import {
     ColumnDef,
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     useReactTable,
+    RowSelectionState,
 } from "@tanstack/react-table";
-
 import {
     Table,
     TableBody,
@@ -17,45 +16,70 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { DataTablePagination } from "@/components/data-table/pagination";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    // Slot để chèn Filter hoặc Action Buttons từ bên ngoài
-    toolbar?: (table: any) => React.ReactNode;
+    toolbar?: React.ReactNode;
+    pagination?: React.ReactNode;
+    // Chỉnh lại chỉ nhận vào mảng string IDs để tối ưu và tránh lỗi render
+    onSelectionChange?: (selectedIds: string[]) => void;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     toolbar,
+    pagination,
+    onSelectionChange,
 }: DataTableProps<TData, TValue>) {
-    const [rowSelection, setRowSelection] = React.useState({});
+    const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
+        {},
+    );
 
     const table = useReactTable({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onRowSelectionChange: setRowSelection,
         state: {
             rowSelection,
         },
+        enableRowSelection: true,
+        onRowSelectionChange: setRowSelection,
+        getCoreRowModel: getCoreRowModel(),
+        // QUAN TRỌNG: Giúp table map rowSelection bằng ID thay vì index
+        getRowId: (row: any) => row.id,
     });
+
+    // Trích xuất IDs từ object rowSelection { "id-1": true, "id-2": true }
+    const selectedIds = React.useMemo(() => {
+        return Object.keys(rowSelection);
+    }, [rowSelection]);
+
+    // Chỉ gọi callback khi danh sách ID thực sự thay đổi
+    React.useEffect(() => {
+        onSelectionChange?.(selectedIds);
+    }, [selectedIds, onSelectionChange]);
 
     return (
         <div className="space-y-4">
-            {/* Toolbar: Nơi chứa Filter, Xóa, Thêm mới... */}
-            {toolbar && toolbar(table)}
+            {/* Toolbar Area */}
+            {toolbar && (
+                <div className="flex items-center justify-between">
+                    {toolbar}
+                </div>
+            )}
 
+            {/* Table Area */}
             <div className="bg-card rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead
+                                        key={header.id}
+                                        className="text-xs"
+                                    >
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -76,9 +100,13 @@ export function DataTable<TData, TValue>({
                                     data-state={
                                         row.getIsSelected() && "selected"
                                     }
+                                    className="hover:bg-muted/50 transition-colors"
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className="py-2 text-xs"
+                                        >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext(),
@@ -91,16 +119,18 @@ export function DataTable<TData, TValue>({
                             <TableRow>
                                 <TableCell
                                     colSpan={columns.length}
-                                    className="h-24 text-center"
+                                    className="text-muted-foreground h-24 text-center text-xs"
                                 >
-                                    Không có dữ liệu.
+                                    Không tìm thấy kết quả nào.
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination table={table} />
+
+            {/* Pagination Area */}
+            {pagination && <div className="py-2">{pagination}</div>}
         </div>
     );
 }
