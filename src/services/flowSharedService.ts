@@ -13,6 +13,8 @@ export interface FlowShare {
     createdAt: string;
     updatedAt: string;
     content?: string;
+    isLiked: boolean;
+    isSaved: boolean;
     flowShareCategory?: {
         id: string;
         name: string;
@@ -109,8 +111,13 @@ const flowShareService = {
     },
 
     // Lấy danh sách liên quan
-    getRelated: (id: string) =>
-        http.get<FlowShare[]>(`/api/flow-shares/related/${id}`),
+    getRelated: async (id: string) => {
+        const res = await http.get<baseResponse<FlowShare[]>>(
+            `/api/flow-shares/related/${id}`,
+        );
+
+        return res.data;
+    },
 
     // Tạo mới
     create: (body: CreateFlowShareBody) =>

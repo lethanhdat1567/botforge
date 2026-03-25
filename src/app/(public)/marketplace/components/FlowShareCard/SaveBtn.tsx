@@ -5,37 +5,29 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { flowSharedSaveService } from "@/services/flowSharedSaveService";
 import { Bookmark } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
-function SaveBtn({ flowSharedId }: { flowSharedId: string }) {
-    const [isSaved, setIsSaved] = useState(false);
-
-    const checkStatus = async () => {
-        try {
-            const res = await flowSharedSaveService.getSaveStatus(flowSharedId);
-
-            setIsSaved(res.isSaved);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+function SaveBtn({
+    flowSharedId,
+    isSavedData,
+}: {
+    flowSharedId: string;
+    isSavedData: boolean;
+}) {
+    const [isSaved, setIsSaved] = useState(isSavedData);
 
     async function handleSave() {
         try {
             const res = await flowSharedSaveService.toggleSave(flowSharedId);
             setIsSaved(res.status);
 
-            toast.success("Lưu mẫu thành công");
+            toast.success(res.status ? "Lưu mẫu thành công" : "Đã hủy lưu mẫu");
         } catch (error) {
             console.log(error);
             toast.error("Lưu mẫu thất bại");
         }
     }
-
-    useEffect(() => {
-        checkStatus();
-    }, [flowSharedId]);
 
     return (
         <Button

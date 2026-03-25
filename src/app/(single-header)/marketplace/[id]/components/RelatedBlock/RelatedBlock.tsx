@@ -1,10 +1,19 @@
-function RelatedBlock() {
+import FlowShareCard from "@/app/(public)/marketplace/components/FlowShareCard/FlowShareCard";
+import flowShareService from "@/services/flowSharedService";
+
+async function RelatedBlock({ flowSharedId }: { flowSharedId: string }) {
+    const relatedFlowShares = await flowShareService.getRelated(flowSharedId);
+
     return (
         <div>
             <h2 className="mt-10 text-center text-3xl font-semibold">
                 Những sản phẩm liên quan
             </h2>
-            <div>Cards</div>
+            <div className="mt-10 grid grid-cols-4 gap-4">
+                {relatedFlowShares.map((flowShare) => (
+                    <FlowShareCard key={flowShare.id} data={flowShare} />
+                ))}
+            </div>
         </div>
     );
 }

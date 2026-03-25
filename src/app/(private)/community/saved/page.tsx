@@ -1,15 +1,15 @@
-import SharedItem from "@/app/(private)/community/templates/components/SharedItem/SharedItem";
+import FlowShareCard from "@/app/(public)/marketplace/components/FlowShareCard/FlowShareCard";
 import { flowSharedSaveService } from "@/services/flowSharedSaveService";
 
 async function SavedSharedTemplatePage() {
-    const res = await flowSharedSaveService.getMySaved();
+    const flowShares = await flowSharedSaveService.getMySaved();
 
     return (
         <div>
             <h1 className="mb-4 text-2xl font-bold">Mẫu cộng đồng đã lưu</h1>
-            <div className="grid grid-cols-4 gap-4">
-                {res.data.data.map((item: any) => (
-                    <SharedItem key={item.id} sharedItem={item.flowShare} />
+            <div className="mt-10 grid grid-cols-3 gap-4">
+                {flowShares.map((flowShare: any) => (
+                    <FlowShareCard key={flowShare.id} data={flowShare} />
                 ))}
             </div>
         </div>

@@ -22,8 +22,8 @@ async function MarketPlaceDetail({
                 <RenderContent html={res.content || ""} />
             </div>
             <Separator className="my-4" />
-            <ReviewSection />
-            <RelatedBlock />
+            <ReviewSection flowSharedId={id} />
+            <RelatedBlock flowSharedId={id} />
         </div>
     );
 }

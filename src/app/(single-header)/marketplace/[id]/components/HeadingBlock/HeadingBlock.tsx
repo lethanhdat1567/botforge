@@ -1,13 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-    Bookmark,
-    CalendarDays,
-    Download,
-    Heart,
-    MessageSquare,
-} from "lucide-react";
+import { CalendarDays, Download, MessageSquare } from "lucide-react";
 import { FlowShare } from "@/services/flowSharedService";
 import { dateFormat } from "@/lib/timer";
 import LikeBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/LikeBtn/LikeBtn";
