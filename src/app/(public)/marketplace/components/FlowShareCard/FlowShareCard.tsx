@@ -16,23 +16,26 @@ import { resolveMediaSrc } from "@/lib/image";
 import { dateFormat } from "@/lib/timer";
 import { FlowShare } from "@/services/flowSharedService";
 import SaveBtn from "@/app/(public)/marketplace/components/FlowShareCard/SaveBtn";
+import Link from "next/link";
 
 export function FlowShareCard({ data }: { data: FlowShare }) {
     return (
         <Card className="group bg-card flex h-full flex-col gap-0 border-none py-0 shadow-sm transition-all duration-300 hover:shadow-md">
-            <div className="bg-muted group relative aspect-video w-full cursor-pointer overflow-hidden rounded-t-xl">
-                <Image
-                    fill
-                    src={resolveMediaSrc(data.thumbnail)}
-                    alt={data.name}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+            <Link href={`/marketplace/${data.id}`}>
+                <div className="bg-muted group relative aspect-video w-full cursor-pointer overflow-hidden rounded-t-xl">
+                    <Image
+                        fill
+                        src={resolveMediaSrc(data.thumbnail)}
+                        alt={data.name}
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                {/* Button Save */}
-                <div className="absolute top-2 right-2 z-10 -translate-y-2.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <SaveBtn flowSharedId={data.id} />
+                    {/* Button Save */}
+                    <div className="absolute top-2 right-2 z-10 -translate-y-2.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        <SaveBtn flowSharedId={data.id} />
+                    </div>
                 </div>
-            </div>
+            </Link>
             <CardContent className="flex-1 p-4 pb-2">
                 <div className="text-muted-foreground mt-1 mb-2.5 flex items-center justify-between text-[10px] font-medium tracking-wider uppercase">
                     <div className="flex items-center gap-1">
@@ -82,9 +85,11 @@ export function FlowShareCard({ data }: { data: FlowShare }) {
                 </div>
             </CardContent>
             <CardFooter className="mt-4 px-4 pb-4">
-                <Button variant={"default"} className="w-full">
-                    Xem chi tiết
-                </Button>
+                <Link href={`/marketplace/${data.id}`} className="w-full">
+                    <Button variant={"default"} className="w-full">
+                        Xem chi tiết
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     );

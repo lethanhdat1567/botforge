@@ -1,4 +1,5 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
 
 export type FlowSharedLikeUser = {
     id: string;
@@ -10,31 +11,36 @@ export type FlowSharedLikeUser = {
 };
 
 export const flowSharedLikeService = {
-    // POST /flows/like/:flowShareId/toggle
+    // POST /api/flow-share-likes/:flowShareId/toggle
     toggleLike: async (flowShareId: string) => {
-        const response = await api.post(`/flows/like/${flowShareId}/toggle`);
-        return response.data;
-        // { message, data: { likeCount, liked } }
-    },
-
-    // GET /flows/like/:flowShareId/count
-    getLikeCount: async (flowShareId: string) => {
-        const response = await api.get(`/flows/like/${flowShareId}/count`);
-        return response.data;
-        // { data: { likeCount } }
-    },
-
-    // GET /flows/like/:flowShareId/status
-    getLikeStatus: async (flowShareId: string) => {
-        const response = await api.get(`/flows/like/${flowShareId}/status`);
-        return response.data;
-    },
-
-    // GET /flows/like/:flowShareId/users
-    getLikedUsers: async (flowShareId: string) => {
-        const response = await api.get<FlowSharedLikeUser[]>(
-            `/flows/like/${flowShareId}/users`,
+        const response = await http.post<baseResponse<any>>(
+            `/api/flow-share-likes/${flowShareId}`,
+            null,
         );
+        return response.data;
+    },
+
+    // GET /api/flow-share-likes/:flowShareId/count
+    getLikeCount: async (flowShareId: string) => {
+        const response = await http.get<baseResponse<any>>(
+            `/api/flow-share-likes/${flowShareId}/count`,
+        );
+        return response.data;
+    },
+
+    // GET /api/flow-share-likes/:flowShareId/status
+    getLikeStatus: async (flowShareId: string) => {
+        const response = await http.get<baseResponse<any>>(
+            `/api/flow-share-likes/${flowShareId}/status`,
+        );
+        return response.data;
+    },
+
+    // GET /api/flow-share-likes/:flowShareId/users
+    getLikedUsers: async (flowShareId: string) => {
+        const response = await http.get<
+            baseResponse<{ users: FlowSharedLikeUser[] }>
+        >(`/api/flow-share-likes/${flowShareId}`);
         return response.data;
     },
 };
