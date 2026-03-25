@@ -11,6 +11,11 @@ import { useEffect, useState } from "react";
 import { flowService } from "@/services/flowService";
 import UploadThumbnail from "@/app/(private)/components/UploadThumbnail/UploadThumbnail";
 import { SimpleEditor } from "@/components/SimpleEditor/SimpleEditor";
+import { CategorySelector } from "@/app/(private)/community/store/components/SharedForm/components/CategorySelector/CategorySelector";
+import {
+    FlowShareCategory,
+    flowShareCategoryService,
+} from "@/services/flowSharedCategoryService";
 
 type Props = {
     form: UseFormReturn<FormSchemaType>;
@@ -20,6 +25,7 @@ function SharedForm({ form }: Props) {
     const [flowsSelect, setFlowsSelect] = useState<
         { label: string; value: string }[]
     >([]);
+    const [cateogies, setCategories] = useState<FlowShareCategory[]>([]);
 
     const fetchFlows = async () => {
         const res = await flowService.getFlows({});
@@ -32,8 +38,14 @@ function SharedForm({ form }: Props) {
         setFlowsSelect(formatFlows);
     };
 
+    const fetchCategories = async () => {
+        const res = await flowShareCategoryService.list();
+        setCategories(res);
+    };
+
     useEffect(() => {
         fetchFlows();
+        fetchCategories();
     }, []);
 
     return (
@@ -84,7 +96,7 @@ function SharedForm({ form }: Props) {
                     )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     {/* 3. Status - Ruột tự handle */}
                     <Controller
                         name="status"
@@ -129,6 +141,25 @@ function SharedForm({ form }: Props) {
                                         value={field.value}
                                         onChange={field.onChange}
                                         options={flowsSelect}
+                                    />
+                                </div>
+                                {fieldState.error && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+                    <Controller
+                        name="categories"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel>Thể loại mẫu</FieldLabel>
+                                <div className="py-1">
+                                    <CategorySelector
+                                        categories={cateogies}
+                                        selected={field.value || []}
+                                        onChange={field.onChange}
                                     />
                                 </div>
                                 {fieldState.error && (

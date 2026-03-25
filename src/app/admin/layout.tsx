@@ -9,7 +9,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <AdminHeader />
+                {/* <AdminHeader /> */}
                 <Separator />
                 <div className="p-4">{children}</div>
             </SidebarInset>

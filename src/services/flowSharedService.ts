@@ -13,6 +13,11 @@ export interface FlowShare {
     createdAt: string;
     updatedAt: string;
     content?: string;
+    flowShareCategory?: {
+        id: string;
+        name: string;
+        slug: string;
+    }[];
     flow?: {
         id: string;
         name: string;
@@ -33,12 +38,8 @@ export interface FlowShare {
 export interface FlowShareListResponse {
     flowShares: FlowShare[];
     meta: {
-        total: number;
-        lastPage: number;
+        pageCount: number;
         currentPage: number;
-        perPage: number;
-        prev: number | null;
-        next: number | null;
     };
 }
 
@@ -49,6 +50,7 @@ export interface CreateFlowShareBody {
     thumbnail?: string;
     content?: string;
     status?: FlowShareStatus;
+    categories?: string[];
 }
 
 const flowShareService = {
@@ -78,13 +80,24 @@ const flowShareService = {
     }) => http.get<FlowShareListResponse>("/api/flow-shares/admin", { params }),
 
     // Lấy danh sách Public (không cần login)
-    getPublic: (params?: {
+    getPublic: async (params?: {
         q?: string;
         status?: string;
         page?: number;
         limit?: number;
-    }) =>
-        http.get<FlowShareListResponse>("/api/flow-shares/public", { params }),
+        category?: string;
+        sortBy?: string;
+        sortOrder?: string;
+    }) => {
+        const res = await http.get<baseResponse<FlowShareListResponse>>(
+            "/api/flow-shares/public",
+            {
+                params,
+            },
+        );
+
+        return res.data;
+    },
 
     // Chi tiết 1 flow
     getDetail: async (id: string) => {

@@ -14,6 +14,8 @@ const formSchema = z.object({
     flowId: z.string().min(1, "Vui lòng chọn một Flow"),
 
     content: z.string().optional().or(z.literal("")),
+
+    categories: z.array(z.string()).default([]),
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;

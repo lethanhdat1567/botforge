@@ -69,7 +69,7 @@ const data = {
                 },
                 {
                     title: "Kho mẫu cộng đồng",
-                    url: "/community/templates",
+                    url: "/marketplace",
                 },
                 {
                     title: "Mẫu đã lưu",

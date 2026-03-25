@@ -28,6 +28,7 @@ function UpdateSharedTemplatePage() {
             flowId: "",
             thumbnail: null,
             content: "",
+            categories: [],
         },
     });
 
@@ -37,7 +38,9 @@ function UpdateSharedTemplatePage() {
         const fetchData = async () => {
             try {
                 const res = await flowShareService.getDetail(id);
-                console.log("run here");
+                const selectedCategories = res?.flowShareCategory?.map(
+                    (cat) => cat.id,
+                );
 
                 form.reset({
                     name: res.name,
@@ -46,6 +49,7 @@ function UpdateSharedTemplatePage() {
                     flowId: res.flowId,
                     thumbnail: res.thumbnail,
                     content: res.content || "",
+                    categories: selectedCategories,
                 });
             } catch (error) {
                 toast.error("Could not fetch template data");
@@ -67,6 +71,7 @@ function UpdateSharedTemplatePage() {
                 content: data.content,
                 status: data.status,
                 thumbnail: data.thumbnail,
+                categories: data.categories,
             };
 
             await flowShareService.update(id, payload);

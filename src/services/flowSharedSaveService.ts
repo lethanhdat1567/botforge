@@ -1,36 +1,27 @@
-import api from "@/config/axios";
-import type { SharedUser } from "@/services/flowShareService";
-
-export type FlowSharedSaveUser = SharedUser & {
-    createdAt: string;
-};
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
 
 export const flowSharedSaveService = {
     // GET /flows/save/me
     getMySaved: async () => {
-        const response = await api.get("/flows/save/me");
+        const response = await http.get<baseResponse<any>>(
+            "/api/flow-share-saves/me",
+        );
         return response.data;
-        // { message, data: FlowShare[] }
     },
 
     // POST /flows/save/:flowShareId/toggle
     toggleSave: async (flowShareId: string) => {
-        const response = await api.post(`/flows/save/${flowShareId}/toggle`);
+        const response = await http.post<baseResponse<any>>(
+            `/api/flow-share-saves/${flowShareId}`,
+            null,
+        );
         return response.data;
-        // { message, data: { saveCount, saved } }
     },
 
-    // GET /flows/save/:flowShareId/status
     getSaveStatus: async (flowShareId: string) => {
-        const response = await api.get(`/flows/save/${flowShareId}/status`);
-        return response.data;
-        // { message, data: { saved } }
-    },
-
-    // GET /flows/save/:flowShareId/users
-    getSavedUsers: async (flowShareId: string) => {
-        const response = await api.get<FlowSharedSaveUser[]>(
-            `/flows/save/${flowShareId}/users`,
+        const response = await http.get<baseResponse<any>>(
+            `/api/flow-share-saves/${flowShareId}/status`,
         );
         return response.data;
     },

@@ -29,6 +29,7 @@ function CreateSharedTemplatePage() {
             flowId: "",
 
             content: "Nội dung chi tiết của flow sẽ nằm ở đây...",
+            categories: [],
         },
     });
 
@@ -42,6 +43,7 @@ function CreateSharedTemplatePage() {
                 thumbnail: data.thumbnail,
                 content: data.content,
                 status: data.status,
+                categories: data.categories,
             });
 
             toast.success("Template created successfully");
