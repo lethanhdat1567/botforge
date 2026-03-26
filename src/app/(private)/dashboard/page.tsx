@@ -1,85 +1,54 @@
-import { DatePickerWithRange } from "@/app/(private)/dashboard/components/DatePicker/DatePicker";
-import TotalItem from "@/app/(private)/dashboard/components/TotalItem/TotalItem";
-import { DateRange } from "react-day-picker";
-import dayjs from "dayjs";
-import { dashboardService } from "@/services/dashboardService";
-import {
-    mapConversationChart,
-    mapDashboardOverview,
-} from "@/app/(private)/dashboard/helpers";
-import { ChartArea } from "@/app/(private)/dashboard/components/AreaChart/AreaChart";
-import { authService } from "@/services/authService";
+"use client"
 
-async function Dashboard() {
-    const me = await authService.me();
-    console.log(me);
+import { useEffect, useState, useCallback } from "react"
+import { DashboardHeader } from "./_components/dashboard-header"
+import { SummaryCards } from "./_components/summary-cards"
+import { ChartsSection } from "./_components/charts-section"
+import { userDashboardService, DashboardStats } from "@/services/userDashboardService"
+import { toast } from "sonner"
+import { DateRange } from "react-day-picker"
+import { subDays } from "date-fns"
 
-    // const [overview, setOverview] = useState<any>([]);
-    // const [chartData, setChartData] = useState<any[]>([]);
-    // const [loading, setLoading] = useState(false);
-    // const [range, setRange] = useState<DateRange>({
-    //     from: dayjs().startOf("month").toDate(),
-    //     to: dayjs().endOf("day").toDate(),
-    // });
-    // const fetchDashboard = async (range: DateRange) => {
-    //     if (!range.from || !range.to) return;
-    //     try {
-    //         setLoading(true);
-    //         const [overviewRes, chartRes] = await Promise.all([
-    //             dashboardService.overview({
-    //                 from: range.from,
-    //                 to: range.to,
-    //             }),
-    //             dashboardService.conversationsChart({
-    //                 from: range.from,
-    //                 to: range.to,
-    //             }),
-    //         ]);
-    //         setOverview(mapDashboardOverview(overviewRes.data.data));
-    //         setChartData(mapConversationChart(chartRes.data.data));
-    //     } catch (error) {
-    //         console.error("Fetch dashboard failed:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-    // useEffect(() => {
-    //     fetchDashboard(range);
-    // }, [range]);
-    // return (
-    //     <div>
-    //         <div className="mb-6 flex items-center justify-between">
-    //             <h1 className="text-2xl font-bold">Tổng quan</h1>
-    //             {/* Date picker */}
-    //             <DatePickerWithRange
-    //                 initDate={range}
-    //                 onSelect={(r) => {
-    //                     if (!r?.from || !r?.to) return;
-    //                     setRange(r);
-    //                 }}
-    //             />
-    //         </div>
-    //         <div className="mt-4 space-y-4">
-    //             {/* Blocks section  */}
-    //             <div className="grid grid-cols-4 gap-2">
-    //                 {overview.map((item: any) => (
-    //                     <TotalItem
-    //                         key={item.id}
-    //                         title={item.title}
-    //                         value={item.value}
-    //                         change={item.change}
-    //                         trend={item.trend}
-    //                         icon={item.icon}
-    //                     />
-    //                 ))}
-    //             </div>
-    //             {/* Chart section */}
-    //             <ChartArea data={chartData} />
-    //         </div>
-    //     </div>
-    // );
+export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 30),
+    to: new Date(),
+  })
 
-    return null;
+  const fetchStats = useCallback(async () => {
+    if (!date?.from || !date?.to) return;
+    
+    setIsLoading(true)
+    try {
+      const data = await userDashboardService.getUserStats(
+        date.from.toISOString(),
+        date.to.toISOString()
+      )
+
+      console.log(data);
+      
+      setStats(data)
+    } catch (error) {
+      console.error("Failed to fetch dashboard stats:", error)
+      toast.error("Không thể tải dữ liệu dashboard")
+    } finally {
+      setIsLoading(false)
+    }
+  }, [date])
+
+  useEffect(() => {
+    fetchStats()
+  }, [fetchStats])
+
+  return (
+    <div className="flex-1 space-y-8 min-h-screen bg-neutral-50/30 pb-10">
+      <DashboardHeader date={date} setDate={setDate} />
+      <div className="space-y-4">
+        <SummaryCards data={stats?.summary} isLoading={isLoading} />
+        <ChartsSection chartData={stats?.chartData} summary={stats?.summary} isLoading={isLoading} />
+      </div>
+    </div>
+  )
 }
-
-export default Dashboard;
