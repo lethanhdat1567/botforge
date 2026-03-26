@@ -29,6 +29,8 @@ function StorePage() {
                 page: page,
             });
 
+            console.log(res.flowShares);
+
             setSharedTemplates(res.flowShares);
             setMeta(res.meta as any);
         } catch (error) {

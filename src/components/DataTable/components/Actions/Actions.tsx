@@ -1,4 +1,3 @@
-// components/shared-flow/actions.tsx
 "use client";
 
 import { Edit2, Eye, MoreHorizontal, Trash2 } from "lucide-react";
@@ -29,6 +28,9 @@ export default function Actions({
 }: ActionsProps) {
     const [showDestroyAlert, setShowDestroyAlert] = useState(false);
 
+    // Nếu không có bất kỳ hành động nào được truyền vào, không render menu để tối ưu UI
+    if (!onEdit && !onDelete && !onView) return null;
+
     return (
         <>
             <DropdownMenu>
@@ -41,45 +43,58 @@ export default function Actions({
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[160px]">
-                    <DropdownMenuLabel className="text-muted-foreground text-[11px] font-medium">
+                <DropdownMenuContent
+                    align="end"
+                    className="w-[160px] rounded-none border-neutral-200"
+                >
+                    <DropdownMenuLabel className="text-muted-foreground text-[10px] font-bold tracking-widest uppercase">
                         Thao tác
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem
-                        onClick={() => onView?.(id)}
-                        className="cursor-pointer text-xs"
-                    >
-                        <Eye className="mr-2 h-3.5 w-3.5" />
-                        Xem chi tiết
-                    </DropdownMenuItem>
+                    {onView && (
+                        <DropdownMenuItem
+                            onClick={() => onView(id)}
+                            className="cursor-pointer text-xs"
+                        >
+                            <Eye className="mr-2 h-3.5 w-3.5" />
+                            Xem chi tiết
+                        </DropdownMenuItem>
+                    )}
 
-                    <DropdownMenuItem
-                        onClick={() => onEdit?.(id)}
-                        className="cursor-pointer text-xs"
-                    >
-                        <Edit2 className="mr-2 h-3.5 w-3.5" />
-                        Chỉnh sửa
-                    </DropdownMenuItem>
+                    {onEdit && (
+                        <DropdownMenuItem
+                            onClick={() => onEdit(id)}
+                            className="cursor-pointer text-xs"
+                        >
+                            <Edit2 className="mr-2 h-3.5 w-3.5" />
+                            Chỉnh sửa
+                        </DropdownMenuItem>
+                    )}
 
-                    <DropdownMenuSeparator />
-
-                    <DropdownMenuItem
-                        variant="destructive"
-                        onClick={() => setShowDestroyAlert(true)}
-                        className="text-destructive focus:text-destructive cursor-pointer text-xs"
-                    >
-                        <Trash2 className="mr-2 h-3.5 w-3.5" />
-                        Xóa quy trình
-                    </DropdownMenuItem>
+                    {onDelete && (
+                        <>
+                            {(onView || onEdit) && <DropdownMenuSeparator />}
+                            <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => setShowDestroyAlert(true)}
+                                className="text-destructive focus:text-destructive cursor-pointer text-xs"
+                            >
+                                <Trash2 className="mr-2 h-3.5 w-3.5" />
+                                Xóa quy trình
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
-            <AlertDestroyDialog
-                open={showDestroyAlert}
-                onOpenChange={setShowDestroyAlert}
-                onConfirm={() => onDelete?.(id)}
-            />
+
+            {onDelete && (
+                <AlertDestroyDialog
+                    open={showDestroyAlert}
+                    onOpenChange={setShowDestroyAlert}
+                    onConfirm={() => onDelete(id)}
+                />
+            )}
         </>
     );
 }

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface StatusBadgeProps {
-    status: string; // "active" | "inactive"
+    status: string;
 }
 
 export default function StatusBadge({ status }: StatusBadgeProps) {

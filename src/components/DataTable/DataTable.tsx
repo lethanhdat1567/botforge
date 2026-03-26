@@ -7,6 +7,8 @@ import {
     getCoreRowModel,
     useReactTable,
     RowSelectionState,
+    getSortedRowModel,
+    SortingState,
 } from "@tanstack/react-table";
 import {
     Table,
@@ -36,17 +38,20 @@ export function DataTable<TData, TValue>({
     const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
         {},
     );
+    const [sorting, setSorting] = React.useState<SortingState>([]);
 
     const table = useReactTable({
         data,
         columns,
         state: {
             rowSelection,
+            sorting,
         },
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
-        // QUAN TRỌNG: Giúp table map rowSelection bằng ID thay vì index
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
         getRowId: (row: any) => row.id,
     });
 

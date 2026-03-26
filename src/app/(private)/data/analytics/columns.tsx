@@ -1,26 +1,25 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import Status from "@/app/(private)/data/analytics/components/Status";
-import VariableDialog from "@/app/(private)/data/analytics/components/VariableDialog/VariableDialog";
-import StepHistory from "@/app/(private)/data/analytics/components/StepHistory/StepHistory";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FlowRecord } from "@/services/flowRecordService";
+import Actions from "@/components/DataTable/components/Actions/Actions";
+import { Hash, User, Calendar } from "lucide-react";
+import { dateFormat, timerFormat } from "@/lib/timer";
+import FlowRecordStatusBadge from "@/app/(private)/data/analytics/components/FlowRecordStatusBadge";
+import VariableDialog from "@/app/(private)/data/analytics/components/VariableDialog";
+import { ErrorLogDialog } from "@/app/(private)/data/analytics/components/ErrorDialog";
+import { DataTableColumnHeader } from "@/components/DataTable/components/DataTableColumnHeader/DataTableColumnHeader";
 
-export interface TrackingFlow {
-    id: string;
-    platformUserId: string;
-    ownerUserId: string;
-    flowId: string;
-    pageId: string;
-    currentStep: string;
-    stepHistory?: any; // JSON array
-    variables?: any; // JSON object
-    status: "running" | "pending" | "cancelled" | "completed";
-    createdAt: Date;
-    updatedAt: Date;
+interface FlowRecordColumnProps {
+    onDelete?: (id: string) => void;
+    onView?: (id: string) => void;
 }
 
-export const columns: ColumnDef<TrackingFlow>[] = [
+export const getFlowRecordColumns = ({
+    onDelete,
+    onView,
+}: FlowRecordColumnProps): ColumnDef<FlowRecord>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -33,60 +32,102 @@ export const columns: ColumnDef<TrackingFlow>[] = [
                     table.toggleAllPageRowsSelected(!!value)
                 }
                 aria-label="Chọn tất cả"
+                className="translate-y-0.5 border-neutral-300"
             />
         ),
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Chọn dòng"
+                aria-label="Chọn hàng"
+                className="translate-y-0.5 border-neutral-300"
             />
         ),
         enableSorting: false,
         enableHiding: false,
     },
-
-    {
-        accessorKey: "platformUserId",
-        header: "ID người dùng nền tảng",
-    },
     {
         accessorKey: "flowId",
-        header: "ID kịch bản",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Mã Quy trình" />
+        ),
+        cell: ({ row }) => (
+            <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                    <Hash className="h-3 w-3 text-neutral-400" />
+                    <span className="font-mono text-[11px] font-medium text-neutral-900 uppercase">
+                        {row.original.flowId.slice(-10)}
+                    </span>
+                </div>
+                <span className="text-[10px] text-neutral-400 italic">
+                    Node: {row.original.currentNodeId?.slice(-6) || "N/A"}
+                </span>
+            </div>
+        ),
     },
     {
-        accessorKey: "currentStep",
-        header: "Bước hiện tại",
-    },
-    {
-        accessorKey: "stepHistory",
-        header: "Lịch sử bước",
-        cell: ({ getValue }) => {
-            const value = getValue<any>();
-            if (!value) return null;
-            return <StepHistory history={value} />;
-        },
-    },
-    {
-        accessorKey: "variables",
-        header: "Biến",
-        cell: ({ getValue }) => {
-            const value = getValue<any>();
-            if (!value) return null;
-            return <VariableDialog variable={value} />;
-        },
+        accessorKey: "senderId",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Người gửi" />
+        ),
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2 text-neutral-700">
+                <User className="h-3.5 w-3.5 text-neutral-400" />
+                <span className="text-xs font-medium">
+                    {row.original.senderId || "Hệ thống"}
+                </span>
+            </div>
+        ),
     },
     {
         accessorKey: "status",
-        header: "Trạng thái",
-        cell: ({ getValue }) => {
-            return <Status status={getValue<string>() as any} />;
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Trạng thái" />
+        ),
+        cell: ({ row }) => (
+            <FlowRecordStatusBadge status={row.original.status} />
+        ),
+    },
+    {
+        id: "variables",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Biến số" />
+        ),
+        cell: ({ row }) => (
+            <VariableDialog variables={row.original.variables} />
+        ),
+    },
+    {
+        accessorKey: "lastInteraction",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Tương tác cuối" />
+        ),
+        cell: ({ row }) => {
+            const { lastInteraction, errorLog } = row.original;
+            return (
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2 text-neutral-500">
+                        <Calendar className="h-3 w-3" />
+                        <span className="font-mono text-[11px]">
+                            {timerFormat(lastInteraction)}
+                        </span>
+                    </div>
+                    {errorLog && <ErrorLogDialog log={errorLog} />}
+                </div>
+            );
         },
     },
     {
-        accessorKey: "createdAt",
-        header: "Thời điểm tạo",
-        cell: ({ getValue }) =>
-            new Date(getValue<Date>()).toLocaleString("vi-VN"),
+        id: "actions",
+        header: "",
+        cell: ({ row }) => (
+            <div className="flex justify-end">
+                <Actions
+                    id={row.original.id}
+                    onDelete={onDelete}
+                    onView={onView}
+                />
+            </div>
+        ),
     },
 ];
