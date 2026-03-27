@@ -1,89 +1,58 @@
 "use client";
 
-import { DatePickerWithRange } from "@/app/(private)/dashboard/components/DatePicker/DatePicker";
-import TotalItem from "@/app/(private)/dashboard/components/TotalItem/TotalItem";
-import { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import dayjs from "dayjs";
-import { adminDashboardService } from "@/services/adminDashboardService";
+import { useEffect, useState, useCallback } from "react";
+import { ChartsSection } from "./_components/charts-section";
 import {
-    mapAdminDashboardChart,
-    mapDashboardOverview,
-} from "@/app/admin/dashboard/helpers";
-import { AdminDashboardAreaChart } from "@/app/admin/dashboard/AdminAreaChart";
+    dashboardService,
+    AdminDashboardStats,
+} from "@/services/dashboardService";
+import { toast } from "sonner";
+import { DateRange } from "react-day-picker";
+import { subDays } from "date-fns";
+import { DashboardHeader } from "./_components/dashboard-header";
+import { SummaryCards } from "./_components/summary-cards";
 
-function AdmimDashboardPage() {
-    // const [overview, setOverview] = useState<any>([]);
-    // const [chartData, setChartData] = useState<any[]>([]);
-    // const [loading, setLoading] = useState(false);
+export default function AdminDashboardPage() {
+    const [stats, setStats] = useState<AdminDashboardStats | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: subDays(new Date(), 7),
+        to: new Date(),
+    });
 
-    // const [range, setRange] = useState<DateRange>({
-    //     from: dayjs().startOf("month").toDate(),
-    //     to: dayjs().endOf("day").toDate(),
-    // });
+    const fetchStats = useCallback(async () => {
+        if (!date?.from || !date?.to) return;
 
-    // const fetchDashboard = async (range: DateRange) => {
-    //     if (!range.from || !range.to) return;
+        setIsLoading(true);
+        try {
+            const data = await dashboardService.getAdminStats(
+                date.from.toISOString(),
+                date.to.toISOString(),
+            );
 
-    //     try {
-    //         setLoading(true);
-    //         const [overviewRes, chartRes] = await Promise.all([
-    //             adminDashboardService.overview({
-    //                 from: range.from,
-    //                 to: range.to,
-    //             }),
-    //             adminDashboardService.chart({
-    //                 from: range.from,
-    //                 to: range.to,
-    //             }),
-    //         ]);
+            setStats(data);
+        } catch (error) {
+            console.error("Failed to fetch admin stats:", error);
+            toast.error("Không thể tải dữ liệu quản trị");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [date]);
 
-    //         setOverview(mapDashboardOverview(overviewRes.data.data));
-    //         setChartData(mapAdminDashboardChart(chartRes.data.data));
-    //     } catch (error) {
-    //         console.error("Fetch dashboard failed:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    useEffect(() => {
+        fetchStats();
+    }, [fetchStats]);
 
-    // useEffect(() => {
-    //     fetchDashboard(range);
-    // }, [range]);
-
-    // return (
-    //     <div>
-    //         <div className="mb-6 flex items-center justify-between">
-    //             <h1 className="text-2xl font-bold">Tổng quan</h1>
-    //             {/* Date picker */}
-    //             <DatePickerWithRange
-    //                 initDate={range}
-    //                 onSelect={(r) => {
-    //                     if (!r?.from || !r?.to) return;
-    //                     setRange(r);
-    //                 }}
-    //             />
-    //         </div>
-    //         <div className="mt-4 space-y-4">
-    //             {/* Blocks section  */}
-    //             <div className="grid grid-cols-4 gap-2">
-    //                 {overview.map((item: any) => (
-    //                     <TotalItem
-    //                         key={item.id}
-    //                         title={item.title}
-    //                         value={item.value}
-    //                         change={item.change}
-    //                         trend={item.trend}
-    //                         icon={item.icon}
-    //                     />
-    //                 ))}
-    //             </div>
-    //             {/* Chart section */}
-    //             <AdminDashboardAreaChart data={chartData} />
-    //         </div>
-    //     </div>
-    // );
-    return null;
+    return (
+        <div className="min-h-screen flex-1 space-y-8 bg-neutral-50/30 pb-10">
+            <DashboardHeader date={date} setDate={setDate} />
+            <div className="space-y-4">
+                <SummaryCards data={stats?.summary} isLoading={isLoading} />
+                <ChartsSection
+                    chartData={stats?.chartData}
+                    isLoading={isLoading}
+                />
+            </div>
+        </div>
+    );
 }
-
-export default AdmimDashboardPage;

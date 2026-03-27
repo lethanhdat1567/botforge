@@ -7,6 +7,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { resolveMediaSrc } from "@/lib/image";
 import { profileService } from "@/services/profileService";
+import { useAuthStore } from "@/store/authStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -14,20 +15,34 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 export function FormProfile() {
+    const user = useAuthStore((state) => state.user)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        
         defaultValues: {
             displayName: "",
-            avatar: null,
+            username: "",
+            email: "",
+            avatar: "",
         },
     });
+
+    const errors = form.formState.errors
+
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            console.log("Form Errors:", errors);
+        }
+    }, [errors]);
 
     const fetchUser = async () => {
         try {
             const res = await profileService.getProfile();
-
-            form.setValue("displayName", res.data.displayName);
-            form.setValue("avatar", resolveMediaSrc(res.data.avatar) as string);
+                
+            form.setValue("displayName", res.displayName || "");
+            form.setValue("username", res.username || "");
+            form.setValue("email", res.email || "");
+            form.setValue("avatar", resolveMediaSrc(res.avatar) as string);
         } catch (error) {
             console.log(error);
         }
@@ -38,13 +53,13 @@ export function FormProfile() {
     }, []);
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data);
-
-        // Do something with the form values.
+        if(!user) return
         try {
-            await profileService.updateProfile({
+            await profileService.updateProfile(user?.id, {
                 displayName: data.displayName,
-                avatar: data.avatar as File,
+                username: data.username,
+                email: data.email,
+                avatar: data.avatar as string,
             });
 
             fetchUser();
@@ -56,7 +71,7 @@ export function FormProfile() {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <Controller
                 name="avatar"
                 control={form.control}
@@ -64,23 +79,65 @@ export function FormProfile() {
                     <AvatarUpload
                         value={field.value || ""}
                         onChange={field.onChange}
-                        src={undefined /* user.avatar từ BE */}
                     />
                 )}
             />
+            <div className="grid grid-cols-2 gap-4">
+                <Controller
+                    name="displayName"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>
+                                Display name
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                id={field.name}
+                                aria-invalid={fieldState.invalid}
+                                className="rounded-none font-medium"
+                                placeholder="Enter your display name"
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name="username"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>
+                                Username
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                id={field.name}
+                                aria-invalid={fieldState.invalid}
+                                className="rounded-none font-medium"
+                                placeholder="Enter your username"
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+            </div>
             <Controller
-                name="displayName"
+                name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>
-                            Display name
-                        </FieldLabel>
+                        <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                         <Input
                             {...field}
                             id={field.name}
                             aria-invalid={fieldState.invalid}
-                            className="rounded-none"
+                            className="rounded-none font-medium "
+                            placeholder="Enter your email"
                         />
                         {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
@@ -89,7 +146,7 @@ export function FormProfile() {
                 )}
             />
             <div className="mt-6 flex items-center justify-end">
-                <Button className="rounded-none">Save</Button>
+                <Button className="rounded-none px-8 font-bold">Save</Button>
             </div>
         </form>
     );

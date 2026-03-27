@@ -12,67 +12,67 @@ import SearchInput from "@/components/DataTable/SearchInput";
 import { Button } from "@/components/ui/button";
 import AlertDestroyDialog from "@/components/AlertDestroyDialog";
 
-import { profileService, User } from "@/services/profileService";
+import flowShareService, { FlowShare } from "@/services/flowSharedService";
 import { PaginationMeta } from "@/types/data-table";
-import { getUserColumns } from "./userColumns";
+import { getFlowShareColumns } from "./flowShareColumns";
 
-export default function AdminUserPage() {
+export default function AdminFlowSharesPage() {
     const router = useRouter();
-    const [users, setUsers] = useState<User[]>([]);
+    const [flowShares, setFlowShares] = useState<FlowShare[]>([]);
     const [searchValue, setSearchValue] = useState("");
     const [meta, setMeta] = useState<PaginationMeta | null>(null);
     const [destroySelect, setDestroySelect] = useState<string[]>([]);
     const [alertDestroy, setAlertDestroy] = useState(false);
 
-    const fetchUsers = useCallback(
+    const fetchFlowShares = useCallback(
         async (page = 1) => {
             try {
-                const data = await profileService.getAdminUsers({
+                const data = await flowShareService.getListForAdmin({
                     q: searchValue,
                     page: page,
+                    status: "active",
                 });
 
-                setUsers(data.users);
+                setFlowShares(data.flowShares);
                 setMeta(data.meta);
             } catch (error) {
-                console.error("Error fetching admin users:", error);
-                toast.error("Không thể tải danh sách người dùng");
+                console.error("Error fetching admin flow shares:", error);
+                toast.error("Không thể tải danh sách quy trình chia sẻ");
             }
         },
         [searchValue],
     );
 
-    console.log(users);
-
     useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers]);
+        fetchFlowShares();
+    }, [fetchFlowShares]);
 
     const handleDelete = async (id: string) => {
         try {
-            await profileService.deleteUser(id);
-            toast.success("Xóa người dùng thành công");
-            fetchUsers(meta?.currentPage || 1);
+            await flowShareService.delete(id);
+            toast.success("Xóa quy trình chia sẻ thành công");
+            fetchFlowShares(meta?.currentPage || 1);
         } catch (error) {
             console.error(error);
-            toast.error("Xóa người dùng thất bại");
+            toast.error("Xóa quy trình chia sẻ thất bại");
         }
     };
 
     const handleDestroySelect = async () => {
         try {
-            await profileService.deleteBulkUsers(destroySelect);
+            await flowShareService.deleteMany(destroySelect);
             toast.success("Xóa hàng loạt thành công");
             setDestroySelect([]);
-            fetchUsers(1);
+            fetchFlowShares(1);
         } catch (error) {
             console.error(error);
             toast.error("Xóa hàng loạt thất bại");
         }
     };
 
-    const userColumns = getUserColumns({
+    const flowShareColumns = getFlowShareColumns({
         onDelete: handleDelete,
+        onView: (id) => router.push(`/marketplace/${id}`),
     });
 
     return (
@@ -80,30 +80,25 @@ export default function AdminUserPage() {
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
                     <h1 className="text-2xl font-bold tracking-tight text-stone-900">
-                        Quản lý người dùng
+                        Quản lý Thư viện quy trình
                     </h1>
                     <p className="text-xs font-medium text-stone-500 italic">
-                        Danh sách và phân quyền người dùng trong hệ thống
+                        Danh sách các quy trình được người dùng chia sẻ lên thư
+                        viện
                     </p>
                 </div>
-                <Link href={"/admin/users/new" as any}>
-                    <Button className="rounded-none bg-black text-white shadow-md transition-all hover:bg-stone-800 active:scale-95">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Tạo người dùng
-                    </Button>
-                </Link>
             </div>
 
             <div className="mt-6">
                 <DataTable
-                    data={users}
-                    columns={userColumns}
+                    data={flowShares}
+                    columns={flowShareColumns}
                     onSelectionChange={(ids) => setDestroySelect(ids)}
                     toolbar={
                         <div className="flex items-center gap-4">
                             <SearchInput
                                 onChange={(val) => setSearchValue(val)}
-                                placeholder="Tìm kiếm người dùng..."
+                                placeholder="Tìm kiếm quy trình..."
                             />
                             {destroySelect.length > 0 && (
                                 <Button
@@ -111,7 +106,7 @@ export default function AdminUserPage() {
                                     className="rounded-none text-[11px] font-bold tracking-widest uppercase"
                                     onClick={() => setAlertDestroy(true)}
                                 >
-                                    Xóa {destroySelect.length} người dùng
+                                    Xóa {destroySelect.length} quy trình
                                 </Button>
                             )}
                         </div>
@@ -121,7 +116,7 @@ export default function AdminUserPage() {
                             <div className="border-t border-stone-100 bg-stone-50/30">
                                 <DataTablePagination
                                     meta={meta}
-                                    onPageChange={fetchUsers}
+                                    onPageChange={fetchFlowShares}
                                 />
                             </div>
                         )

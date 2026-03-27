@@ -1,5 +1,6 @@
 import { http } from "@/http/fetch";
 import { baseResponse } from "@/types/response";
+import { PaginationMeta } from "@/types/data-table";
 
 export type FlowShareStatus = "active" | "inactive";
 
@@ -39,10 +40,7 @@ export interface FlowShare {
 
 export interface FlowShareListResponse {
     flowShares: FlowShare[];
-    meta: {
-        pageCount: number;
-        currentPage: number;
-    };
+    meta: PaginationMeta;
 }
 
 export interface CreateFlowShareBody {
@@ -74,12 +72,18 @@ const flowShareService = {
     },
 
     // Lấy danh sách cho Admin
-    getListForAdmin: (params?: {
+    getListForAdmin: async (params?: {
         q?: string;
         status?: string;
         page?: number;
         limit?: number;
-    }) => http.get<FlowShareListResponse>("/api/flow-shares/admin", { params }),
+    }) => {
+        const res = await http.get<baseResponse<FlowShareListResponse>>(
+            "/api/flow-shares/admin",
+            { params },
+        );
+        return res.data;
+    },
 
     // Lấy danh sách Public (không cần login)
     getPublic: async (params?: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,10 +12,13 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/authStore";
+import { authService } from "@/services/authService";
 
 type FormData = z.infer<typeof changePasswordSchema>;
 
 function ChangePassword() {
+    const [user, setUser] = useState<any>()
     const [showOld, setShowOld] = useState(false);
     const [showNew, setShowNew] = useState(false);
 
@@ -27,9 +30,22 @@ function ChangePassword() {
         },
     });
 
+    const fetchUser = async () => {
+        const user = await authService.me();
+        
+        setUser(user);
+    }
+
+    useEffect(() => {
+        fetchUser();
+    },[])
+
     async function onSubmit(data: FormData) {
+        if(!user) return
         try {
-            await profileService.changePassword(data);
+            console.log(data);
+            
+            await profileService.changePassword(user?.id, data);
         } catch (error: any) {
             const code = error?.response?.data?.code;
 
@@ -46,13 +62,15 @@ function ChangePassword() {
         }
     }
 
+    if(user?.isSocialAccount) return null;
+
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            <h3 className="text-lg font-semibold">Change password</h3>
+            <h3 className="text-lg font-semibold">Đổi mật khẩu</h3>
 
             {/* Old password */}
             <Field data-invalid={!!form.formState.errors.oldPassword}>
-                <FieldLabel>Old password</FieldLabel>
+                <FieldLabel>Mật khẩu cũ</FieldLabel>
                 <div className="relative">
                     <Input
                         type={showOld ? "text" : "password"}
@@ -72,7 +90,7 @@ function ChangePassword() {
 
             {/* New password */}
             <Field data-invalid={!!form.formState.errors.newPassword}>
-                <FieldLabel>New password</FieldLabel>
+                <FieldLabel>Mật khẩu mới</FieldLabel>
                 <div className="relative">
                     <Input
                         type={showNew ? "text" : "password"}

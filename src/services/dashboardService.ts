@@ -1,49 +1,58 @@
-// services/dashboard.service.ts
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
-export type DashboardOverviewParams = {
-    from?: Date | string;
-    to?: Date | string;
-};
+export interface DashboardStats {
+    summary: {
+        flowsCount: number;
+        recordsCount: number;
+        sharesCount: number;
+        executionsCount: number;
+    };
+    chartData: Array<{
+        day: string;
+        executions: number;
+    }>;
+}
 
-// services/dashboard.service.ts
+export interface AdminDashboardStats {
+    summary: {
+        usersCount: number;
+        sharedFlowsCount: number;
+        postsCount: number;
+    };
+    chartData: Array<{
+        day: string;
+        users: number;
+        sharedFlows: number;
+        posts: number;
+    }>;
+}
+
+interface ApiResponse<T> {
+    data: T;
+    message: string;
+    status: number;
+}
+
 export const dashboardService = {
-    overview: async (params?: DashboardOverviewParams) => {
-        const res = await api.get("/dashboard/overview", {
-            params: params
-                ? {
-                      from:
-                          params.from instanceof Date
-                              ? params.from.toISOString()
-                              : params.from,
-                      to:
-                          params.to instanceof Date
-                              ? params.to.toISOString()
-                              : params.to,
-                  }
-                : undefined,
+    /**
+     * Lấy thông tin thống kê Dashboard của User
+     * BE: DashboardController.getUserStats -> DashboardService.getUserStats
+     */
+    getUserStats: async (from?: string, to?: string) => {
+        const res = await http.get<ApiResponse<DashboardStats>>("/api/dashboard/user", {
+            params: { from, to }
         });
-
         return res.data;
     },
 
-    conversationsChart: async (params: {
-        from: Date | string;
-        to: Date | string;
-    }) => {
-        const res = await api.get("/dashboard/conversations/chart", {
-            params: {
-                from:
-                    params.from instanceof Date
-                        ? params.from.toISOString()
-                        : params.from,
-                to:
-                    params.to instanceof Date
-                        ? params.to.toISOString()
-                        : params.to,
-            },
+    /**
+     * Lấy thông tin thống kê Dashboard của Admin
+     * BE: DashboardController.getAdminStats -> DashboardService.getAdminStats
+     */
+    getAdminStats: async (from?: string, to?: string) => {
+        const res = await http.get<ApiResponse<AdminDashboardStats>>("/api/dashboard/admin", {
+            params: { from, to }
         });
-
         return res.data;
     },
 };

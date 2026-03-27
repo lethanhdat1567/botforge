@@ -16,7 +16,7 @@ function Navbar() {
         },
         {
             title: "Hướng dẫn",
-            link: "/guides",
+            link: "/blogs",
         },
         {
             title: "Liên hệ",

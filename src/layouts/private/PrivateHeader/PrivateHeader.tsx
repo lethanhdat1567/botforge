@@ -1,6 +1,5 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import Notification from "@/layouts/private/PrivateHeader/components/Notification/Notification";
 import { ToggleTheme } from "@/layouts/private/PrivateHeader/components/ToggleTheme/ToggleTheme";
 import User from "@/layouts/private/PrivateHeader/components/User/User";
 
@@ -15,7 +14,6 @@ function PrivateHeader() {
                 />
             </div>
             <div className="flex items-center gap-4">
-                {/* <Notification /> */}
                 <ToggleTheme />
                 <Separator
                     orientation="vertical"

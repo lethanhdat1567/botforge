@@ -1,59 +1,67 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
+import { User, Loader2 } from "lucide-react"; // Thêm Loader để user biết đang upload
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
+import { uploadService } from "@/services/uploadService"; // Giả sử bạn có service upload riêng
+import { resolveMediaSrc } from "@/lib/image";
 
 type Props = {
-    value: File | string | null;
-    onChange: (value: File | null) => void;
-    src?: string;
+    value?: string | null; 
+    onChange: (url: string) => void; 
 };
 
-function AvatarUpload({ value, onChange, src }: Props) {
+function AvatarUpload({ value, onChange }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [preview, setPreview] = useState<string | undefined>(src);
+    const [preview, setPreview] = useState<string | undefined>(value ?? undefined);
+    const [isUploading, setIsUploading] = useState(false);
 
+    // Đồng bộ preview khi value từ props thay đổi (ví dụ khi load dữ liệu user)
     useEffect(() => {
-        // Khi load từ BE (string)
-        if (typeof value === "string") {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setPreview(value);
-        }
-
-        // Khi upload file mới
-        if (value instanceof File) {
-            const blobUrl = URL.createObjectURL(value);
-            setPreview(blobUrl);
-
-            return () => URL.revokeObjectURL(blobUrl);
-        }
-
-        // Khi xóa
-        if (!value) {
-            setPreview(undefined);
-        }
+        setPreview(value ?? undefined);
     }, [value]);
 
-    function handleFileChange(file?: File) {
+    async function handleFileChange(file?: File) {
         if (!file) return;
-        onChange(file);
+
+        try {
+            setIsUploading(true);
+            
+
+            const response = await uploadService.uploadFile(file); 
+            
+            const uploadedUrl = response.path;
+            setPreview(uploadedUrl)
+            onChange(uploadedUrl);
+            
+        } catch (error) {
+            console.error("Upload failed:", error);
+            setPreview(value ?? undefined);
+        } finally {
+            setIsUploading(false);
+        }
     }
 
     return (
         <div className="mb-4 flex items-center gap-4">
-            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-neutral-200">
+            <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-neutral-200">
                 {preview ? (
                     <Image
-                        src={preview}
+                        src={resolveMediaSrc(preview)}
                         alt="avatar"
-                        className="h-full w-full object-cover"
+                        className={`h-full w-full object-cover ${isUploading ? "opacity-50" : ""}`}
                         width={100}
                         height={100}
                     />
                 ) : (
                     <User className="text-neutral-400" />
+                )}
+                
+                {isUploading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    </div>
                 )}
             </div>
 
@@ -63,14 +71,17 @@ function AvatarUpload({ value, onChange, src }: Props) {
                 accept="image/*"
                 hidden
                 onChange={(e) => handleFileChange(e.target.files?.[0])}
+                disabled={isUploading}
             />
 
             <Button
                 type="button"
-                className="rounded-none"
+                variant="outline"
+                className="rounded-md"
                 onClick={() => inputRef.current?.click()}
+                disabled={isUploading}
             >
-                Upload Image
+                {isUploading ? "Uploading..." : "Change Avatar"}
             </Button>
         </div>
     );

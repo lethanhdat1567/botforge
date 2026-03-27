@@ -6,18 +6,21 @@ import { FlowShare } from "@/services/flowSharedService";
 import { dateFormat } from "@/lib/timer";
 import LikeBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/LikeBtn/LikeBtn";
 import SaveBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/SaveBtn/SaveBtn";
+import { resolveMediaSrc } from "@/lib/image";
 
 function HeadingBlock({ data }: { data: FlowShare }) {
     return (
         <div className="w-6xl">
             <div className="mb-3 flex items-center gap-2">
                 <Avatar className="border-border h-8 w-8 border">
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage
+                        src={resolveMediaSrc(data.user?.avatar) as string}
+                    />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="text-left">
                     <h3 className="text-foreground text-md leading-none font-medium">
-                        Le Thanh Dat
+                        {data.user?.displayName}
                     </h3>
                 </div>
             </div>

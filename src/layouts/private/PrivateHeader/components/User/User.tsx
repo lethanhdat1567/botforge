@@ -6,10 +6,23 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserDropdownContent from "@/layouts/private/PrivateHeader/components/User/UserDropdownContent";
-import { useAuthStore } from "@/store/authStore";
+import { resolveMediaSrc } from "@/lib/image";
+import { authService, User as UserType } from "@/services/authService";
+import { useEffect, useState } from "react";
 
 function User() {
-    const user = useAuthStore((state) => state.user);
+    const [user, setUser] = useState<UserType | null>(null);
+
+    const fetchUser = async () => {
+        const me = await authService.me();
+        setUser(me);
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    if (!user) return;
 
     return (
         <DropdownMenu>

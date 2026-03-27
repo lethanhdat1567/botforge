@@ -55,12 +55,10 @@ export function DataTable<TData, TValue>({
         getRowId: (row: any) => row.id,
     });
 
-    // Trích xuất IDs từ object rowSelection { "id-1": true, "id-2": true }
     const selectedIds = React.useMemo(() => {
         return Object.keys(rowSelection);
     }, [rowSelection]);
 
-    // Chỉ gọi callback khi danh sách ID thực sự thay đổi
     React.useEffect(() => {
         onSelectionChange?.(selectedIds);
     }, [selectedIds, onSelectionChange]);
@@ -83,7 +81,7 @@ export function DataTable<TData, TValue>({
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className="text-xs"
+                                        className="text-md"
                                     >
                                         {header.isPlaceholder
                                             ? null

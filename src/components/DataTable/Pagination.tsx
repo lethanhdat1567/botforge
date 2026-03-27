@@ -20,7 +20,6 @@ export function DataTablePagination({
     meta,
     onPageChange,
 }: DataTablePaginationProps) {
-    // Chỉ hiện nếu có từ 2 trang trở lên
     if (!meta || meta.pageCount <= 1) return null;
 
     return (

@@ -17,6 +17,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar";
+import PrivateLogo from "@/components/PrivateLogo";
 
 const data = {
     versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
@@ -33,12 +34,8 @@ const data = {
                     url: "/admin/users",
                 },
                 {
-                    title: "Flows",
-                    url: "/admin/flows",
-                },
-                {
-                    title: "Cộng đồng",
-                    url: "/admin/community",
+                    title: "Mẫu Cộng đồng",
+                    url: "/admin/flow-shares",
                 },
             ],
         },
@@ -46,7 +43,7 @@ const data = {
             title: "Hỗ trợ",
             items: [
                 {
-                    title: "Blog hướng dẫn",
+                    title: "Bài viết",
                     url: "/admin/support/blog",
                 },
                 {
@@ -69,11 +66,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar {...props}>
             <SidebarHeader>
-                <VersionSwitcher
-                    versions={data.versions}
-                    defaultVersion={data.versions[0]}
-                />
-                <SearchForm />
+                <SidebarHeader>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton size="lg" asChild>
+                                <PrivateLogo />
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarHeader>
             </SidebarHeader>
 
             <SidebarContent>

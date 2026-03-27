@@ -4,10 +4,11 @@ import { baseResponse } from "@/types/response";
 
 const AUTH_BASE_URL = "/api/auth";
 
-interface User {
+export interface User {
     id: string;
     email: string;
     role: string;
+    avatar: string;
 }
 
 type DataResponse = {
@@ -33,9 +34,9 @@ interface RefreshResponse {
 
 export const authService = {
     me: async () => {
-        const res = await http.get(`${AUTH_BASE_URL}/me`);
+        const res: baseResponse<User> = await http.get(`${AUTH_BASE_URL}/me`);
 
-        return res;
+        return res.data;
     },
 
     login: async (payload: {

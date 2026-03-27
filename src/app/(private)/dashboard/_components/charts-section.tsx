@@ -47,7 +47,7 @@ export function ChartsSection({ chartData, summary, isLoading }: ChartsSectionPr
 
   return (
     <div className="w-full pb-8">
-      <Card className="border-stone-200 shadow-xl flex flex-col w-full bg-white relative overflow-hidden group py-0">
+      <Card className="border-stone-200  shadow-xl flex flex-col w-full bg-white relative overflow-hidden group py-0">
         {/* Subtle decorative background */}
         <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity pointer-events-none">
           <TrendingUp className="h-48 w-48 text-stone-900" />
