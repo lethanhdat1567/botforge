@@ -37,15 +37,19 @@ const data = {
                     title: "Mẫu Cộng đồng",
                     url: "/admin/flow-shares",
                 },
+                {
+                    title: "Danh mục bài viết",
+                    url: "/admin/blog-category",
+                },
+                {
+                    title: "Bài viết",
+                    url: "/admin/blogs",
+                },
             ],
         },
         {
             title: "Hỗ trợ",
             items: [
-                {
-                    title: "Bài viết",
-                    url: "/admin/support/blog",
-                },
                 {
                     title: "Chat trực tiếp",
                     url: "/admin/support/chat",
