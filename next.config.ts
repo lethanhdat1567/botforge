@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
                 port: "8000",
                 pathname: "/uploads/**",
             },
+            {
+                protocol: "https",
+                hostname: "i.pravatar.cc",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "images.unsplash.com",
+                pathname: "/**",
+            },
         ],
         unoptimized: true,
     },

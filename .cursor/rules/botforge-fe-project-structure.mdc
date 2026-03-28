@@ -1,0 +1,30 @@
+---
+description: Botforge FE — thư mục components, tên file PascalCase, tách comp con (ưu tiên dự án)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+## Cấu trúc & đặt tên (botforge-fe)
+
+### Colocation với route / feature
+
+- Dùng thư mục **`components`** (tên đúng chữ thường) để gom UI riêng của route hoặc feature — **không** dùng `_components`.
+- Ví dụ: `src/app/admin/support/chat/components/ChatSidebar.tsx` cạnh `page.tsx`, hoặc module feature có `components/` bên trong.
+
+### Tên file component (React)
+
+- File chứa component phải **`PascalCase`** và khớp tên component chính: ví dụ `BadgeStatus.tsx` export `BadgeStatus`, **không** dùng `badge-status.tsx` cho component.
+- File không phải component (hooks, utils, types, schema): có thể `useFoo.ts`, `utils.ts`, `types.ts` theo convention hiện có.
+
+### Phân tách & comp con
+
+- Mỗi component nên **gọn, một trách nhiệm**. Nếu một component có phần UI/con logic đủ lớn (đủ để tái dùng hoặc test riêng), **tách** thành component riêng.
+- Các component con **chỉ dùng bởi parent** đặt trong **`{ParentName}/components/`**, mỗi file **`PascalCase`**.
+- Ví dụ: `OrderSummary/OrderSummary.tsx` và `OrderSummary/components/OrderLineItem.tsx`, `OrderSummary/components/OrderTotalRow.tsx`.
+
+### Route Next.js
+
+- Segment dưới `src/app/` (URL): giữ **kebab-case** theo App Router (ví dụ `blog-category`, `support/chat`).
+
+### Shared UI
+
+- Primitive / shadcn: `src/components/ui/`. Component dùng chéo app: `src/components/` (file/folder PascalCase cho component entries).

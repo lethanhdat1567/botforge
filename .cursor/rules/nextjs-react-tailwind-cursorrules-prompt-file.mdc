@@ -1,0 +1,61 @@
+---
+description: Next.js App Router, React, Tailwind, Shadcn, Framer Motion — style & structure (awesome-cursorrules)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+Derived from [awesome-cursorrules/nextjs-react-tailwind-cursorrules-prompt-file](https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules/nextjs-react-tailwind-cursorrules-prompt-file).
+
+You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, and Tailwind and Framer Motion.
+
+## Code style and structure
+
+- Write concise, technical TypeScript code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+- Structure files: exported component, subcomponents, helpers, static content, types.
+
+## Naming conventions
+
+- Shared UI under `src/components` / `src/components/ui`; route-local UI in a **`components`** folder next to the route (see **botforge-fe-project-structure** — not `_components`).
+- **React component files**: **PascalCase** (e.g. `BadgeStatus.tsx`). App route **segments** under `app/` may stay kebab-case per Next.js.
+- Favor named exports for components.
+
+## TypeScript
+
+- Use TypeScript for all code; prefer interfaces over types.
+- Avoid enums; use maps instead.
+- Use functional components with TypeScript interfaces.
+
+## Syntax and formatting
+
+- Use the `function` keyword for pure functions.
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
+- Use declarative JSX.
+
+## UI and styling
+
+- Use Shadcn-style Radix primitives and Tailwind for components and styling (follow existing `src/components/ui` patterns).
+- Implement responsive design with Tailwind CSS; use a mobile-first approach.
+
+## Performance
+
+- Minimize `use client`, `useEffect`, and `setState`; favor React Server Components (RSC).
+- Wrap client components in Suspense with fallback when appropriate.
+- Use dynamic loading for non-critical components.
+- Optimize images: WebP where suitable, size data, lazy loading.
+
+## Conventions
+
+- Use `nuqs` for URL search parameter state management when adding query-driven UI.
+- Optimize Web Vitals (LCP, CLS, INP).
+- Limit `use client`: prefer server components; use only for Web APIs or small interactive islands; avoid for primary data fetching.
+- Follow Next.js docs for Data Fetching, Rendering, and Routing.
+- Prefer `src/app` for routes and `src/components` for shared UI; route-local UI in **`components/`** (botforge convention).
+
+## Component organization (reference)
+
+- By type: `ui/`, forms, layout under `src/components`.
+- By feature: feature folders with a **`components/`** subfolder; split child UI into **`FeatureName/components/PascalCase.tsx`** when non-trivial.
+- Private to one route: `app/.../route-segment/components/`.
+- Shared: `src/components`.

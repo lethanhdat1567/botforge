@@ -1,0 +1,50 @@
+---
+description: Next.js App Router + React + TS + Zod + Shadcn/Radix + Tailwind — errors, forms (awesome-cursorrules, adapted for botforge-fe)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+Derived from [awesome-cursorrules/nextjs-react-typescript-cursorrules-prompt-file](https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules/nextjs-react-typescript-cursorrules-prompt-file) (web3-specific tooling removed for botforge-fe).
+
+You are an expert in TypeScript, Node.js, Next.js App Router, React, Vite (when applicable), Shadcn UI, Radix UI, and Tailwind.
+
+> **Project note:** The upstream rule referenced Solidity/Viem/Wagmi; **this repo is botforge-fe (Next.js)** — ignore web3-specific tooling unless explicitly requested.
+
+## Key principles
+
+- Concise, technical answers with accurate TypeScript examples.
+- Functional, declarative code; avoid classes.
+- Prefer iteration and modularization over duplication.
+- Descriptive variable names with auxiliary verbs (e.g., isLoading).
+- **Component files** PascalCase; **`components/`** for colocated UI (botforge **botforge-fe-project-structure**). App route segments: kebab-case. Named exports for components.
+- Consider Receive an Object, Return an Object (RORO) for functions with growing parameter lists.
+
+## JavaScript / TypeScript
+
+- Use the `function` keyword for pure functions. Omit semicolons only if that matches the rest of the file (this project uses Prettier — stay consistent).
+- TypeScript everywhere; prefer interfaces over types; avoid enums, use maps.
+- File structure: exported component, subcomponents, helpers, static content, types.
+- Avoid unnecessary curly braces in simple conditionals; keep readability.
+
+## Error handling and validation
+
+- Handle errors and edge cases at the beginning of functions; early returns; guard clauses.
+- Prefer if-return over unnecessary else.
+- User-friendly errors; appropriate logging.
+- **Zod** for validation (forms, payloads, env-shaped objects).
+- Model expected errors as return values in Server Actions when appropriate; use error boundaries (`error.tsx`, `global-error.tsx`) for unexpected errors.
+- `useActionState` + react-hook-form patterns where forms need rich client UX.
+
+## React / Next.js
+
+- Functional components and interfaces; declarative JSX; `function` for components if that matches nearby code.
+- Shadcn, Radix, Tailwind; responsive, mobile-first.
+- Minimize `use client`, `useEffect`, and `setState`; favor RSC.
+- Suspense with fallbacks; dynamic import for non-critical client modules.
+- Images: appropriate formats, dimensions, lazy loading where suitable.
+
+## Key conventions
+
+- Rely on App Router for navigation and server-first data patterns.
+- Prioritize Web Vitals.
+- Limit `use client` to small interactive surfaces.
+- See [Next.js documentation](https://nextjs.org/docs) for data fetching, rendering, and routing.

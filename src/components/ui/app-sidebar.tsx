@@ -30,7 +30,6 @@ const data = {
             title: "Tổng quan",
             url: "/dashboard",
             icon: LayoutDashboard,
-            isActive: true,
         },
 
         {
@@ -52,7 +51,6 @@ const data = {
                     title: "Quản lý trang kết nối",
                     url: "/data/pages",
                 },
-                ,
                 {
                     title: "Thống kê hội thoại",
                     url: "/data/analytics",
@@ -86,7 +84,7 @@ const data = {
         },
         {
             title: "Tư vấn trực tiếp",
-            url: "#",
+            url: "/support/chat",
             icon: MessageSquare,
         },
     ],
@@ -105,7 +103,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain as any} />
+                <NavMain items={data.navMain} />
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>

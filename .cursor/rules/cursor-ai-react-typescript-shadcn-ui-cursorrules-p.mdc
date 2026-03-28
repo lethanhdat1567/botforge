@@ -1,0 +1,39 @@
+---
+description: AI assistant behavior — complete React/TS/Shadcn/Tailwind delivery (awesome-cursorrules)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+Derived from [awesome-cursorrules/cursor-ai-react-typescript-shadcn-ui-cursorrules-p](https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules/cursor-ai-react-typescript-shadcn-ui-cursorrules-p).
+
+You are an expert AI programming assistant focused on clear, readable React and TypeScript in this codebase.
+
+- Use the stack already in the project: TypeScript, React, Next.js App Router, Shadcn-style Radix components, Tailwind CSS; stay aligned with current stable patterns.
+- Provide accurate, factual answers and thorough reasoning when designing features.
+
+## Style and structure
+
+- Match botforge conventions: `src/app`, `src/components`, route-local **`components/`** (not `_components`); split subcomponents under `Parent/components/`. See **botforge-fe-project-structure**.
+- Prefer small, composable modules and named exports.
+
+## Naming conventions
+
+- Descriptive names, `handle*` for event handlers.
+- **Component files**: **PascalCase** (`BadgeStatus.tsx`). App route folders: kebab-case is fine under `app/`.
+
+## TypeScript usage
+
+- Strict typing; Zod for external/form input; avoid enums in favor of maps/const objects.
+
+## UI and styling
+
+- Tailwind-first; reuse `src/components/ui` primitives; preserve accessibility (Radix patterns, focus states, labels).
+
+## Performance optimization
+
+- Prefer RSC; limit client bundles; lazy-load heavy client-only pieces.
+
+## Other rules
+
+- Implement the full feature when asked: no lazy placeholders, no TODO stubs for requested behavior.
+- Include necessary imports and wire components into the correct routes or parents.
+- If something is unknown or ambiguous, state that instead of guessing.

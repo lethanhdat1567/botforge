@@ -1,6 +1,7 @@
 import envConfig from "@/config/envConfig";
 import { authCode } from "@/constants/auth";
 import { getAuthToken, HttpError } from "@/http/helpers";
+import { getOrCreateLiveChatAnonymousId } from "@/lib/live-chat-identity";
 import { redirect } from "next/navigation";
 
 const API_URL = envConfig.BE_URL;
@@ -28,7 +29,7 @@ export const request = async <T>(
     if (options?.params) {
         const cleanParams = Object.fromEntries(
             Object.entries(options.params).filter(
-                ([_, value]) => value !== undefined,
+                ([, value]) => value !== undefined,
             ),
         ) as Record<string, string>;
 
@@ -47,7 +48,14 @@ export const request = async <T>(
 
     const token = await getAuthToken();
 
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    } else if (typeof window !== "undefined") {
+        const anonymousId = getOrCreateLiveChatAnonymousId();
+        if (anonymousId) {
+            headers["X-Anonymous-Id"] = anonymousId;
+        }
+    }
 
     const res = await fetch(fullUrl, {
         ...options,

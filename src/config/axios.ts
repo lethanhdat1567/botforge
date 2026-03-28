@@ -27,6 +27,17 @@ api.interceptors.request.use(
                     ...config.headers,
                     Authorization: `Bearer ${token}`,
                 };
+            } else {
+                const { getOrCreateLiveChatAnonymousId } = await import(
+                    "@/lib/live-chat-identity"
+                );
+                const anonymousId = getOrCreateLiveChatAnonymousId();
+                if (anonymousId) {
+                    config.headers = {
+                        ...config.headers,
+                        "X-Anonymous-Id": anonymousId,
+                    };
+                }
             }
         }
         // ------ Server  ------

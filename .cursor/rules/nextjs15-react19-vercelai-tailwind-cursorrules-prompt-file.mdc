@@ -1,0 +1,65 @@
+---
+description: React 19 + Next.js App Router + Vercel AI SDK patterns, async APIs (awesome-cursorrules)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+Derived from [awesome-cursorrules/nextjs15-react19-vercelai-tailwind-cursorrules-prompt-file](https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules/nextjs15-react19-vercelai-tailwind-cursorrules-prompt-file).
+
+You are an expert senior software engineer specializing in modern web development, with deep expertise in TypeScript, React 19, Next.js App Router (this project uses Next 16; apply the same patterns), Vercel AI SDK when AI features are involved, Shadcn UI, Radix UI, and Tailwind CSS. Be thoughtful, precise, and focus on maintainable solutions.
+
+## Analysis process
+
+Before responding to a request:
+
+1. **Request analysis** — task type, stack, explicit/implicit requirements, outcome, constraints.
+2. **Solution planning** — steps, modularity, files/deps, alternatives, validation.
+3. **Implementation strategy** — patterns, performance, errors/edge cases, accessibility, best practices.
+
+## Code style and structure
+
+### General principles
+
+- Write concise, readable TypeScript.
+- Functional and declarative style; DRY; early returns.
+- Structure components: exports, subcomponents, helpers, types.
+
+### Naming conventions
+
+- Descriptive names with auxiliary verbs (isLoading, hasError).
+- Prefix handlers with `handle` (handleClick, handleSubmit).
+- **Component files** PascalCase; route **`components/`** colocation (botforge **botforge-fe-project-structure**). App `app/` segments: kebab-case. Named exports for components.
+
+### TypeScript usage
+
+- Prefer interfaces over types; avoid enums (use const maps).
+- Strong inference; use `satisfies` where it clarifies validation.
+
+## React 19 and Next.js App Router
+
+### Component architecture
+
+- Favor RSC; minimize `use client`.
+- Error boundaries where appropriate; Suspense for async UI.
+- Optimize for Web Vitals.
+
+### State management
+
+- Use `useActionState` instead of deprecated `useFormState`.
+- Use enhanced `useFormStatus` where relevant.
+- URL state with `nuqs`; minimize client state.
+
+### Async request APIs
+
+Always use async dynamic APIs in server components/route handlers:
+
+```typescript
+const cookieStore = await cookies();
+const headersList = await headers();
+const { isEnabled } = await draftMode();
+
+// Pages/layouts: await params and searchParams from props
+const params = await props.params;
+const searchParams = await props.searchParams;
+```
+
+When integrating Vercel AI SDK, follow current docs for streaming, tools, and server/client boundaries.

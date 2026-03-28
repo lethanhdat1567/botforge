@@ -1,17 +1,41 @@
 import envConfig from "@/config/envConfig";
-import { io, Socket } from "socket.io-client";
+import { getOrCreateLiveChatAnonymousId } from "@/lib/live-chat-identity";
+import { io, type Socket } from "socket.io-client";
 
-let socket: Socket | null = null;
+export type ChatSocketConnectArgs =
+    | { userId: string; role?: "admin" | "user"; conversationId?: string }
+    | { anonymousId: string; conversationId?: string };
 
-export function connectSocket(userId: string, role: "admin" | "user") {
-    socket = io(envConfig.BE_URL, {
-        query: { userId, role },
-    });
+function buildQuery(args: ChatSocketConnectArgs): Record<string, string> {
+    if ("userId" in args) {
+        const q: Record<string, string> = { userId: args.userId };
+        if (args.role) {
+            q.role = args.role;
+        }
+        if (args.conversationId) {
+            q.conversationId = args.conversationId;
+        }
+        return q;
+    }
 
-    return socket;
+    const q: Record<string, string> = { anonymousId: args.anonymousId };
+    if (args.conversationId) {
+        q.conversationId = args.conversationId;
+    }
+    return q;
 }
 
-export function disconnectSocket() {
-    socket?.disconnect();
-    socket = null;
+/** Mỗi lần gọi tạo socket riêng; nhớ `disconnect()` trong cleanup effect. */
+export function connectChatSocket(args: ChatSocketConnectArgs): Socket {
+    return io(envConfig.BE_URL, { query: buildQuery(args) });
+}
+
+/** @deprecated Dùng `connectChatSocket({ userId, role })`. */
+export function connectSocket(userId: string, role?: "admin" | "user"): Socket {
+    return connectChatSocket({ userId, role });
+}
+
+export function connectAnonymousChatSocket(conversationId?: string): Socket {
+    const anonymousId = getOrCreateLiveChatAnonymousId();
+    return connectChatSocket({ anonymousId, conversationId });
 }

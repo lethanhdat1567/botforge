@@ -1,0 +1,64 @@
+---
+description: TypeScript + Zod + Tailwind + Next.js — forms, validation, RSC (awesome-cursorrules, corrected)
+globs: botforge-fe/**/*.ts,botforge-fe/**/*.tsx,botforge-fe/**/*.scss,src/**/*.ts,src/**/*.tsx,src/**/*.scss
+---
+
+Derived from [awesome-cursorrules/typescript-zod-tailwind-nextjs-cursorrules-prompt-](https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules/typescript-zod-tailwind-nextjs-cursorrules-prompt-) (“React Remix” / RSC wording corrected for Next.js).
+
+# Coding style guide
+
+## Code style and structure
+
+- Write concise, technical TypeScript with accurate examples.
+- Use functional and declarative patterns; avoid classes.
+- Prefer iteration and modularization over duplication.
+- Descriptive names with auxiliary verbs (isLoading, hasError).
+- File layout: exported component, subcomponents, helpers, static content, types.
+
+## Naming conventions
+
+- App route segments: kebab-case. **React component files**: **PascalCase**. Colocated UI: **`components/`** — see **botforge-fe-project-structure**.
+- Favor named exports for components.
+
+## TypeScript usage
+
+- TypeScript throughout; prefer interfaces over types.
+- Avoid enums; use maps instead.
+- Functional components with interfaces.
+- Use Zod for form and runtime validation (schemas colocated with actions/API layers where practical).
+
+## Syntax and formatting
+
+- `function` for pure functions.
+- Avoid unnecessary braces in simple conditionals.
+- Declarative JSX.
+
+## Error handling and validation
+
+- Handle errors and edge cases early; early returns and guard clauses.
+- User-friendly messages; log appropriately server-side.
+- Zod at boundaries; model expected errors as return values in Server Actions when suitable.
+- Error boundaries for unexpected failures.
+
+## UI and styling
+
+- Shadcn/Radix + Tailwind; responsive, **mobile-first** (prefer over desktop-first).
+
+## Performance
+
+- Minimize `useEffect` and `setState` where RSC or server data can suffice.
+- Suspense + fallbacks for client async islands; `next/dynamic` for heavy client-only modules.
+- Images: appropriate format, dimensions, loading strategy.
+
+## Key conventions
+
+- URL/search state: use `nuqs` for query-driven UI.
+- Optimize Web Vitals (LCP, CLS, INP).
+- Limit `use client` to interactive islands and Web APIs.
+
+## RSC usage
+
+- Prefer server components and Next.js SSR/streaming.
+- Do not use `use client` as the default for data fetching; keep data reads on the server when possible.
+
+Follow [Next.js](https://nextjs.org/docs) docs for Data Fetching, Rendering, and Routing.
