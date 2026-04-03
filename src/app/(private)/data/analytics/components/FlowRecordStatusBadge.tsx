@@ -22,32 +22,37 @@ const STATUS_META: Record<
 > = {
     [FlowRecordStatus.running]: {
         label: "Running",
-        className: "border-blue-400 bg-blue-100 text-blue-700",
+        className:
+            "border-blue-500/40 bg-blue-500/10 text-blue-800 dark:text-blue-300",
         icon: <PlayCircle className="mr-2 h-3.5 w-3.5" />,
     },
     [FlowRecordStatus.pending]: {
         label: "Pending",
-        className: "border-yellow-400 bg-yellow-100 text-yellow-700",
+        className:
+            "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-300",
         icon: <Clock className="mr-2 h-3.5 w-3.5" />,
     },
     [FlowRecordStatus.processing]: {
         label: "Processing",
-        className: "border-indigo-400 bg-indigo-100 text-indigo-700",
+        className:
+            "border-violet-500/40 bg-violet-500/10 text-violet-800 dark:text-violet-300",
         icon: <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />,
     },
     [FlowRecordStatus.completed]: {
         label: "Completed",
-        className: "border-green-400 bg-green-100 text-green-700",
+        className:
+            "border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300",
         icon: <CheckCircle2 className="mr-2 h-3.5 w-3.5" />,
     },
     [FlowRecordStatus.cancelled]: {
         label: "Cancelled",
-        className: "border-gray-400 bg-gray-100 text-gray-700",
+        className: "border-border bg-muted text-muted-foreground",
         icon: <XCircle className="mr-2 h-3.5 w-3.5" />,
     },
     [FlowRecordStatus.error]: {
         label: "Error",
-        className: "border-red-400 bg-red-100 text-red-700",
+        className:
+            "border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300",
         icon: <AlertCircle className="mr-2 h-3.5 w-3.5" />,
     },
 };

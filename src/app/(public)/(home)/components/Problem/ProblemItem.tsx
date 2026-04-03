@@ -12,7 +12,7 @@ function ProblemItem({ title, description, image, index }: ProblemItemProps) {
     return (
         <AnimatedContent
             delay={index * 0.2}
-            className="bg-background h-full overflow-hidden rounded-xl border border-white shadow-2xl"
+            className="h-full overflow-hidden rounded-xl border border-border bg-background shadow-2xl"
         >
             <Image
                 alt="fallback"
@@ -23,7 +23,7 @@ function ProblemItem({ title, description, image, index }: ProblemItemProps) {
             />
             <div className="px-8 py-4">
                 <h3 className="text-xl font-semibold">{title}</h3>
-                <p className="text-md mt-2 text-neutral-600">{description}</p>
+                <p className="text-md mt-2 text-muted-foreground">{description}</p>
             </div>
         </AnimatedContent>
     );

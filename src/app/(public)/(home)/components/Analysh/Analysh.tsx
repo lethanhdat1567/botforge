@@ -2,12 +2,12 @@ import CountUp from "@/components/CountUp";
 
 function Analysh() {
     return (
-        <div className="mx-auto mt-30 grid w-5xl grid-cols-4 rounded-sm border border-white p-8 shadow-2xl">
+        <div className="mx-auto mt-30 grid w-5xl grid-cols-4 rounded-sm border border-border bg-background p-8 shadow-2xl">
             <div>
                 <h3 className="text-4xl font-bold">
                     <CountUp from={0} to={100} />+
                 </h3>
-                <p className="mt-3 text-sm text-neutral-700">
+                <p className="mt-3 text-sm text-muted-foreground">
                     Flow hội thoại tùy chỉnh
                 </p>
             </div>
@@ -16,7 +16,7 @@ function Analysh() {
                     <CountUp from={0} to={10} />
                     K+
                 </h3>
-                <p className="mt-3 text-sm text-neutral-700">
+                <p className="mt-3 text-sm text-muted-foreground">
                     Tin nhắn xử lý mỗi ngày
                 </p>
             </div>
@@ -25,13 +25,13 @@ function Analysh() {
                     <CountUp from={0} to={24} />
                     /<CountUp from={0} to={7} />
                 </h3>
-                <p className="mt-3 text-sm text-neutral-700">
+                <p className="mt-3 text-sm text-muted-foreground">
                     Tự động phản hồi
                 </p>
             </div>
             <div>
                 <h3 className="text-4xl font-bold">0₫</h3>
-                <p className="mt-3 text-sm text-neutral-700">
+                <p className="mt-3 text-sm text-muted-foreground">
                     Khởi tạo miễn phí
                 </p>
             </div>

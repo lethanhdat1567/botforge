@@ -32,7 +32,7 @@ export const getFlowRecordColumns = ({
                     table.toggleAllPageRowsSelected(!!value)
                 }
                 aria-label="Chọn tất cả"
-                className="translate-y-0.5 border-neutral-300"
+                className="border-input translate-y-0.5"
             />
         ),
         cell: ({ row }) => (
@@ -40,7 +40,7 @@ export const getFlowRecordColumns = ({
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 aria-label="Chọn hàng"
-                className="translate-y-0.5 border-neutral-300"
+                className="border-input translate-y-0.5"
             />
         ),
         enableSorting: false,
@@ -54,12 +54,12 @@ export const getFlowRecordColumns = ({
         cell: ({ row }) => (
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                    <Hash className="h-3 w-3 text-neutral-400" />
-                    <span className="font-mono text-[11px] font-medium text-neutral-900 uppercase">
+                    <Hash className="text-muted-foreground h-3 w-3" />
+                    <span className="text-foreground font-mono text-[11px] font-medium uppercase">
                         {row.original.flowId.slice(-10)}
                     </span>
                 </div>
-                <span className="text-[10px] text-neutral-400 italic">
+                <span className="text-muted-foreground text-[10px] italic">
                     Node: {row.original.currentNodeId?.slice(-6) || "N/A"}
                 </span>
             </div>
@@ -71,8 +71,8 @@ export const getFlowRecordColumns = ({
             <DataTableColumnHeader column={column} title="Người gửi" />
         ),
         cell: ({ row }) => (
-            <div className="flex items-center gap-2 text-neutral-700">
-                <User className="h-3.5 w-3.5 text-neutral-400" />
+            <div className="text-foreground flex items-center gap-2">
+                <User className="text-muted-foreground h-3.5 w-3.5" />
                 <span className="text-xs font-medium">
                     {row.original.senderId || "Hệ thống"}
                 </span>
@@ -106,7 +106,7 @@ export const getFlowRecordColumns = ({
             const { lastInteraction, errorLog } = row.original;
             return (
                 <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2 text-neutral-500">
+                    <div className="text-muted-foreground flex items-center gap-2">
                         <Calendar className="h-3 w-3" />
                         <span className="font-mono text-[11px]">
                             {timerFormat(lastInteraction)}

@@ -8,7 +8,7 @@ import {
 export const techLogos = [
     {
         node: (
-            <div className="flex items-center gap-2 text-neutral-700">
+            <div className="flex items-center gap-2 text-muted-foreground">
                 <SiReact className="text-2xl" />
                 <span className="text-sm font-medium">React</span>
             </div>
@@ -18,7 +18,7 @@ export const techLogos = [
     },
     {
         node: (
-            <div className="flex items-center gap-2 text-neutral-700">
+            <div className="flex items-center gap-2 text-muted-foreground">
                 <SiNextdotjs className="text-2xl" />
                 <span className="text-sm font-medium">Next.js</span>
             </div>
@@ -28,7 +28,7 @@ export const techLogos = [
     },
     {
         node: (
-            <div className="flex items-center gap-2 text-neutral-700">
+            <div className="flex items-center gap-2 text-muted-foreground">
                 <SiTypescript className="text-2xl" />
                 <span className="text-sm font-medium">TypeScript</span>
             </div>
@@ -38,7 +38,7 @@ export const techLogos = [
     },
     {
         node: (
-            <div className="flex items-center gap-2 text-neutral-700">
+            <div className="flex items-center gap-2 text-muted-foreground">
                 <SiTailwindcss className="text-2xl" />
                 <span className="text-sm font-medium">Tailwind CSS</span>
             </div>

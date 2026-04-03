@@ -41,7 +41,7 @@ function Navbar() {
                             <li key={item.label}>
                                 <Link
                                     href={item.link as any}
-                                    className="text-sm text-neutral-400 hover:underline"
+                                    className="text-sm text-neutral-400 hover:text-neutral-200 hover:underline dark:text-muted-foreground dark:hover:text-foreground"
                                 >
                                     {item.label}
                                 </Link>

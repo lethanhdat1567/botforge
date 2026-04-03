@@ -8,7 +8,7 @@ function CoreValue() {
             <h2 className="text-center text-5xl font-medium">
                 Giá trị cốt lõi
             </h2>
-            <p className="mx-auto mt-5 w-xl text-center">
+            <p className="mx-auto mt-5 w-xl text-center text-muted-foreground">
                 Botforge được xây dựng xoay quanh sự đơn giản, hiệu quả và khả
                 năng mở rộng — những giá trị giúp bạn tự động hóa mà không đánh
                 đổi sự kiểm soát.

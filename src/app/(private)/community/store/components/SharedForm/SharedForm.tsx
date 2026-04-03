@@ -50,7 +50,7 @@ function SharedForm({ form }: Props) {
 
     return (
         <div className="space-y-6">
-            <div className="space-y-4 rounded-sm border bg-white p-6">
+            <div className="border-border bg-card space-y-4 rounded-sm border p-6">
                 {/* 1. Name - Dùng Input */}
                 <Controller
                     name="name"
@@ -200,7 +200,7 @@ function SharedForm({ form }: Props) {
                 render={({ field, fieldState }) => (
                     <Field
                         data-invalid={fieldState.invalid}
-                        className="rounded-sm border bg-white p-6"
+                        className="border-border bg-card rounded-sm border p-6"
                     >
                         <FieldLabel>Nội dung mô tả</FieldLabel>
                         <SimpleEditor

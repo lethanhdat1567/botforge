@@ -45,7 +45,7 @@ function AvatarUpload({ value, onChange }: Props) {
 
     return (
         <div className="mb-4 flex items-center gap-4">
-            <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-neutral-200">
+            <div className="bg-muted relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full">
                 {preview ? (
                     <Image
                         src={resolveMediaSrc(preview)}
@@ -55,7 +55,7 @@ function AvatarUpload({ value, onChange }: Props) {
                         height={100}
                     />
                 ) : (
-                    <User className="text-neutral-400" />
+                    <User className="text-muted-foreground" />
                 )}
                 
                 {isUploading && (

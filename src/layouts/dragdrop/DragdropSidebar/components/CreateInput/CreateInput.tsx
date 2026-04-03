@@ -36,6 +36,11 @@ function CreateInput({ onCreate }: { onCreate: () => void }) {
                     setValue(e.target.value);
                     setError("");
                 }}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleBlur();
+                    }
+                }}
                 onBlur={handleBlur}
                 aria-invalid={Boolean(error)}
                 autoFocus

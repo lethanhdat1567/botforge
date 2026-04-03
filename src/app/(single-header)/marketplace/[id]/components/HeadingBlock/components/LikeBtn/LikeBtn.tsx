@@ -58,7 +58,7 @@ function LikeBtn({ flowShareId, count }: Props) {
                         "h-4 w-4 transition-colors",
                         isLiked
                             ? "fill-red-500 text-red-500"
-                            : "text-neutral-600",
+                            : "text-muted-foreground",
                     )}
                 />
             </Button>

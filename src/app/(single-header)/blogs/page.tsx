@@ -94,7 +94,7 @@ export default function BlogsPage() {
                                 <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     placeholder="Search guides..."
-                                    className="rounded-none border-stone-300 pl-10"
+                                    className="rounded-none border-input pl-10"
                                     value={searchQuery}
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
@@ -105,7 +105,7 @@ export default function BlogsPage() {
 
                         {isLoading ? (
                             <div className="flex h-64 items-center justify-center">
-                                <Loader2 className="h-8 w-8 animate-spin text-stone-400" />
+                                <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
                             </div>
                         ) : (
                             <div className="grid gap-6 sm:grid-cols-3">
@@ -129,7 +129,7 @@ export default function BlogsPage() {
                                         </Link>
                                     ))
                                 ) : (
-                                    <div className="col-span-full py-20 text-center text-stone-500">
+                                    <div className="text-muted-foreground col-span-full py-20 text-center">
                                         Không tìm thấy bài viết nào phù hợp.
                                     </div>
                                 )}

@@ -5,7 +5,7 @@ import Technology from "@/app/(public)/about/components/Technology/Technology";
 
 function AboutPage() {
     return (
-        <div>
+        <div className="bg-muted pb-30">
             <div className="mx-auto w-5xl pt-40">
                 <FounderSection />
                 <CoreValue />

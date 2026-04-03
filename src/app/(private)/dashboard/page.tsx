@@ -41,7 +41,7 @@ export default function DashboardPage() {
     }, [fetchStats]);
 
     return (
-        <div className="min-h-screen flex-1 space-y-8 bg-neutral-50/30 pb-10">
+        <div className="bg-muted/30 min-h-screen flex-1 space-y-8 pb-10">
             <DashboardHeader date={date} setDate={setDate} />
             <div className="space-y-4">
                 <SummaryCards data={stats?.summary} isLoading={isLoading} />

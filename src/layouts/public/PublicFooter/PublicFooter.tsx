@@ -4,8 +4,8 @@ import { Facebook, Github, Instagram } from "lucide-react";
 
 function PublicFooter() {
     return (
-        <div className="bg-[#f6f6f6]">
-            <div className="mx-auto w-5xl rounded-tl-2xl rounded-tr-2xl bg-[#1c1c1c] px-10 pt-18 pb-8 text-white">
+        <div className="bg-muted">
+            <div className="mx-auto w-5xl rounded-tl-2xl rounded-tr-2xl bg-neutral-950 px-10 pt-18 pb-8 text-neutral-50 dark:bg-card dark:text-card-foreground">
                 <div className="grid grid-cols-12 gap-20">
                     <div className="col-span-4">
                         <Logo isWhite />
@@ -29,7 +29,7 @@ function PublicFooter() {
                         ].map(({ icon, key }) => (
                             <div
                                 key={key}
-                                className="cursor-pointer rounded-md bg-linear-to-b from-[#474747] to-[#1a1a1a] p-2 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_10px_20px_-6px_rgba(255,255,255,0.35)]"
+                                className="cursor-pointer rounded-md bg-linear-to-b from-background/20 to-background/5 p-2 ring-1 ring-inset ring-background/15 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_10px_20px_-6px_rgba(255,255,255,0.2)] dark:from-foreground/15 dark:to-foreground/5 dark:ring-foreground/10 dark:hover:shadow-[0_10px_20px_-6px_rgba(255,255,255,0.12)]"
                             >
                                 {icon}
                             </div>

@@ -10,9 +10,11 @@ function PrivateLogo() {
             <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <Command className="size-4" />
             </div>
-            <div className="grid flex-1 text-left text-sm leading-tight">
+            <div className="text-sidebar-foreground grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">BotForge</span>
-                <span className="truncate text-xs">ChatbotAI</span>
+                <span className="text-sidebar-foreground/70 truncate text-xs">
+                    ChatbotAI
+                </span>
             </div>
         </Link>
     );

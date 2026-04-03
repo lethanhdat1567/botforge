@@ -17,7 +17,6 @@ function LoopSection() {
                     logoHeight={36}
                     gap={60}
                     fadeOut
-                    fadeOutColor="#ffffff"
                     ariaLabel="Technology partners"
                 />
             </div>

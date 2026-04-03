@@ -37,7 +37,7 @@ function PageLists({ pages }: Props) {
                                                 .toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <div className="absolute -right-1 -bottom-1 rounded-full border bg-white p-0.5 shadow-sm">
+                                    <div className="border-border bg-card absolute -right-1 -bottom-1 rounded-full border p-0.5 shadow-sm">
                                         <Facebook className="h-3 w-3 fill-[#1877F2] text-[#1877F2]" />
                                     </div>
                                 </div>

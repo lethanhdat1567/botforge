@@ -2,6 +2,7 @@ import { useQueryParams } from "@/hooks/use-query-params";
 import { HttpError } from "@/http/helpers";
 import Action from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/Action/Action";
 import ConnectAlert from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/ConnectAlert/ConnectAlert";
+import ConnectPageDialog from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/ConnectPageDialog/ConnectPageDialog";
 import NameBlock from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/NameBlock/NameBlock";
 import StatusBadge from "@/layouts/dragdrop/DragdropSidebar/components/FlowList/components/FlowItem/components/StatusBadge/StatusBadge";
 import { FlowList, flowService } from "@/services/flowService";
@@ -16,6 +17,7 @@ type Props = {
 function FlowItem({ flow, onRefresh }: Props) {
     const { getQueryParam, setQueryParams } = useQueryParams();
     const [isRename, setIsRename] = useState(false);
+    const [connectPageOpen, setConnectPageOpen] = useState(false);
     const flowId = getQueryParam("flowId");
 
     async function handleDestroy() {
@@ -56,13 +58,7 @@ function FlowItem({ flow, onRefresh }: Props) {
     }
 
     function handleConnectPage() {
-        setQueryParams(
-            { connectFlowId: flow.id },
-            {
-                replace: true,
-                scroll: false,
-            },
-        );
+        setConnectPageOpen(true);
     }
 
     function handleClickFlow() {
@@ -84,6 +80,7 @@ function FlowItem({ flow, onRefresh }: Props) {
                 </div>
 
                 <NameBlock
+                    key={isRename ? `${flow.id}:rename` : `${flow.id}:view`}
                     flowId={flow.id}
                     isRename={isRename}
                     name={flow.name}
@@ -100,6 +97,13 @@ function FlowItem({ flow, onRefresh }: Props) {
                 onDestroy={handleDestroy}
                 onChangeStatus={handleChangeStatus}
                 onConnectPage={handleConnectPage}
+            />
+
+            <ConnectPageDialog
+                flowId={flow.id}
+                open={connectPageOpen}
+                onOpenChange={setConnectPageOpen}
+                onSuccess={onRefresh}
             />
         </div>
     );

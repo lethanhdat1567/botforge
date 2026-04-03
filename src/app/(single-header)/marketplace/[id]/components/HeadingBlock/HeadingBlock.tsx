@@ -29,7 +29,7 @@ function HeadingBlock({ data }: { data: FlowShare }) {
                 <h1 className="text-foreground text-5xl font-bold tracking-tight">
                     {data.name}
                 </h1>
-                <p className="mt-4 text-lg leading-relaxed text-neutral-600">
+                <p className="text-muted-foreground mt-4 text-lg leading-relaxed">
                     {data.description}
                 </p>
             </div>
@@ -40,7 +40,7 @@ function HeadingBlock({ data }: { data: FlowShare }) {
                         Ngày đăng: {dateFormat(data.createdAt)}
                     </span>
                 </div>
-                <div className="mt-3 flex items-center gap-6 text-sm font-medium text-neutral-600">
+                <div className="text-muted-foreground mt-3 flex items-center gap-6 text-sm font-medium">
                     <LikeBtn
                         count={data._count.flowShareLikes}
                         flowShareId={data.id}

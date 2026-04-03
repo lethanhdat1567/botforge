@@ -57,12 +57,12 @@ function Questions() {
                         <AccordionItem
                             key={index}
                             value={`item-${index + 1}`}
-                            className="rounded-md border border-white bg-white px-3 py-1 shadow-[0_10px_14px_-8px_rgba(0,0,0,0.3)]"
+                            className="rounded-md border border-border bg-card px-3 py-1 shadow-[0_10px_14px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_14px_-8px_rgba(0,0,0,0.45)]"
                         >
                             <AccordionHeader>
                                 <AccordionTrigger className="flex w-full cursor-pointer items-center justify-between border-b-0 py-2 text-start">
                                     {item.title}{" "}
-                                    <Plus className="h-5 w-5 text-neutral-500 transition-transform duration-300" />
+                                    <Plus className="h-5 w-5 text-muted-foreground transition-transform duration-300" />
                                 </AccordionTrigger>
                             </AccordionHeader>
                             <AccordionContent>

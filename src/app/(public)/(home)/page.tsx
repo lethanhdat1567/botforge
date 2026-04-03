@@ -8,7 +8,7 @@ import WhyChoiceUs from "@/app/(public)/(home)/components/WhyChoiceUs/WhyChoiceU
 
 function Home() {
     return (
-        <div className="bg-[#f6f6f6]">
+        <div className="bg-muted">
             <Hero />
             <Problem />
             <WhyChoiceUs />

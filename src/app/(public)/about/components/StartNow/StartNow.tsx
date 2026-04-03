@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react";
 
 function StartNow() {
     return (
-        <div className="mt-30 bg-[#f6f6f6] py-20">
+        <div className="mt-30 bg-muted py-20">
             <div className="relative mx-auto h-100 w-6xl overflow-hidden rounded-2xl">
                 <div className="relative z-50 flex h-full w-full flex-col items-center justify-center text-white">
                     <h3 className="text-5xl font-medium">

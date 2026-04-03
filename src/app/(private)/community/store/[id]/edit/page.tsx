@@ -93,7 +93,7 @@ function UpdateSharedTemplatePage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <BackBtn />
-                        <h1 className="text-xl font-semibold text-neutral-800">
+                        <h1 className="text-foreground text-xl font-semibold">
                             Update shared template
                         </h1>
                     </div>

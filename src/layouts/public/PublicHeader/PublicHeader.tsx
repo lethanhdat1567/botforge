@@ -5,6 +5,7 @@ import Logo from "@/components/Logo";
 import Navbar from "@/layouts/public/PublicHeader/components/Navbar/Navbar";
 import StartBtn from "@/layouts/public/PublicHeader/components/StartBtn/StartBtn";
 import clsx from "clsx";
+import { ToggleTheme } from "@/layouts/private/PrivateHeader/components/ToggleTheme/ToggleTheme";
 
 function PublicHeader() {
     const [hidden, setHidden] = useState(false);
@@ -41,19 +42,22 @@ function PublicHeader() {
                 "-translate-x-1/2",
                 "overflow-anchor-none",
                 "flex w-4xl items-center justify-between",
-                "rounded-lg border border-white bg-[#f6f6f6f0]",
+                "rounded-lg border border-border bg-muted/90",
                 "px-8 py-1.5 backdrop-blur-md",
                 "transition-all duration-500 ease-out",
                 !mounted && "-translate-y-24 opacity-0",
                 mounted &&
                     (hidden
                         ? "-translate-y-32 opacity-0"
-                        : "translate-y-0 opacity-100 shadow-[0_12px_24px_-8px_rgba(0,0,0,0.25)]"),
+                        : "translate-y-0 opacity-100 shadow-[0_12px_24px_-8px_rgba(0,0,0,0.2)] dark:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.55)]"),
             )}
         >
             <Logo />
             <Navbar />
-            <StartBtn />
+            <div className="item-center flex gap-2">
+                <ToggleTheme />
+                <StartBtn />
+            </div>
         </div>
     );
 }

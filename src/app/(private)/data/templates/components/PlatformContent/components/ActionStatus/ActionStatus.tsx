@@ -17,8 +17,8 @@ const STATUS_LABEL = {
 };
 
 const STATUS_COLOR = {
-    draft: "bg-gray-400",
-    published: "bg-green-500",
+    draft: "bg-muted-foreground/60",
+    published: "bg-emerald-600 dark:bg-emerald-500",
 };
 
 function ActionStatus({ status, onUpdateStatus }: Props) {
@@ -38,14 +38,14 @@ function ActionStatus({ status, onUpdateStatus }: Props) {
             <SelectContent>
                 <SelectItem value="draft" className="cursor-pointer">
                     <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-xs bg-gray-400" />
+                        <span className="bg-muted-foreground/60 h-2 w-2 rounded-xs" />
                         <span>Nháp</span>
                     </div>
                 </SelectItem>
 
                 <SelectItem value="published" className="cursor-pointer">
                     <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-xs bg-green-500" />
+                        <span className="h-2 w-2 rounded-xs bg-emerald-600 dark:bg-emerald-500" />
                         <span>Đã xuất bản</span>
                     </div>
                 </SelectItem>

@@ -8,7 +8,7 @@ function joinUrl(base: string, path: string) {
 }
 
 export function resolveMediaSrc(src?: string | null): string | StaticImageData {
-    if (!src) return images.fallback;
+    if (!src) return "";
 
     if (src.startsWith("http://") || src.startsWith("https://")) {
         return src;

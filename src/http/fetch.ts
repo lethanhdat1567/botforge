@@ -40,7 +40,12 @@ export const request = async <T>(
         ? `${base}${url}${queryString}`
         : `${base}/${url}${queryString}`;
 
-    const headers = { ...options?.headers } as any;
+    // --- KHU VỰC SỬA ĐỔI CHÍNH ---
+    const headers: any = {
+        ...options?.headers,
+        // Luôn gửi header này để bypass trang cảnh báo của ngrok
+        "ngrok-skip-browser-warning": "true",
+    };
 
     if (!isFormData) {
         headers["Content-Type"] = "application/json";
@@ -61,18 +66,19 @@ export const request = async <T>(
         ...options,
         method,
         body,
-        headers: {
-            ...headers,
-            ...options?.headers,
-        },
+        headers,
+        // QUAN TRỌNG: Phải có dòng này khi Backend dùng credentials: true
+        credentials: options?.credentials ?? "include",
     });
+    // --- KẾT THÚC SỬA ĐỔI ---
 
     if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
 
+        // Dùng Optional Chaining (?.) để tránh lỗi crash khi response không đúng format
         if (
-            errorData.data.code === authCode.Unauthorized &&
-            res.status === 401
+            res.status === 401 &&
+            errorData?.data?.code === authCode.Unauthorized
         ) {
             if (typeof window !== "undefined") {
                 window.location.href = "/auth-logout";
@@ -80,6 +86,7 @@ export const request = async <T>(
                 redirect("/auth-logout");
             }
         }
+
         throw new HttpError({
             status: res.status,
             payload: errorData,

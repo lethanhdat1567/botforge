@@ -6,6 +6,7 @@ import { flowSharedSaveService } from "@/services/flowSharedSaveService";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 type Props = { flowSharedId: string };
 
@@ -39,15 +40,20 @@ function SaveBtn({ flowSharedId }: Props) {
 
     return (
         <Button
-            className={`flex-1 ${isSaved ? "border-blue-400 bg-blue-100 text-blue-500" : ""}`}
+            className={cn(
+                "flex-1",
+                isSaved &&
+                    "border-primary bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary",
+            )}
             variant={"outline"}
             onClick={handleToggleSave}
         >
             {isSaved ? "Bỏ lưu mẫu" : "Lưu mẫu"}
             <Bookmark
-                className="ml-2 h-4 w-4"
-                fill={isSaved ? "blue" : ""}
-                color={isSaved ? "blue" : ""}
+                className={cn(
+                    "ml-2 h-4 w-4",
+                    isSaved && "fill-primary text-primary",
+                )}
             />
         </Button>
     );

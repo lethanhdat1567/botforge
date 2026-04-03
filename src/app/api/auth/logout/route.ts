@@ -18,7 +18,6 @@ export async function POST() {
         const cookiesStore = await cookies();
         const refreshToken = cookiesStore.get("refreshToken")?.value;
 
-        // Nếu không có refreshToken, vẫn nên xóa sạch cookie ở trình duyệt cho an toàn
         if (!refreshToken) {
             const response = NextResponse.json(
                 {

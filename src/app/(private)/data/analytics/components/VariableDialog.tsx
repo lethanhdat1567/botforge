@@ -26,28 +26,28 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="flex h-7 gap-2 rounded-none border-neutral-200 px-2 text-[11px] font-normal tracking-tight uppercase hover:bg-neutral-50"
+                    className="border-border hover:bg-muted flex h-7 gap-2 rounded-none border px-2 text-[11px] font-normal tracking-tight uppercase"
                 >
                     <Database className="h-3 w-3" />
                     Biến số
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md rounded-none border-neutral-200 p-0 shadow-lg">
+            <DialogContent className="border-border max-w-md rounded-none p-0 shadow-lg">
                 <DialogHeader className="p-6 pb-2">
-                    <DialogTitle className="text-sm font-semibold tracking-widest text-neutral-800 uppercase">
+                    <DialogTitle className="text-foreground text-sm font-semibold tracking-widest uppercase">
                         Variables Log
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="p-6 pt-2">
-                    <ScrollArea className="max-h-[350px] rounded-none border border-neutral-100">
+                    <ScrollArea className="border-border max-h-[350px] rounded-none border">
                         <Table>
-                            <TableHeader className="bg-neutral-50/50">
+                            <TableHeader className="bg-muted/50">
                                 <TableRow className="hover:bg-transparent">
-                                    <TableHead className="h-10 text-[10px] font-bold text-neutral-500 uppercase">
+                                    <TableHead className="text-muted-foreground h-10 text-[10px] font-bold uppercase">
                                         Key
                                     </TableHead>
-                                    <TableHead className="h-10 text-[10px] font-bold text-neutral-500 uppercase">
+                                    <TableHead className="text-muted-foreground h-10 text-[10px] font-bold uppercase">
                                         Value
                                     </TableHead>
                                 </TableRow>
@@ -57,12 +57,12 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                                     variableEntries.map(([key, value]) => (
                                         <TableRow
                                             key={key}
-                                            className="border-neutral-100 transition-none hover:bg-neutral-50/50"
+                                            className="border-border transition-none hover:bg-muted/50"
                                         >
-                                            <TableCell className="py-3 font-mono text-[11px] font-medium text-neutral-900">
+                                            <TableCell className="text-foreground py-3 font-mono text-[11px] font-medium">
                                                 {key}
                                             </TableCell>
-                                            <TableCell className="py-3 text-[11px] text-neutral-600">
+                                            <TableCell className="text-muted-foreground py-3 text-[11px]">
                                                 {typeof value === "object"
                                                     ? JSON.stringify(value)
                                                     : String(value)}
@@ -73,7 +73,7 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                                     <TableRow>
                                         <TableCell
                                             colSpan={2}
-                                            className="h-32 text-center text-[11px] text-neutral-400"
+                                            className="text-muted-foreground h-32 text-center text-[11px]"
                                         >
                                             No data recorded.
                                         </TableCell>

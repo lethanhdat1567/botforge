@@ -15,21 +15,21 @@ async function GuideDetailPage({ params }: Props) {
     return (
         <article className="mx-auto min-h-screen w-2xl px-4 pt-10 pb-32">
             {/* Title */}
-            <h1 className="text-4xl leading-tight font-bold text-neutral-900">
+            <h1 className="text-foreground text-4xl leading-tight font-bold">
                 {guide.title}
             </h1>
 
             {/* Meta time */}
-            <time className="mt-3 block text-sm text-neutral-500">
+            <time className="text-muted-foreground mt-3 block text-sm">
                 {timeAgo(guide.createdAt)}
             </time>
 
             {/* Divider */}
-            <hr className="my-4 border-neutral-200" />
+            <hr className="border-border my-4" />
 
             {/* Content */}
             <div
-                className="prose prose-neutral prose-headings:font-semibold prose-headings:text-neutral-900 prose-p:leading-relaxed prose-p:text-neutral-800 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-ul:list-disc prose-ol:list-decimal max-w-none"
+                className="prose prose-neutral dark:prose-invert max-w-none prose-headings:font-semibold prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-ul:list-disc prose-ol:list-decimal"
                 dangerouslySetInnerHTML={{ __html: guide.content }}
             />
         </article>

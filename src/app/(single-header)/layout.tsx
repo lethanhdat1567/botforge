@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 function SingleHeaderLayout({ children }: { children: ReactNode }) {
     return (
-        <div>
+        <div className="min-h-screen bg-background text-foreground">
             <SingleHeader />
             <div>{children}</div>
         </div>

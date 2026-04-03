@@ -48,7 +48,7 @@ function LikeDialog({ children, flowSharedId, count }: Props) {
             <DialogTrigger asChild>{children}</DialogTrigger>
 
             <DialogContent className="gap-0 overflow-hidden p-0">
-                <DialogHeader className="border-b p-4">
+                <DialogHeader className="border-border border-b p-4">
                     <DialogTitle className="text-center text-base font-bold">
                         Lượt thích ({users.length})
                     </DialogTitle>
@@ -62,7 +62,7 @@ function LikeDialog({ children, flowSharedId, count }: Props) {
                                     key={user.id}
                                     className="hover:bg-muted/50 flex cursor-pointer items-center gap-3 px-4 py-2.5 transition-colors"
                                 >
-                                    <Avatar className="h-9 w-9 border">
+                                    <Avatar className="border-border h-9 w-9 border">
                                         <AvatarImage
                                             src={
                                                 resolveMediaSrc(

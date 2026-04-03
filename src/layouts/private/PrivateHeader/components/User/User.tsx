@@ -19,6 +19,7 @@ function User() {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchUser();
     }, []);
 
@@ -27,7 +28,10 @@ function User() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="cursor-pointer">
-                <Avatar className="h-8 w-8" src={user?.avatar} />
+                <Avatar
+                    className="h-8 w-8"
+                    src={resolveMediaSrc(user?.avatar || "") as string}
+                />
             </DropdownMenuTrigger>
             <UserDropdownContent />
         </DropdownMenu>

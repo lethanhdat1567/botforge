@@ -45,7 +45,7 @@ function CustomSelect({
                         </SelectItem>
                     ))
                 ) : (
-                    <div className="p-2 text-center text-sm text-gray-500">
+                    <div className="text-muted-foreground p-2 text-center text-sm">
                         No options available
                     </div>
                 )}

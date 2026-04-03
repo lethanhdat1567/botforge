@@ -36,9 +36,9 @@ function Navbar() {
                                 href={item.link}
                                 className={cn(
                                     "rounded-lg border border-transparent px-4 py-1.5 text-[14px] font-medium transition-all duration-300",
-                                    "hover:border-white hover:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.6)]",
+                                    "hover:border-border hover:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.45)]",
                                     isActive &&
-                                        "border-white shadow-[0_10px_30px_-8px_rgba(0,0,0,0.6)]",
+                                        "border-border shadow-[0_10px_30px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.45)]",
                                 )}
                             >
                                 {item.title}

@@ -13,7 +13,7 @@ function FounderSection() {
                     className="text-4xl font-semibold"
                     duration={1}
                 />
-                <AnimatedContent className="mt-4 text-sm text-neutral-900">
+                <AnimatedContent className="mt-4 text-sm text-muted-foreground">
                     <p>
                         Botforge bắt đầu từ một vấn đề rất quen thuộc: trả lời
                         tin nhắn quá nhiều, lặp đi lặp lại mỗi ngày, nhưng vẫn
@@ -21,13 +21,13 @@ function FounderSection() {
                         kinh doanh nhỏ, startup và cá nhân đang tốn thời gian
                         cho những việc hoàn toàn có thể tự động hóa.
                     </p>
-                    <p className="mt-4 text-sm text-neutral-900">
+                    <p className="mt-4 text-sm text-muted-foreground">
                         Tôi xây dựng Botforge với một mục tiêu rõ ràng: giúp mọi
                         người tạo chatbot một cách đơn giản nhất — không cần lập
                         trình, chỉ cần kéo thả, theo dõi được hành trình hội
                         thoại và hiểu khách hàng đang dừng lại ở đâu.
                     </p>
-                    <p className="mt-4 text-sm text-neutral-900">
+                    <p className="mt-4 text-sm text-muted-foreground">
                         Đây không phải là một sản phẩm được sinh ra từ phòng họp
                         hay bản kế hoạch phức tạp, mà từ nhu cầu thực tế trong
                         quá trình làm việc mỗi ngày. Botforge sẽ tiếp tục được

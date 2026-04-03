@@ -22,12 +22,12 @@ function TabStatus({ value = "all", onStatusChange }: TabStatusProps) {
     return (
         <Tabs value={value} onValueChange={onStatusChange} className="w-full">
             {/* Giảm h-9 xuống h-8, bỏ border-b ở đây nếu bạn muốn nó mỏng nhất có thể */}
-            <TabsList className="h-8 w-full justify-start rounded-none border-b border-neutral-100 bg-transparent p-0">
+            <TabsList className="border-border h-8 w-full justify-start rounded-none border-b bg-transparent p-0">
                 {STATUS_TABS.map((tab) => (
                     <TabsTrigger
                         key={tab.value}
                         value={tab.value}
-                        className={`relative h-8 rounded-none border-b-2 border-b-transparent bg-transparent px-3 pt-1.5 pb-2 text-[10px] font-bold tracking-wider text-neutral-500 uppercase transition-none hover:text-neutral-700 data-[state=active]:border-b-neutral-900 data-[state=active]:text-neutral-900 data-[state=active]:shadow-none`}
+                        className="data-[state=active]:border-b-foreground data-[state=active]:text-foreground relative h-8 rounded-none border-b-2 border-b-transparent bg-transparent px-3 pt-1.5 pb-2 text-[10px] font-bold tracking-wider text-muted-foreground uppercase transition-none hover:text-foreground data-[state=active]:shadow-none"
                     >
                         {tab.label}
                     </TabsTrigger>

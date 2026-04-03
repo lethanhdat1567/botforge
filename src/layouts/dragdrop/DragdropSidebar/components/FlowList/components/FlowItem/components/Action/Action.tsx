@@ -38,7 +38,12 @@ function Action({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuGroup>
-                        <DropdownMenuItem onClick={onConnectPage}>
+                        <DropdownMenuItem
+                            onMouseDown={(e) => {
+                                e.preventDefault();
+                                onConnectPage();
+                            }}
+                        >
                             Kết nối page
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={onChangeStatus}>

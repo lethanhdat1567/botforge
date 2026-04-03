@@ -63,8 +63,12 @@ export function ChatSidebar({
                             <ChatSidebarRow
                                 key={c.id}
                                 item={c}
-                                isActive={c.conversationId === selectedConversationId}
-                                onSelect={() => onSelectConversation(c.conversationId)}
+                                isActive={
+                                    c.conversationId === selectedConversationId
+                                }
+                                onSelect={() =>
+                                    onSelectConversation(c.conversationId)
+                                }
                             />
                         ))}
                     </ul>

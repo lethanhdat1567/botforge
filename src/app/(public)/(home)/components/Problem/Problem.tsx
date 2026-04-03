@@ -38,7 +38,7 @@ function Problem() {
                 ))}
             </div>
             {/* Footer */}
-            <AnimatedContent className="text-md mt-10 w-full rounded-lg border border-white bg-neutral-100 py-6 text-center shadow-2xl">
+            <AnimatedContent className="text-md mt-10 w-full rounded-lg border border-border bg-muted py-6 text-center shadow-2xl">
                 <p className="mx-auto w-xl">
                     Khi không có chatbot, bạn đang trả giá bằng thời gian, cơ
                     hội bán hàng và trải nghiệm khách hàng.

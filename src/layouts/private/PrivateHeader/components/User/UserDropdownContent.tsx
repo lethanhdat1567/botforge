@@ -44,7 +44,7 @@ function UserDropdownContent({
                 <Avatar className="h-8 w-8" src={user?.avatar} />
                 <div>
                     <h2 className="text-sm font-bold">{user?.displayName}</h2>
-                    <h3 className="text-xs text-neutral-600">{user?.email}</h3>
+                    <h3 className="text-muted-foreground text-xs">{user?.email}</h3>
                 </div>
             </div>
             <DropdownMenuSeparator />

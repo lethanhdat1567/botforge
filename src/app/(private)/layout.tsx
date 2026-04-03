@@ -6,9 +6,9 @@ function PrivateLayout({ children }: { children: React.ReactNode }) {
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
+            <SidebarInset className="min-h-0">
                 <PrivateHeader />
-                <div className="p-4">{children}</div>
+                <div className="min-h-0 flex-1 overflow-auto p-4">{children}</div>
             </SidebarInset>
         </SidebarProvider>
     );

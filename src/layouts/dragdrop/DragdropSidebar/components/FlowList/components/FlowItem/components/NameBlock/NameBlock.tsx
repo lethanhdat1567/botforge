@@ -1,7 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { HttpError } from "@/http/helpers";
 import { flowService } from "@/services/flowService";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+
+/** Radix Dropdown trả focus về trigger khi đóng; blur ngay sau đó không được coi là hủy rename. */
+const RENAME_BLUR_GRACE_MS = 250;
 
 type Props = {
     flowId: string;
@@ -12,10 +15,15 @@ type Props = {
 
 function NameBlock({ flowId, isRename, name, onRename }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
+    const renameOpenedAtRef = useRef(0);
     const [inputName, setInputName] = useState(name);
     const [error, setError] = useState("");
 
     const handleBlur = async () => {
+        if (Date.now() - renameOpenedAtRef.current < RENAME_BLUR_GRACE_MS) {
+            queueMicrotask(() => inputRef.current?.focus());
+            return;
+        }
         if (inputName === name || !inputName.trim()) return onRename();
         try {
             await flowService.updateFlow(flowId, { name: inputName });
@@ -30,13 +38,28 @@ function NameBlock({ flowId, isRename, name, onRename }: Props) {
         }
     };
 
-    useEffect(() => {
-        if (isRename) {
-            const timer = setTimeout(() => {
-                inputRef.current?.focus();
-            }, 200);
-            return () => clearTimeout(timer);
-        }
+    useLayoutEffect(() => {
+        if (!isRename) return;
+        renameOpenedAtRef.current = Date.now();
+
+        const focusInput = () => {
+            inputRef.current?.focus({ preventScroll: true });
+        };
+
+        focusInput();
+
+        const raf1 = requestAnimationFrame(() => {
+            requestAnimationFrame(focusInput);
+        });
+
+        const t0 = window.setTimeout(focusInput, 0);
+        const t1 = window.setTimeout(focusInput, 120);
+
+        return () => {
+            cancelAnimationFrame(raf1);
+            clearTimeout(t0);
+            clearTimeout(t1);
+        };
     }, [isRename]);
 
     return isRename ? (
@@ -47,6 +70,11 @@ function NameBlock({ flowId, isRename, name, onRename }: Props) {
                 onChange={(e) => {
                     setError("");
                     setInputName(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleBlur();
+                    }
                 }}
                 onBlur={handleBlur}
                 aria-invalid={Boolean(error)}

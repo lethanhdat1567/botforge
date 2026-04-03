@@ -18,7 +18,7 @@ export function CodeBlock({ language, children }: CodeBlockProps) {
     };
 
     return (
-        <div className="not-prose border-border my-6 overflow-hidden rounded-xl border bg-[#1e1e1e]">
+        <div className="not-prose border-border my-6 overflow-hidden rounded-xl border bg-zinc-950">
             <div className="bg-muted/50 border-border flex items-center justify-between border-b px-4 py-2">
                 <span className="text-muted-foreground font-mono text-xs">
                     {language}
@@ -34,7 +34,7 @@ export function CodeBlock({ language, children }: CodeBlockProps) {
                     )}
                 </button>
             </div>
-            <pre className="overflow-x-auto p-4 font-mono text-sm leading-6 text-gray-300">
+            <pre className="overflow-x-auto p-4 font-mono text-sm leading-6 text-zinc-300">
                 <code>{children}</code>
             </pre>
         </div>

@@ -27,7 +27,7 @@ function WhyChoiceUs() {
                 </p>
             </FadeContent>
 
-            <AnimatedContent className="mt-10 h-130 w-full overflow-hidden rounded-xl border border-white shadow-2xl">
+            <AnimatedContent className="mt-10 h-130 w-full overflow-hidden rounded-xl border border-border shadow-2xl">
                 <Image
                     width={1000}
                     height={1000}

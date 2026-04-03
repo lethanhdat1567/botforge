@@ -6,7 +6,7 @@ async function RelatedBlock({ flowSharedId }: { flowSharedId: string }) {
 
     return (
         <div>
-            <h2 className="mt-10 text-center text-3xl font-semibold">
+            <h2 className="text-foreground mt-10 text-center text-3xl font-semibold">
                 Những sản phẩm liên quan
             </h2>
             <div className="mt-10 grid grid-cols-4 gap-4">
