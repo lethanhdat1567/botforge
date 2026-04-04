@@ -14,15 +14,19 @@ import { Trash } from "lucide-react";
 
 type Props = {
     generic: GenericTemplateElement;
+    itemIndex: number;
     nodeId: string;
     payload: any;
     setErrors: any;
 };
 
-function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
-    /**
-     * Update current generic only
-     */
+function GenericItem({
+    generic,
+    itemIndex,
+    nodeId,
+    payload,
+    setErrors,
+}: Props) {
     function updateGeneric(
         updater: (g: GenericTemplateElement) => GenericTemplateElement,
     ) {
@@ -36,35 +40,28 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
         });
     }
 
-    /**
-     * Upload image / media
-     */
-    async function handleUpload(file: File) {
+    async function handleUpload(file: File, genericId: string) {
+        if (genericId !== generic.id) return;
         try {
-            const res = await uploadService.uploadFile(file);
+            const uploaded = await uploadService.uploadFile(file);
 
             updateGeneric((g) => ({
                 ...g,
-                image_url: res.data.path,
+                image_url: uploaded.path,
             }));
         } catch (error) {
             console.error(error);
         }
     }
 
-    /**
-     * Remove image
-     */
-    function handleDestroyImage() {
+    function handleDestroyImage(genericId: string) {
+        if (genericId !== generic.id) return;
         updateGeneric((g) => ({
             ...g,
             image_url: "",
         }));
     }
 
-    /**
-     * Update title
-     */
     function handleUpdateTitle(title: string) {
         updateGeneric((g) => ({
             ...g,
@@ -72,9 +69,6 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
         }));
     }
 
-    /**
-     * Update subtitle
-     */
     function handleUpdateSubtitle(subtitle: string) {
         updateGeneric((g) => ({
             ...g,
@@ -82,9 +76,6 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
         }));
     }
 
-    /**
-     * Update default action URL
-     */
     function handleUpdateUrl(url: string) {
         updateGeneric((g) => ({
             ...g,
@@ -95,9 +86,6 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
         }));
     }
 
-    /**
-     * Update button list
-     */
     function handleUpdateBtnLists(buttons: any[]) {
         updateGeneric((g) => ({
             ...g,
@@ -116,52 +104,61 @@ function GenericItem({ generic, nodeId, payload, setErrors }: Props) {
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <div className="w-full shrink-0 space-y-2">
-                    <ViewUpload
-                        src={generic.image_url}
-                        onUpload={handleUpload}
-                        onDestroy={handleDestroyImage}
-                        genericId={generic.id}
-                    />
+        <div className="bg-background w-full shrink-0 space-y-3 rounded-md border p-3 shadow-sm">
+            <div className="flex items-center justify-between gap-2">
+                <span className="text-muted-foreground text-xs font-medium tracking-tight">
+                    Mục {itemIndex}
+                </span>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            type="button"
+                            size="icon"
+                            variant="ghost"
+                            className="text-destructive hover:text-destructive size-8 shrink-0"
+                            onClick={handleRemoveGeneric}
+                        >
+                            <Trash className="size-4" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Xóa mục</TooltipContent>
+                </Tooltip>
+            </div>
 
-                    <TextArea
-                        value={generic.title}
-                        onCommit={handleUpdateTitle}
-                        setErrors={setErrors}
-                        placeholder="Tiêu đề..."
-                    />
+            <div className="space-y-2">
+                <ViewUpload
+                    src={generic.image_url}
+                    onUpload={handleUpload}
+                    onDestroy={handleDestroyImage}
+                    genericId={generic.id}
+                />
 
-                    <TextArea
-                        value={generic.subtitle || ""}
-                        onCommit={handleUpdateSubtitle}
-                        placeholder="Tiêu đề phụ..."
-                    />
+                <TextArea
+                    value={generic.title}
+                    onCommit={handleUpdateTitle}
+                    setErrors={setErrors}
+                    placeholder="Tiêu đề..."
+                />
 
-                    <TextArea
-                        value={generic.default_action?.url || ""}
-                        onCommit={handleUpdateUrl}
-                        placeholder="url..."
-                    />
+                <TextArea
+                    value={generic.subtitle || ""}
+                    onCommit={handleUpdateSubtitle}
+                    placeholder="Tiêu đề phụ..."
+                />
 
-                    <ButtonList
-                        buttonLists={generic.buttons || []}
-                        setButtonList={handleUpdateBtnLists}
-                        setErrors={setErrors}
-                    />
-                </div>
-            </TooltipTrigger>
-            <TooltipContent align="center" side="right">
-                <Button
-                    size={"icon-sm"}
-                    variant={"destructive"}
-                    onClick={handleRemoveGeneric}
-                >
-                    <Trash />
-                </Button>
-            </TooltipContent>
-        </Tooltip>
+                <TextArea
+                    value={generic.default_action?.url || ""}
+                    onCommit={handleUpdateUrl}
+                    placeholder="url..."
+                />
+
+                <ButtonList
+                    buttonLists={generic.buttons || []}
+                    setButtonList={handleUpdateBtnLists}
+                    setErrors={setErrors}
+                />
+            </div>
+        </div>
     );
 }
 

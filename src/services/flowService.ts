@@ -59,9 +59,16 @@ export const flowService = {
     /**
      * Lấy chi tiết 1 Flow
      * BE: FlowController.detail -> FlowService.detail
+     * cache: no-store — tránh reload dùng bản GET cũ sau khi đã PATCH.
      */
-    getFlowDetail: (id: string) => {
-        return http.get<ApiResponse<any>>(`/api/flows/${id}`);
+    getFlowDetail: (
+        id: string,
+        options?: { signal?: AbortSignal },
+    ) => {
+        return http.get<ApiResponse<any>>(`/api/flows/${id}`, {
+            cache: "no-store",
+            signal: options?.signal,
+        });
     },
 
     /**

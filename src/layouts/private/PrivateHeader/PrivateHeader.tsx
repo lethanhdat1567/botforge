@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import Notification from "@/layouts/private/PrivateHeader/components/Notification/Notification";
 import { ToggleTheme } from "@/layouts/private/PrivateHeader/components/ToggleTheme/ToggleTheme";
 import User from "@/layouts/private/PrivateHeader/components/User/User";
 
@@ -13,14 +14,15 @@ function PrivateHeader() {
                     className="mr-2 data-[orientation=vertical]:h-4"
                 />
             </div>
-            <div className="flex items-center gap-4">
-                <ToggleTheme />
-                <Separator
-                    orientation="vertical"
-                    className="mr-2 data-[orientation=vertical]:h-4"
-                />
-                <User />
-            </div>
+                <div className="flex items-center gap-4">
+                    <ToggleTheme />
+                    <Separator
+                        orientation="vertical"
+                        className="mr-2 data-[orientation=vertical]:h-4"
+                    />
+                    <Notification />
+                    <User />
+                </div>
         </header>
     );
 }

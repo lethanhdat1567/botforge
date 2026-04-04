@@ -11,8 +11,7 @@ function CreateCondition({ onCreate }: Props) {
     function handleCreateNewCondition() {
         const newCondition: ConditionItem = {
             id: uuid(),
-            field: "",
-            operator: "equals",
+            key: "",
             value: "",
         };
 
@@ -21,10 +20,13 @@ function CreateCondition({ onCreate }: Props) {
 
     return (
         <Button
-            className="w-full rounded-none"
+            type="button"
+            variant="outline"
+            className="w-full rounded-md border-neutral-200 text-neutral-800 hover:bg-neutral-50"
             onClick={handleCreateNewCondition}
         >
-            <Plus /> Thêm điều kiện mới
+            <Plus className="size-4" />
+            Thêm điều kiện mới
         </Button>
     );
 }

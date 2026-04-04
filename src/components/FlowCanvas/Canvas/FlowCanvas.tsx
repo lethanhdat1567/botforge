@@ -36,6 +36,7 @@ function FlowCanvas() {
     const searchParams = useSearchParams();
     const flowId = searchParams.get("flowId");
     const [status, setStatus] = useState<FlowStatus>("idle");
+    const [hydrationReady, setHydrationReady] = useState(false);
 
     const { handleEndConnect } = useFlowConnect();
     const { handleEdgeChange } = useFlowEdges();
@@ -49,20 +50,36 @@ function FlowCanvas() {
     const onConnectStart = useEdgeStore((s) => s.onConnectStart);
 
     // 🔹 Lifecycle flow
+    /* eslint-disable react-hooks/set-state-in-effect -- đồng bộ status/hydration với tải flow + AbortController */
     useEffect(() => {
         if (!flowId) {
             FlowController.resetFlow();
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setStatus("idle");
+            setHydrationReady(false);
             return;
         }
 
+        setHydrationReady(false);
         setStatus("loading");
 
-        FlowController.loadFlow(flowId)
-            .then(() => setStatus("ready"))
-            .catch(() => setStatus("error"));
+        const ac = new AbortController();
+
+        FlowController.loadFlow(flowId, ac.signal)
+            .then(() => {
+                if (ac.signal.aborted) return;
+                setHydrationReady(true);
+                setStatus("ready");
+            })
+            .catch((error) => {
+                console.log(error);
+                if (ac.signal.aborted) return;
+                setHydrationReady(false);
+                setStatus("error");
+            });
+
+        return () => ac.abort();
     }, [flowId]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // 🔹 Render theo trạng thái
     if (!flowId) {
@@ -112,7 +129,7 @@ function FlowCanvas() {
                 </Panel>
                 {/* AutoSave */}
                 <Panel position="top-right">
-                    <AutoSave />
+                    <AutoSave hydrationReady={hydrationReady} />
                 </Panel>
                 {/* Controls */}
                 <Controls position={"center-right"} />

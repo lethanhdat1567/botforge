@@ -7,15 +7,10 @@ type Props = {
 
 function AddGeneric({ onAddGeneric }: Props) {
     return (
-        <div className="mb-2">
-            <Button
-                onClick={onAddGeneric}
-                variant={"default"}
-                className="w-full"
-            >
-                <Plus /> Thêm mục
-            </Button>
-        </div>
+        <Button onClick={onAddGeneric} variant="default" className="gap-1">
+            <Plus className="size-4" />
+            Thêm mục
+        </Button>
     );
 }
 

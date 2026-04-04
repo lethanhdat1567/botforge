@@ -104,6 +104,8 @@ function FlowItem({ flow, onRefresh }: Props) {
                 open={connectPageOpen}
                 onOpenChange={setConnectPageOpen}
                 onSuccess={onRefresh}
+                isConnected={flow.isConnected}
+                connectedPageUid={flow.page?.pageUid ?? null}
             />
         </div>
     );

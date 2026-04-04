@@ -31,17 +31,21 @@ function ConditionList({ items, nodeId, payloadId }: Props) {
     }
 
     return (
-        <div className="space-y-4 px-4">
-            {items.map((item, index) => (
-                <ConditionItem
-                    condition={item}
-                    key={index}
-                    ordinal={index}
-                    onCommit={handleUpdateCondition}
-                    onDestroy={handleDestroyCondition}
-                />
-            ))}
-            <CreateCondition onCreate={handleCreateCondition} />
+        <div className="flex flex-col gap-0 px-0 sm:px-1">
+            <div className="divide-y divide-neutral-100">
+                {items.map((item, index) => (
+                    <ConditionItem
+                        condition={item}
+                        key={item.id}
+                        ordinal={index}
+                        onCommit={handleUpdateCondition}
+                        onDestroy={handleDestroyCondition}
+                    />
+                ))}
+            </div>
+            <div className="pt-3">
+                <CreateCondition onCreate={handleCreateCondition} />
+            </div>
         </div>
     );
 }

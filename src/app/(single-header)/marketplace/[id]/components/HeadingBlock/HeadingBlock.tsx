@@ -1,10 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { CalendarDays, Download, MessageSquare } from "lucide-react";
 import { FlowShare } from "@/services/flowSharedService";
 import { dateFormat } from "@/lib/timer";
 import LikeBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/LikeBtn/LikeBtn";
+import DownloadBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/DownloadBtn/DownloadBtn";
 import SaveBtn from "@/app/(single-header)/marketplace/[id]/components/HeadingBlock/components/SaveBtn/SaveBtn";
 import { resolveMediaSrc } from "@/lib/image";
 
@@ -62,9 +62,7 @@ function HeadingBlock({ data }: { data: FlowShare }) {
             {/* 4. Action Buttons */}
             <div className="mt-3 flex max-w-lg items-center gap-3">
                 <SaveBtn flowSharedId={data.id} />
-                <Button className="flex-1">
-                    Tải xuống <Download className="ml-2 h-4 w-4" />
-                </Button>
+                <DownloadBtn flowShareId={data.id} />
             </div>
             {/* 5. Phân loại */}
             <div className="mt-6 flex items-center gap-2 pt-1">

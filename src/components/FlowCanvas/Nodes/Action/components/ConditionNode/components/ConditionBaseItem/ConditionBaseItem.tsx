@@ -1,37 +1,43 @@
 import { ConditionItem } from "@/components/FlowCanvas/types/node/action.type";
 
-function ConditionBaseItem({ item }: { item: ConditionItem }) {
+type Props = {
+    item: ConditionItem;
+    /** 0 = "Nếu", các hàng sau = "Và" (khớp sheet) */
+    ordinal?: number;
+};
+
+function ConditionBaseItem({ item, ordinal = 0 }: Props) {
     const { key, value } = item;
     const hasField = !!key;
-    const hasValue = !!value;
+    const hasValue =
+        value !== undefined && value !== null && String(value).length > 0;
 
     if (!hasField && !hasValue) {
         return (
-            <div className="flex items-center gap-2 rounded border border-dashed border-slate-300 bg-slate-50/50 px-2 py-1.5">
-                <span className="text-[11px] leading-none text-slate-400 italic">
-                    Chưa thiết lập điều kiện
-                </span>
-            </div>
+            <span className="text-xs text-neutral-600 italic">
+                Chưa thiết lập điều kiện
+            </span>
         );
     }
 
-    return (
-        <div className="flex flex-wrap items-center gap-1 py-1 text-[13px] leading-6">
-            <span className="font-medium text-slate-500">Nếu</span>
+    const logicLabel = ordinal === 0 ? "Nếu" : "Và";
 
-            {/* Key / Variable Tag */}
-            <span className="inline-flex items-center rounded border border-blue-200 bg-blue-50 px-2 py-0.5 font-mono text-[11px] font-bold text-blue-600 shadow-sm">
+    return (
+        <div className="flex flex-wrap items-center gap-2 py-0.5 text-sm leading-6 text-neutral-950">
+            <span className="min-w-8 text-xs font-bold tracking-wide text-neutral-800 uppercase">
+                {logicLabel}
+            </span>
+
+            <span className="inline-flex items-center rounded-md bg-neutral-200/90 px-2.5 py-1 font-mono text-xs font-semibold text-neutral-950">
                 {hasField ? key : "Rỗng"}
             </span>
 
-            {/* Operator Text */}
-            <span className="px-1 text-[10px] font-black tracking-tighter text-amber-600 uppercase">
+            <span className="text-xs font-bold tracking-tight text-neutral-700 uppercase">
                 Bằng
             </span>
 
-            {/* Value Tag */}
-            <span className="inline-flex items-center rounded border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[12px] font-medium text-emerald-600 shadow-sm">
-                {hasValue ? value : "Rỗng"}
+            <span className="inline-flex items-center rounded-md bg-neutral-200/90 px-2.5 py-1 text-sm font-semibold text-neutral-950">
+                {hasValue ? String(value) : "Rỗng"}
             </span>
         </div>
     );

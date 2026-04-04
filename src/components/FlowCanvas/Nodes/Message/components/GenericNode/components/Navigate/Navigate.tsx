@@ -34,12 +34,13 @@ function Navigate({ api }: { api: CarouselApi | null }) {
     }, [api]);
 
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
                         size="icon"
                         variant="outline"
+                        className="size-8 shrink-0"
                         onClick={() => api?.scrollPrev()}
                         disabled={!api?.canScrollPrev()}
                     >
@@ -49,8 +50,7 @@ function Navigate({ api }: { api: CarouselApi | null }) {
                 <TooltipContent>Mẫu trước</TooltipContent>
             </Tooltip>
 
-            {/* Counter */}
-            <div className="text-muted-foreground min-w-9 text-center text-sm">
+            <div className="text-muted-foreground min-w-8 text-center text-xs tabular-nums">
                 {current} / {total}
             </div>
 
@@ -59,6 +59,7 @@ function Navigate({ api }: { api: CarouselApi | null }) {
                     <Button
                         size="icon"
                         variant="outline"
+                        className="size-8 shrink-0"
                         onClick={() => api?.scrollNext()}
                         disabled={!api?.canScrollNext()}
                     >

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
-import { Bell, LogOut, UserIcon } from "lucide-react";
+import { LogOut, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -53,9 +53,6 @@ function UserDropdownContent({
                     <UserIcon /> Trang cá nhân
                 </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>
-                <Bell /> Thông báo
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive" onClick={handleLogout}>
                 <LogOut /> Logout

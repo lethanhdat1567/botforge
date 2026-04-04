@@ -3,9 +3,8 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import EdgeJsonBtn from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/EdgeJsonBtn/EdgeJsonBtn";
 import FlowJsonBtn from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/FlowJSonBtn/FlowJsonBtn";
-import NodeJsonBtn from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/NodeJsonBtn/NodeJsonBtn";
+import LayoutJsonBtn from "@/components/FlowCanvas/Canvas/components/JsonBtns/components/LayoutJsonBtn/LayoutJsonBtn";
 import { Button } from "@/components/ui/button";
 import { Code } from "lucide-react";
 
@@ -21,9 +20,8 @@ function JsonBtns() {
                     <Code /> JSON
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col items-center gap-2">
-                <NodeJsonBtn />
-                <EdgeJsonBtn />
+            <DropdownMenuContent className="flex w-[min(90vw,16rem)] flex-col items-stretch gap-2 p-2">
+                <LayoutJsonBtn />
                 <FlowJsonBtn />
             </DropdownMenuContent>
         </DropdownMenu>

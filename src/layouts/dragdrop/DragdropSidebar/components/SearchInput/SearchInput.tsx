@@ -14,7 +14,7 @@ function SearchInput({ searchValue, setSearchValue }: Props) {
     return (
         <InputGroup>
             <InputGroupInput
-                placeholder="Search..."
+                placeholder="Tìm kiếm flow..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
             />

@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/carousel";
 import GenericItem from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/GenericItem/GenericItem";
 import { v4 as uuid } from "uuid";
-import ExpandBtn from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/ExpandBtn/ExpandBtn";
 import Navigate from "@/components/FlowCanvas/Nodes/Message/components/GenericNode/components/Navigate/Navigate";
 
 type Props = {
@@ -27,7 +26,6 @@ type Props = {
 function GenericNode({ nodeId, payload }: Props) {
     const [api, setApi] = useState<CarouselApi | null>(null);
     const [errors, setErrors] = useState([]);
-    const [isExpand, setIsExpand] = useState(false);
 
     function handleAddNewGeneric() {
         const newGeneric = {
@@ -50,52 +48,38 @@ function GenericNode({ nodeId, payload }: Props) {
     }
 
     return (
-        <div>
-            {/* Heading */}
-            <div className="my-2 flex items-center gap-4">
-                <ExpandBtn
-                    isExpand={isExpand}
-                    onToggleExpand={() => setIsExpand(!isExpand)}
-                />
-                {!isExpand && <Navigate api={api} />}
+        <div className="space-y-3">
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                    <AddGeneric onAddGeneric={handleAddNewGeneric} />
+                    <div className="flex justify-end">
+                        <Navigate api={api} />
+                    </div>
+                </div>
             </div>
-            <AddGeneric onAddGeneric={handleAddNewGeneric} />
-            {/* Lists */}
+
             <BaseContent nodeId={nodeId} payloadId={payload.id} errors={errors}>
-                <div>
-                    {isExpand ? (
-                        <div className="flex items-center gap-4">
-                            {payload.fields.elements.map((generic) => (
-                                <GenericItem
-                                    key={generic.id}
-                                    generic={generic}
-                                    nodeId={nodeId}
-                                    payload={payload}
-                                    setErrors={setErrors}
-                                />
+                <div className="rounded-md py-1">
+                    <Carousel
+                        setApi={setApi}
+                        opts={{
+                            watchDrag: false,
+                        }}
+                    >
+                        <CarouselContent className="overflow-visible py-1">
+                            {payload.fields.elements.map((generic, index) => (
+                                <CarouselItem key={generic.id}>
+                                    <GenericItem
+                                        generic={generic}
+                                        itemIndex={index + 1}
+                                        nodeId={nodeId}
+                                        payload={payload}
+                                        setErrors={setErrors}
+                                    />
+                                </CarouselItem>
                             ))}
-                        </div>
-                    ) : (
-                        <Carousel
-                            setApi={setApi}
-                            opts={{
-                                watchDrag: false,
-                            }}
-                        >
-                            <CarouselContent className="overflow-visible">
-                                {payload.fields.elements.map((generic) => (
-                                    <CarouselItem key={generic.id}>
-                                        <GenericItem
-                                            generic={generic}
-                                            nodeId={nodeId}
-                                            payload={payload}
-                                            setErrors={setErrors}
-                                        />
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                        </Carousel>
-                    )}
+                        </CarouselContent>
+                    </Carousel>
                 </div>
             </BaseContent>
         </div>

@@ -40,19 +40,9 @@ function CollectSheetContent({ variable, fallback, nodeId, fieldId }: Props) {
         FlowController.updateNodePayload(nodeId, fieldId, { fallback: next });
 
     return (
-        <div className="space-y-8 px-2 py-4 antialiased">
-            {/* Group 1: Data Variable */}
+        <div className="space-y-6 px-2 py-4 antialiased">
             <section className="space-y-4">
-                <header>
-                    <Label className="text-foreground text-[13px] font-semibold tracking-wider uppercase">
-                        Dữ liệu thu thập
-                    </Label>
-                    <p className="text-muted-foreground text-[12px]">
-                        Xác định biến lưu trữ và định dạng kiểm tra.
-                    </p>
-                </header>
-
-                <div className="ml-1 grid gap-4 border-l-2 border-black/5 pl-4">
+                <div className="grid gap-4">
                     <div className="space-y-1.5">
                         <Label className="text-muted-foreground text-[12px] font-medium">
                             Tên biến
@@ -93,7 +83,6 @@ function CollectSheetContent({ variable, fallback, nodeId, fieldId }: Props) {
                                 }))
                             }
                             onBlur={() => commitVar(localVariable)}
-                            className="bg-secondary/30 h-9 border-none font-mono text-[11px] shadow-none focus-visible:ring-0"
                             placeholder="Chưa thiết lập mẫu..."
                         />
                     </div>
@@ -102,18 +91,8 @@ function CollectSheetContent({ variable, fallback, nodeId, fieldId }: Props) {
 
             <Separator className="opacity-50" />
 
-            {/* Group 2: Error Handling */}
             <section className="space-y-4">
-                <header>
-                    <Label className="text-foreground text-[13px] font-semibold tracking-wider uppercase">
-                        Xử lý quá hạn & lỗi
-                    </Label>
-                    <p className="text-muted-foreground text-[12px]">
-                        Hành động khi người dùng không phản hồi đúng.
-                    </p>
-                </header>
-
-                <div className="ml-1 grid gap-4 border-l-2 border-black/5 pl-4">
+                <div className="grid gap-4">
                     <div className="space-y-2">
                         <Label className="text-muted-foreground text-[12px] font-medium">
                             Thời gian chờ phản hồi

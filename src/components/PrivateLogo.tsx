@@ -13,7 +13,7 @@ function PrivateLogo() {
             <div className="text-sidebar-foreground grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">BotForge</span>
                 <span className="text-sidebar-foreground/70 truncate text-xs">
-                    ChatbotAI
+                    Chatbot
                 </span>
             </div>
         </Link>

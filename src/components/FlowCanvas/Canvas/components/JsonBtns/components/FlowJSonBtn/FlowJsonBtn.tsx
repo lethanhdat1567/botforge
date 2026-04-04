@@ -40,7 +40,7 @@ function FlowJsonBtn() {
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <Workflow />
-                    Xem Flow Json
+                    Xem Logic JSON
                 </Button>
             </DialogTrigger>
 

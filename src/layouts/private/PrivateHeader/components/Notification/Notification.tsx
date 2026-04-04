@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -11,10 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import NotificationItem from "@/layouts/private/PrivateHeader/components/Notification/NotificationItem";
 import {
     notificationService,
-    Notification as NotificationType,
+    Notification as NotificationRow,
+    type NewNotificationSocketPayload,
 } from "@/services/notificationService";
 import { Bell } from "lucide-react";
-import Link from "next/link";
 import { useNotificationSocket } from "@/hooks/use-notification-socket";
 import { useAuthStore } from "@/store/authStore";
 import {
@@ -22,92 +22,147 @@ import {
     showSystemNotification,
 } from "@/lib/notificationPermission";
 
+function normalizeIncoming(n: NotificationRow): NotificationRow {
+    return {
+        ...n,
+        createdAt:
+            typeof n.createdAt === "string" ? n.createdAt : String(n.createdAt),
+        updatedAt:
+            typeof n.updatedAt === "string" ? n.updatedAt : String(n.updatedAt),
+    };
+}
+
 function Notification() {
-    const [notifications, setNotifications] = useState<NotificationType[]>([]);
+    const [notifications, setNotifications] = useState<NotificationRow[]>([]);
     const [open, setOpen] = useState(false);
     const user = useAuthStore((state) => state.user);
-    const [hasUnread, setHasUnread] = useState(false);
-    async function fetchNotifications() {
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    const refreshUnreadCount = useCallback(async () => {
+        if (!user?.id) return;
         try {
-            const res = await notificationService.getNotifications();
-            setNotifications(res.data);
-        } catch (error) {
-            console.log(error);
+            const count = await notificationService.getUnreadCount();
+            setUnreadCount(count);
+        } catch {
+            /* ignore */
         }
-    }
+    }, [user?.id]);
 
-    // Fetch notifications
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        fetchNotifications();
-    }, [open]);
-
-    // Check unread
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setHasUnread(notifications.some((notification) => !notification.read));
-    }, [notifications]);
-
-    // Realtime notification
-    useNotificationSocket(user?.id, () => {
-        fetchNotifications();
-        if (document.visibilityState === "hidden") {
-            showSystemNotification();
+    const fetchNotifications = useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            const list = await notificationService.getNotifications();
+            setNotifications(list);
+        } catch {
+            /* ignore */
         }
-    });
+    }, [user?.id]);
 
-    // Request notification permission
+    useEffect(() => {
+        if (!user?.id) return;
+        void fetchNotifications();
+        void refreshUnreadCount();
+    }, [user?.id, fetchNotifications, refreshUnreadCount]);
+
+    useEffect(() => {
+        if (!open || !user?.id) return;
+        void fetchNotifications();
+        void refreshUnreadCount();
+    }, [open, user?.id, fetchNotifications, refreshUnreadCount]);
+
+    const onSocketPayload = useCallback(
+        (payload: NewNotificationSocketPayload) => {
+            if (!payload?.notification) return;
+            const n = normalizeIncoming(payload.notification);
+            setNotifications((prev) => {
+                if (prev.some((x) => x.id === n.id)) return prev;
+                return [n, ...prev];
+            });
+            if (!n.read) {
+                setUnreadCount((c) => c + 1);
+            }
+            if (document.visibilityState === "hidden") {
+                showSystemNotification();
+            }
+        },
+        [],
+    );
+
+    useNotificationSocket(user?.id, onSocketPayload);
+
     useEffect(() => {
         requestNotificationPermission();
     }, []);
 
-    async function handleCheckNoti() {
-        await fetchNotifications();
-        setHasUnread(notifications.some((notification) => !notification.read));
-        setOpen(false);
+    async function handleMarkAllRead() {
+        try {
+            await notificationService.markAllAsRead();
+            setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+            setUnreadCount(0);
+        } catch {
+            /* ignore */
+        }
     }
+
+    if (!user?.id) return null;
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative">
-                    <Bell />
-                    {hasUnread && (
-                        <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
-                    )}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative shrink-0"
+                    aria-label="Thông báo"
+                >
+                    <Bell className="size-3" />
+                    {unreadCount > 0 ? (
+                        <span className="ring-background absolute top-1 right-1 size-2 rounded-full bg-red-500 ring-2" />
+                    ) : null}
                 </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
-                className="max-h-130 w-100 overflow-hidden rounded-none"
+                className="flex w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-lg border p-0 shadow-lg"
                 side="bottom"
                 align="end"
+                sideOffset={8}
             >
-                <div className="flex items-center justify-between p-4">
-                    <h2 className="text-sm font-medium">Notifications</h2>
-
-                    <Link
-                        href={"/notifications" as any}
-                        className="cursor-pointer text-xs hover:underline"
-                        onClick={() => setOpen(false)}
+                <div className="flex items-center justify-between gap-2 px-4 py-3">
+                    <h2 className="text-sm font-semibold">Notifications</h2>
+                    <button
+                        type="button"
+                        className="text-muted-foreground hover:text-foreground text-xs font-medium hover:underline disabled:pointer-events-none disabled:opacity-50"
+                        onClick={() => void handleMarkAllRead()}
+                        disabled={unreadCount === 0}
                     >
-                        View all
-                    </Link>
+                        Đọc tất cả
+                    </button>
                 </div>
 
                 <Separator />
 
                 {notifications.length === 0 ? (
-                    <div className="text-muted-foreground p-4 text-center text-sm">
-                        No notifications
+                    <div className="text-muted-foreground px-4 py-8 text-center text-sm">
+                        Chưa có thông báo
                     </div>
                 ) : (
-                    <div className="h-[calc(100%-52px)] overflow-auto">
+                    <div className="max-h-[min(70vh,24rem)] overflow-y-auto overscroll-contain">
                         {notifications.map((notification) => (
                             <NotificationItem
                                 key={notification.id}
                                 notification={notification}
-                                onClick={handleCheckNoti}
+                                onNavigate={() => setOpen(false)}
+                                onMarkedRead={(id) => {
+                                    setNotifications((prev) =>
+                                        prev.map((n) =>
+                                            n.id === id
+                                                ? { ...n, read: true }
+                                                : n,
+                                        ),
+                                    );
+                                    setUnreadCount((c) => Math.max(0, c - 1));
+                                }}
                             />
                         ))}
                     </div>

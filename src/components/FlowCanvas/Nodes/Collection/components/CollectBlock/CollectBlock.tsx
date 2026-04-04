@@ -56,7 +56,7 @@ function CollectBlock({
 
     return (
         <Sheet>
-            <SheetTrigger asChild className="p-3">
+            <SheetTrigger asChild>
                 <div className="mt-2 cursor-pointer rounded-sm bg-white p-2">
                     <h3 className="text-md mb-4 font-medium">
                         Thu thập câu trả lời

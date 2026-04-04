@@ -6,6 +6,7 @@ import AskBlock from "@/components/FlowCanvas/Nodes/Collection/components/AskBlo
 import CollectBlock from "@/components/FlowCanvas/Nodes/Collection/components/CollectBlock/CollectBlock";
 import { CollectionData } from "@/components/FlowCanvas/types/node/collection.type";
 import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 function CollectionNode(props: any) {
     const [errors, setErrors] = useState([]);
@@ -19,21 +20,24 @@ function CollectionNode(props: any) {
                 errors={errors}
                 isHideToolbar={true}
             >
-                <AskBlock
-                    text={messageCollection.fields.text}
-                    buttons={messageCollection.fields.buttons}
-                    variable={messageCollection.fields.variable.key}
-                    nodeId={props.id}
-                    fieldId={props.data.messages.id}
-                    setErrors={setErrors}
-                />
-                <CollectBlock
-                    fallback={messageCollection.fields.fallback}
-                    variable={messageCollection.fields.variable}
-                    nodeId={props.id}
-                    fieldId={props.data.messages.id}
-                    setErrors={setErrors}
-                />
+                <div className="p-2">
+                    <AskBlock
+                        text={messageCollection.fields.text}
+                        buttons={messageCollection.fields.buttons}
+                        variable={messageCollection.fields.variable.key}
+                        nodeId={props.id}
+                        fieldId={props.data.messages.id}
+                        setErrors={setErrors}
+                    />
+                    <Separator className="my-2" />
+                    <CollectBlock
+                        fallback={messageCollection.fields.fallback}
+                        variable={messageCollection.fields.variable}
+                        nodeId={props.id}
+                        fieldId={props.data.messages.id}
+                        setErrors={setErrors}
+                    />
+                </div>
             </BaseContent>
         </BaseNode>
     );

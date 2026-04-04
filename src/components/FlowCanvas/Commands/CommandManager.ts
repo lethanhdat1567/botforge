@@ -44,6 +44,11 @@ class CommandManager {
     canRedo() {
         return this.redoStack.length > 0;
     }
+
+    clearHistory() {
+        this.undoStack = [];
+        this.redoStack = [];
+    }
 }
 
 export const commandManager = new CommandManager();

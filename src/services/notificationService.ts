@@ -1,11 +1,9 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
 export type NotificationType =
     | "comment"
     | "reply"
     | "download"
-    | "flow_done"
-    | "flow_cancelled"
     | "new_user"
     | "chat_message";
 
@@ -14,49 +12,66 @@ export interface Notification {
     userId: string;
     type: NotificationType;
     message: string;
-    avatar?: string | null;
+    thumbnail?: string | null;
     relatedId: string;
     read: boolean;
     createdAt: string;
     updatedAt: string;
 }
 
+/** Payload socket `notification:new` từ BE. */
+export type NewNotificationSocketPayload = {
+    notification: Notification;
+};
+
 export interface GetNotificationsParams {
     limit?: number;
     search?: string;
 }
 
+/** Envelope JSON từ BE `res.success(data)`. */
+type ApiSuccess<T> = {
+    status: string;
+    data: T;
+};
+
+function unwrap<T>(body: ApiSuccess<T>): T {
+    return body.data;
+}
+
 export const notificationService = {
-    // 📥 Lấy danh sách notification
-    getNotifications: async (params?: GetNotificationsParams) => {
-        const response = await api.get("/notifications", {
-            params,
-        });
-
-        return response.data;
+    getNotifications: async (
+        params?: GetNotificationsParams,
+    ): Promise<Notification[]> => {
+        const res = await http.get<ApiSuccess<Notification[]>>(
+            "/api/notifications",
+            params
+                ? {
+                      params: params as Record<
+                          string,
+                          string | number | boolean | undefined
+                      >,
+                  }
+                : undefined,
+        );
+        return unwrap(res);
     },
 
-    // ✅ Đánh dấu đã đọc 1 notification
-    markAsRead: async (id: string) => {
-        const response = await api.put(`/notifications/${id}/read`);
-        return response.data;
+    getUnreadCount: async (): Promise<number> => {
+        const res = await http.get<ApiSuccess<{ count: number }>>(
+            "/api/notifications/unread-count",
+        );
+        return unwrap(res).count;
     },
 
-    // ✅ Đánh dấu đã đọc tất cả
-    markAllAsRead: async () => {
-        const response = await api.put("/notifications/read-all");
-        return response.data;
+    markAsRead: async (id: string): Promise<void> => {
+        await http.put<ApiSuccess<unknown>>(
+            `/api/notifications/${id}/read`,
+            {},
+        );
     },
 
-    // ➕ Tạo notification (admin / system)
-    createNotification: async (payload: {
-        userId: string;
-        type: NotificationType;
-        message: string;
-        relatedId: string;
-        avatar?: string | null;
-    }) => {
-        const response = await api.post("/notifications", payload);
-        return response.data;
+    markAllAsRead: async (): Promise<void> => {
+        await http.put<ApiSuccess<unknown>>("/api/notifications/read-all", {});
     },
 };

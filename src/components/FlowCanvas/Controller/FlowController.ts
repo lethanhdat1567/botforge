@@ -22,27 +22,75 @@ import { CollectionVariableType } from "@/components/FlowCanvas/types/node/colle
 import { MessageData } from "@/components/FlowCanvas/types/node/message.type";
 import { FlowNodeType } from "@/components/FlowCanvas/types/node/node.type";
 import { flowService } from "@/services/flowService";
+import { useAutoSaveBaselineStore } from "@/store/autoSaveBaselineStore";
 import { useEdgeStore } from "@/store/edgeStore";
 import { useNodeStore } from "@/store/nodeStore";
 import { Connection } from "@xyflow/react";
 
+function isAbortError(err: unknown): boolean {
+    if (err instanceof DOMException && err.name === "AbortError") return true;
+    return (
+        typeof err === "object" &&
+        err !== null &&
+        (err as { name?: string }).name === "AbortError"
+    );
+}
+
 export const FlowController = {
-    async loadFlow(flowId: string) {
+    async loadFlow(flowId: string, signal?: AbortSignal) {
         try {
             this.resetFlow();
 
-            const res = await flowService.getFlowDetail(flowId);
+            const res = await flowService.getFlowDetail(flowId, { signal });
 
-            if (!res?.data?.layoutJson) {
+            if (signal?.aborted) {
+                return;
+            }
+
+            if (res.data == null) {
                 throw new Error("FLOW_NOT_FOUND");
             }
 
-            const nodes = res.data.layoutJson.nodes ?? [];
-            const edges = res.data.layoutJson.edges ?? [];
+            const rawLayout = res.data.layoutJson;
+            const layout =
+                rawLayout &&
+                typeof rawLayout === "object" &&
+                !Array.isArray(rawLayout)
+                    ? rawLayout
+                    : { nodes: [], edges: [] };
+            const nodes = layout.nodes ?? [];
+            const edges = layout.edges ?? [];
 
             useNodeStore.getState().setNodes(nodes);
             useEdgeStore.getState().setEdges(edges);
+
+            const apiStartId = res.data.startNodeId as string | null | undefined;
+            if (
+                apiStartId &&
+                nodes.some(
+                    (n: { id?: string }) => n.id === apiStartId,
+                )
+            ) {
+                useNodeStore.getState().markStartNode(apiStartId);
+            } else {
+                const marked = nodes.find(
+                    (n: { id?: string; data?: { markStart?: boolean } }) =>
+                        n.data?.markStart === true && n.id,
+                );
+                if (marked?.id) {
+                    useNodeStore.getState().markStartNode(marked.id);
+                }
+            }
+
+            const nodesForBaseline = useNodeStore.getState().nodes;
+            useAutoSaveBaselineStore.getState().setBaseline(flowId, {
+                logicJson: res.data.logicJson ?? {},
+                layoutJson: { nodes: nodesForBaseline, edges },
+            });
         } catch (err) {
+            if (signal?.aborted || isAbortError(err)) {
+                return;
+            }
             this.resetFlow();
             throw err;
         }
@@ -90,6 +138,7 @@ export const FlowController = {
     },
 
     resetFlow() {
+        useAutoSaveBaselineStore.getState().clearBaseline();
         useNodeStore.getState().resetNodes();
         useEdgeStore.getState().resetEdges();
     },

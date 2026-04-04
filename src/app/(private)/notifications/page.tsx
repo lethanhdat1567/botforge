@@ -3,40 +3,41 @@
 import NotificationItem from "@/app/(private)/notifications/components/NotificationItem/NotificationItem";
 import SearchSection from "@/app/(private)/notifications/components/SearchSection/SearchSection";
 import { Button } from "@/components/ui/button";
-import { notificationService } from "@/services/notificationService";
+import {
+    notificationService,
+    type Notification,
+} from "@/services/notificationService";
 import { CheckCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function NotificationPage() {
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
     const fetchNotification = async (searchValue?: string) => {
         try {
-            const res = await notificationService.getNotifications({
+            const list = await notificationService.getNotifications({
                 search: searchValue || "",
             });
-
-            setNotifications(res.data);
+            setNotifications(list);
         } catch (error) {
             console.log(error);
         }
     };
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        fetchNotification();
+        void fetchNotification();
     }, []);
 
     function handleSearching(value: string) {
-        fetchNotification(value);
+        void fetchNotification(value);
     }
 
     async function handleMarkAll() {
         try {
             await notificationService.markAllAsRead();
             toast.success("Marked all as read");
-            fetchNotification();
+            void fetchNotification();
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +54,7 @@ function NotificationPage() {
             <div className="mt-6">
                 <SearchSection onSearching={handleSearching} />
                 <div className="mt-4 border">
-                    {notifications.map((item: any) => (
+                    {notifications.map((item) => (
                         <NotificationItem key={item.id} notification={item} />
                     ))}
                 </div>

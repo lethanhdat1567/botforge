@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import Notification from "@/layouts/private/PrivateHeader/components/Notification/Notification";
 import { ToggleTheme } from "@/layouts/private/PrivateHeader/components/ToggleTheme/ToggleTheme";
 import User from "@/layouts/private/PrivateHeader/components/User/User";
 
@@ -16,6 +17,7 @@ function AdminHeader() {
                         orientation="vertical"
                         className="mr-2 data-[orientation=vertical]:h-4"
                     />
+                    <Notification />
                     <User />
                 </div>
             </div>

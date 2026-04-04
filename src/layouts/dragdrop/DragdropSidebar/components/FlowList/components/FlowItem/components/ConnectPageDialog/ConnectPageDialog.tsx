@@ -23,19 +23,30 @@ type Props = {
     onOpenChange: (open: boolean) => void;
     flowId: string;
     onSuccess: () => void;
+    isConnected: boolean;
+    connectedPageUid?: string | null;
 };
 
-function ConnectPageDialog({ open, onOpenChange, flowId, onSuccess }: Props) {
+function ConnectPageDialog({
+    open,
+    onOpenChange,
+    flowId,
+    onSuccess,
+    isConnected,
+    connectedPageUid,
+}: Props) {
     const [pages, setPages] = useState<FacebookResponse[]>([]);
     const [loadError, setLoadError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [connectingId, setConnectingId] = useState<string | null>(null);
+    const [isDisconnecting, setIsDisconnecting] = useState(false);
 
     function resetLocalState() {
         setPages([]);
         setLoadError(null);
         setIsLoading(false);
         setConnectingId(null);
+        setIsDisconnecting(false);
     }
 
     function handleDialogOpenChange(next: boolean) {
@@ -67,12 +78,36 @@ function ConnectPageDialog({ open, onOpenChange, flowId, onSuccess }: Props) {
         }
     }
 
+    async function handleDisconnect() {
+        setIsDisconnecting(true);
+        try {
+            await pageService.delete(flowId);
+            toast.success("Hủy kết nối thành công");
+            handleDialogOpenChange(false);
+            onSuccess();
+        } catch (error) {
+            console.log(error);
+            if (error instanceof HttpError) {
+                toast.error(error.message || "Hủy kết nối thất bại.");
+            } else {
+                toast.error("Hủy kết nối thất bại.");
+            }
+        } finally {
+            setIsDisconnecting(false);
+        }
+    }
+
     useEffect(() => {
         if (!open) return;
 
         setPages([]);
         setLoadError(null);
         setConnectingId(null);
+
+        if (isConnected) {
+            setIsLoading(false);
+            return;
+        }
 
         let cancelled = false;
 
@@ -109,33 +144,61 @@ function ConnectPageDialog({ open, onOpenChange, flowId, onSuccess }: Props) {
         return () => {
             cancelled = true;
         };
-    }, [open]);
+    }, [open, isConnected]);
 
     return (
         <Dialog open={open} onOpenChange={handleDialogOpenChange}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Kết nối Facebook Page</DialogTitle>
+                    <DialogTitle>
+                        {isConnected
+                            ? "Facebook Page đã kết nối"
+                            : "Kết nối Facebook Page"}
+                    </DialogTitle>
                     <DialogDescription>
-                        Chọn một page để gắn với flow này.
+                        {isConnected
+                            ? connectedPageUid
+                                ? `Flow đang gắn với Page ID: ${connectedPageUid}. Bạn có thể hủy kết nối để chọn page khác.`
+                                : "Flow đang gắn với một Facebook Page. Bạn có thể hủy kết nối để chọn page khác."
+                            : "Chọn một page để gắn với flow này."}
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="max-h-[min(320px,50vh)] space-y-2 overflow-y-auto pr-1">
-                    {isLoading && (
+                    {isConnected && (
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            className="w-full"
+                            disabled={isDisconnecting}
+                            onClick={() => void handleDisconnect()}
+                        >
+                            {isDisconnecting ? (
+                                <>
+                                    <Loader2 className="mr-2 size-4 animate-spin" />
+                                    Đang hủy…
+                                </>
+                            ) : (
+                                "Hủy kết nối"
+                            )}
+                        </Button>
+                    )}
+
+                    {!isConnected && isLoading && (
                         <div className="text-muted-foreground flex items-center justify-center gap-2 py-8 text-sm">
                             <Loader2 className="size-4 animate-spin" />
                             Đang tải danh sách…
                         </div>
                     )}
 
-                    {!isLoading && loadError && (
+                    {!isConnected && !isLoading && loadError && (
                         <p className="text-destructive text-center text-sm">
                             {loadError}
                         </p>
                     )}
 
-                    {!isLoading &&
+                    {!isConnected &&
+                        !isLoading &&
                         !loadError &&
                         pages.map((page) => {
                             const busy = connectingId === page.id;
