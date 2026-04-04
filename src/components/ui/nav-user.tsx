@@ -15,7 +15,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useHydrated } from "@/hooks/use-hydrated";
 
 export function NavUser() {
-    const user = useAuthStore((state) => state.user);
+    const user: any = useAuthStore((state) => state.user);
     const hydrated = useHydrated();
 
     if (!hydrated) return null;

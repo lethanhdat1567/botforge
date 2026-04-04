@@ -6,21 +6,21 @@ const CONTACT_ITEMS = [
         title: "Liên hệ trực tiếp",
         description:
             "Gửi email cho chúng tôi nếu bạn có câu hỏi hoặc cần hỗ trợ chi tiết.",
-        linkText: "hello@Botforge.com",
+        linkText: "lethanhdat1567@gmail.com",
     },
     {
         icon: LifeBuoy,
         title: "Hỗ trợ kỹ thuật",
         description:
             "Gặp vấn đề với chatbot hoặc flow? Đội ngũ kỹ thuật luôn sẵn sàng giúp bạn.",
-        linkText: "Trung tâm hỗ trợ",
+        linkText: "Chat ngay với chúng tôi",
     },
     {
         icon: MessageSquare,
         title: "Góp ý sản phẩm",
         description:
             "Chia sẻ ý tưởng hoặc đề xuất tính năng mới để Botforge ngày càng tốt hơn.",
-        linkText: "Gửi góp ý",
+        linkText: "Gửi góp ý ",
     },
     {
         icon: Lightbulb,

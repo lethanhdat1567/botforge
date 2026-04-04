@@ -71,30 +71,30 @@ export default function AdminBlogCategoryPage() {
     });
 
     return (
-        <div className="min-h-screen flex-1 space-y-8 bg-neutral-50/30">
-            <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                    <h1 className="text-2xl font-bold tracking-tight text-stone-900">
+        <div className="min-h-0 w-full min-w-0 flex-1 space-y-6 bg-neutral-50/30 sm:space-y-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 space-y-1">
+                    <h1 className="text-xl font-bold tracking-tight text-stone-900 sm:text-2xl">
                         Quản lý danh mục bài viết
                     </h1>
                     <p className="text-xs font-medium text-stone-500 italic">
                         Danh sách danh mục bài viết
                     </p>
                 </div>
-                <Link href="/admin/blog-category/create">
-                    <Button>
+                <Link href="/admin/blog-category/create" className="shrink-0">
+                    <Button className="w-full sm:w-auto">
                         Tạo danh mục mới <Plus />
                     </Button>
                 </Link>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
                 <DataTable
                     data={blogs}
                     columns={flowShareColumns}
                     onSelectionChange={(ids) => setDestroySelect(ids)}
                     toolbar={
-                        <div className="flex items-center gap-4">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
                             <SearchInput
                                 onChange={(val) => setSearchValue(val)}
                                 placeholder="Tìm kiếm danh mục..."

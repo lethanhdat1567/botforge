@@ -75,11 +75,11 @@ function ClientWrapper() {
     return (
         <>
             <SearchInput value={search} onChange={handleSearch} />
-            <div className="mt-10 grid grid-cols-12 gap-10">
-                <div className="col-span-9">
+            <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-start sm:justify-between sm:gap-6 lg:gap-10">
+                <div className="min-w-0 flex-1">
                     <CategoryBlock onSelect={handleSelectCategory} />
                 </div>
-                <div className="col-span-3 mt-1 ml-auto">
+                <div className="shrink-0 sm:mt-1 sm:self-auto">
                     <FilterBtn
                         sortBy={sortBy}
                         sortOrder={sortOrder}

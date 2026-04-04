@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
+import type { ComponentProps } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { SearchForm } from "@/components/search-form";
-import { VersionSwitcher } from "@/components/version-switcher";
 import {
     Sidebar,
     SidebarContent,
@@ -16,11 +15,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarRail,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import PrivateLogo from "@/components/PrivateLogo";
 
 const data = {
-    versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
     navMain: [
         {
             title: "Quản lý dự án",
@@ -59,26 +58,29 @@ const data = {
     ],
 };
 
-export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: ComponentProps<typeof Sidebar>) {
     const pathname = usePathname();
+    const { isMobile, setOpenMobile } = useSidebar();
 
     const isActive = (url: string) => {
         if (url === "/") return pathname === "/";
         return pathname.startsWith(url);
     };
 
+    const closeMobile = () => {
+        if (isMobile) setOpenMobile(false);
+    };
+
     return (
         <Sidebar {...props}>
             <SidebarHeader>
-                <SidebarHeader>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild>
-                                <PrivateLogo />
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <PrivateLogo />
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
             </SidebarHeader>
 
             <SidebarContent>
@@ -94,7 +96,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                                             asChild
                                             isActive={isActive(item.url)}
                                         >
-                                            <a href={item.url}>{item.title}</a>
+                                            <Link
+                                                href={item.url}
+                                                onClick={closeMobile}
+                                            >
+                                                {item.title}
+                                            </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ))}

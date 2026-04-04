@@ -5,21 +5,20 @@ import AnimatedContent from "@/components/AnimatedContent";
 
 function Hero() {
     return (
-        <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-background pt-30 text-center">
+        <div className="bg-background relative flex min-h-screen w-full max-w-[100vw] flex-col items-center justify-center px-4 pt-24 text-center sm:pt-30">
             <AnimatedContent>
                 <LiveSection />
             </AnimatedContent>
 
             <AnimatedContent delay={0.2}>
-                <h1 className="mt-10 w-2xl text-6xl font-bold">
-                    Nền tảng xây dựng chatbot tự động
+                <h1 className="mt-8 w-full max-w-2xl text-3xl font-bold sm:mt-10 sm:text-4xl md:text-5xl lg:text-6xl">
+                    Tự động hóa hội thoại thông minh
                 </h1>
             </AnimatedContent>
             <AnimatedContent delay={0.4}>
-                <h3 className="text-md mt-6 w-lg font-medium text-muted-foreground">
-                    Thiết kế flow hội thoại bằng kéo thả, tự động trả lời tin
-                    nhắn và theo dõi hiệu quả — tất cả trong một hệ thống duy
-                    nhất.
+                <h3 className="text-md text-muted-foreground mt-4 w-full max-w-lg font-medium sm:mt-6">
+                    Xây dựng kịch bản chatbot không cần code. Tối ưu quy trình
+                    chăm sóc khách hàng trên một nền tảng tập trung.
                 </h3>
             </AnimatedContent>
             <MoreButtons />

@@ -21,22 +21,11 @@ function CreateBlogPage() {
     const form = useForm<BlogFormSchemaType>({
         resolver: zodResolver(blogFormSchema) as any,
         defaultValues: {
-            title: "Hướng dẫn lập trình Next.js 14 cho người mới bắt đầu",
-            slug: "huong-dan-lap-trinh-nextjs-14-cho-nguoi-moi-bat-dau",
-            description:
-                "Khám phá những tính năng mới nhất của Next.js 14 bao gồm App Router, Server Actions và tối ưu hóa hiệu suất ứng dụng web của bạn.",
-            content: `
-            <h2>1. Giới thiệu về Next.js 14</h2>
-            <p>Next.js 14 mang đến những cải tiến vượt bậc về hiệu năng...</p>
-            <ul>
-                <li>Server Actions</li>
-                <li>Partial Prerendering</li>
-                <li>Tối ưu hóa Image và Font</li>
-            </ul>
-            <p>Hãy cùng tìm hiểu chi tiết trong bài viết này.</p>
-        `,
-            thumbnail:
-                "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop",
+            title: "",
+            slug: "",
+            description: "",
+            content: "",
+            thumbnail: "",
             categoryId: "",
             status: "active",
         },
@@ -82,14 +71,17 @@ function CreateBlogPage() {
     };
 
     return (
-        <div className="flex h-full flex-col p-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex min-h-0 w-full min-w-0 flex-col px-0 py-0 sm:px-2">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="min-w-0 space-y-6"
+            >
                 {/* Sticky Header */}
-                <div className="flex items-center justify-between bg-white/80 pb-4 backdrop-blur-md">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-4 bg-white/80 pb-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                         <BackBtn />
-                        <div>
-                            <h1 className="text-xl font-bold text-stone-900">
+                        <div className="min-w-0">
+                            <h1 className="text-lg font-bold text-stone-900 sm:text-xl">
                                 Viết bài mới
                             </h1>
                             <p className="text-xs text-stone-500">
@@ -98,11 +90,11 @@ function CreateBlogPage() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
                         <Button
                             type="button"
                             variant="outline"
-                            className="rounded-none border-stone-300"
+                            className="flex-1 rounded-none border-stone-300 sm:flex-initial"
                             onClick={() => router.back()}
                             disabled={isSubmitting}
                         >
@@ -110,7 +102,7 @@ function CreateBlogPage() {
                         </Button>
                         <Button
                             type="submit"
-                            className="rounded-none bg-blue-600 hover:bg-blue-700"
+                            className="flex-1 rounded-none bg-blue-600 hover:bg-blue-700 sm:flex-initial"
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? (

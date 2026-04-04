@@ -53,7 +53,7 @@ export function SummaryCards({ data, isLoading }: SummaryCardsProps) {
     };
 
     return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {metrics.map((metric, index) => (
                 <MetricCard
                     key={metric.title}
@@ -94,8 +94,8 @@ function MetricCard({
             className="group"
         >
             <Card className="group relative overflow-hidden border-stone-200 bg-white py-0 shadow-sm transition-all hover:border-stone-400 hover:shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
-                    <CardTitle className="text-xs font-bold tracking-widest text-stone-600 uppercase">
+                <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 p-4 pb-2">
+                    <CardTitle className="min-w-0 truncate text-xs font-bold tracking-widest text-stone-600 uppercase">
                         {title}
                     </CardTitle>
                     <div className="rounded-md border border-stone-100 bg-stone-50 p-1.5 transition-colors group-hover:bg-stone-100">

@@ -10,11 +10,13 @@ function EmptyFlow({
     description = "Vui lòng chọn một flow để bắt đầu, hoặc tạo flow mới.",
 }: EmptyFlowProps) {
     return (
-        <div className="flex h-screen w-full flex-col items-center justify-center space-y-6">
+        <div className="flex h-svh min-h-[50dvh] w-full min-w-0 flex-col items-center justify-center space-y-6 px-4">
             {emptyImage}
-            <div className="space-y-3 text-center">
-                <h2 className="text-xl font-bold">{title}</h2>
-                <p className="text-md w-lg text-neutral-500">{description}</p>
+            <div className="w-full max-w-lg space-y-3 text-center">
+                <h2 className="text-lg font-bold sm:text-xl">{title}</h2>
+                <p className="text-muted-foreground text-sm sm:text-base">
+                    {description}
+                </p>
             </div>
         </div>
     );

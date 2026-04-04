@@ -51,13 +51,13 @@ export function ChartsSection({ chartData, isLoading }: ChartsSectionProps) {
   }
 
   return (
-    <div className="w-full pb-8">
-      <Card className="border-stone-200 shadow-xl flex flex-col w-full bg-white relative overflow-hidden group py-0">
+    <div className="w-full min-w-0 pb-8">
+      <Card className="border-stone-200 shadow-xl flex flex-col w-full min-w-0 bg-white relative overflow-hidden group py-0">
         <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity pointer-events-none">
           <TrendingUp className="h-48 w-48 text-stone-900" />
         </div>
         
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-stone-100/60 p-6 relative z-10">
+        <CardHeader className="flex flex-col gap-4 border-b border-stone-100/60 p-4 pb-4 relative z-10 sm:p-6 sm:pb-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-1 text-left">
             <div className="flex items-center gap-2 text-stone-400">
                <CalendarDays className="h-3.5 w-3.5" />
@@ -67,8 +67,8 @@ export function ChartsSection({ chartData, isLoading }: ChartsSectionProps) {
             <CardDescription className="text-xs text-stone-500 font-medium">Thống kê người dùng, flows và bài viết mới</CardDescription>
           </div>
           
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="h-9 px-4 border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-stone-900 font-bold text-[11px] uppercase tracking-widest transition-all shadow-sm active:scale-95">
+          <div className="flex w-full flex-wrap items-center gap-2 md:w-auto md:justify-end">
+            <Button variant="outline" size="sm" className="h-9 w-full border-stone-200 px-4 text-[11px] font-bold tracking-widest text-stone-600 uppercase shadow-sm transition-all hover:bg-stone-50 hover:text-stone-900 active:scale-95 sm:w-auto">
               <Share className="mr-2 h-3.5 w-3.5" />
               Xuất báo cáo
             </Button>

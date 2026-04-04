@@ -20,6 +20,7 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { isNavPathActive } from "@/lib/utils";
 
@@ -34,6 +35,8 @@ type NavItem = {
 };
 
 function NavMainItem({ item, pathname }: { item: NavItem; pathname: string }) {
+    const { isMobile, setOpenMobile } = useSidebar();
+
     const subItems =
         item.items?.filter(
             (sub): sub is { title: string; url: string } => Boolean(sub?.url)
@@ -62,11 +65,12 @@ function NavMainItem({ item, pathname }: { item: NavItem; pathname: string }) {
                         {item.url ? (
                             <Link
                                 href={item.url}
-                                className="flex w-full items-center gap-2"
+                                className="flex w-full min-w-0 items-center gap-2"
                                 onClick={(e) => {
                                     if (hasChildren) {
                                         e.stopPropagation();
                                     }
+                                    if (isMobile) setOpenMobile(false);
                                 }}
                             >
                                 <item.icon size={16} />
@@ -102,7 +106,12 @@ function NavMainItem({ item, pathname }: { item: NavItem; pathname: string }) {
                                             subItem.url
                                         )}
                                     >
-                                        <Link href={subItem.url}>
+                                        <Link
+                                            href={subItem.url}
+                                            onClick={() =>
+                                                isMobile && setOpenMobile(false)
+                                            }
+                                        >
                                             <span>{subItem.title}</span>
                                         </Link>
                                     </SidebarMenuSubButton>

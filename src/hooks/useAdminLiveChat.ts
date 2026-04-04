@@ -29,7 +29,9 @@ function previewFromLastMessage(
     return t || "Tin nhắn";
 }
 
-function mapRowToSidebarItem(row: AdminConversationListRow): LiveChatSidebarItem {
+function mapRowToSidebarItem(
+    row: AdminConversationListRow,
+): LiveChatSidebarItem {
     const name =
         row.user?.displayName?.trim() ||
         row.anonymousParticipant?.displayName?.trim() ||
@@ -120,7 +122,9 @@ export function useAdminLiveChat() {
                 }
             } catch (e) {
                 setListError(
-                    e instanceof Error ? e.message : "Không tải được danh sách chat.",
+                    e instanceof Error
+                        ? e.message
+                        : "Không tải được danh sách chat.",
                 );
             } finally {
                 if (!opts?.silent) {
@@ -141,7 +145,9 @@ export function useAdminLiveChat() {
                 setMessagesLoading(true);
             }
             try {
-                const list = await liveChatApi.fetchMessages(cid, { limit: 100 });
+                const list = await liveChatApi.fetchMessages(cid, {
+                    limit: 100,
+                });
                 setMessages(list);
             } finally {
                 if (!opts?.silent) {

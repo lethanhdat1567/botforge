@@ -44,14 +44,14 @@ function Questions() {
     ];
 
     return (
-        <div className="mx-auto flex w-5xl flex-col items-center pt-30">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 pt-20 sm:px-6 sm:pt-30">
             <SplitText
                 text="Chúng tôi sẵn sàng giải đáp thắc mắc của bạn"
                 tag="h1"
-                className="w-xl pb-2 text-center text-5xl font-medium"
+                className="w-full max-w-xl pb-2 text-center text-3xl font-medium sm:text-4xl md:text-5xl"
                 duration={1}
             />
-            <AnimatedContent className="mt-10 w-4xl">
+            <AnimatedContent className="mt-10 w-full max-w-4xl">
                 <Accordion type={"multiple"} className="w-full space-y-4">
                     {ITEMS.map((item, index) => (
                         <AccordionItem
@@ -60,7 +60,7 @@ function Questions() {
                             className="rounded-md border border-border bg-card px-3 py-1 shadow-[0_10px_14px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_14px_-8px_rgba(0,0,0,0.45)]"
                         >
                             <AccordionHeader>
-                                <AccordionTrigger className="flex w-full cursor-pointer items-center justify-between border-b-0 py-2 text-start">
+                                <AccordionTrigger className="flex w-full cursor-pointer items-center justify-between gap-2 border-b-0 py-2 text-start text-sm sm:text-base">
                                     {item.title}{" "}
                                     <Plus className="h-5 w-5 text-muted-foreground transition-transform duration-300" />
                                 </AccordionTrigger>

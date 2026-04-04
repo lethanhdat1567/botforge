@@ -7,10 +7,10 @@ export function UserSupportChatView() {
     const { contact, messages, loading, sending, error, sendMessage, viewer } =
         useLiveChatThread({ enabled: true });
 
-    // 100dvh − PrivateHeader (h-16) − padding dọc p-4 × 2
+    // Khớp layout private: header ~4–4.5rem + padding shell (p-3–p-6)
     return (
         <div
-            className="flex h-[calc(100dvh-7rem)] min-h-0 min-w-0 shrink-0 flex-col overflow-hidden"
+            className="flex h-[calc(100dvh-8.5rem)] min-h-[min(50dvh,24rem)] min-w-0 shrink-0 flex-col overflow-hidden sm:h-[calc(100dvh-7.5rem)]"
             data-slot="user-support-chat"
         >
             <ChatThread

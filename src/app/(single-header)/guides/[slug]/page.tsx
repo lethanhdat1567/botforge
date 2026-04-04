@@ -13,9 +13,9 @@ async function GuideDetailPage({ params }: Props) {
     const guide = res.data;
 
     return (
-        <article className="mx-auto min-h-screen w-2xl px-4 pt-10 pb-32">
+        <article className="mx-auto min-h-svh w-full min-w-0 max-w-2xl px-4 pt-8 pb-24 sm:pt-10 sm:pb-32">
             {/* Title */}
-            <h1 className="text-foreground text-4xl leading-tight font-bold">
+            <h1 className="text-foreground text-2xl leading-tight font-bold sm:text-3xl md:text-4xl">
                 {guide.title}
             </h1>
 

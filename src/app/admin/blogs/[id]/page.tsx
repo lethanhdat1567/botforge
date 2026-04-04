@@ -94,32 +94,37 @@ function UpdateBlogPage() {
 
     if (isLoading) {
         return (
-            <div className="flex h-100 items-center justify-center">
+            <div className="flex min-h-[40vh] w-full items-center justify-center px-4">
                 <Loader2 className="h-8 w-8 animate-spin text-stone-400" />
             </div>
         );
     }
 
     return (
-        <div className="flex h-full flex-col p-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex min-h-0 w-full min-w-0 flex-col px-0 py-0 sm:px-2">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="min-w-0 space-y-6"
+            >
                 {/* Header Section */}
-                <div className="flex items-center justify-between border-b bg-white/80 pb-4 backdrop-blur-md">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-4 border-b bg-white/80 pb-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                         <BackBtn />
-                        <div>
-                            <h1 className="text-xl font-bold text-stone-900">
+                        <div className="min-w-0">
+                            <h1 className="text-lg font-bold text-stone-900 sm:text-xl">
                                 Chỉnh sửa bài viết
                             </h1>
-                            <p className="text-xs text-blue-600">ID: {id}</p>
+                            <p className="truncate text-xs text-blue-600">
+                                ID: {id}
+                            </p>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
                         <Button
                             type="button"
                             variant="outline"
-                            className="rounded-none border-stone-300"
+                            className="flex-1 rounded-none border-stone-300 sm:flex-initial"
                             onClick={() => router.back()}
                             disabled={isSubmitting}
                         >
@@ -127,7 +132,7 @@ function UpdateBlogPage() {
                         </Button>
                         <Button
                             type="submit"
-                            className="rounded-none bg-indigo-600 hover:bg-indigo-700"
+                            className="flex-1 rounded-none bg-indigo-600 hover:bg-indigo-700 sm:flex-initial"
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? (
@@ -141,7 +146,7 @@ function UpdateBlogPage() {
                 </div>
 
                 {/* Reuse BlogForm */}
-                <div className="mx-auto max-w-5xl py-6">
+                <div className="mx-auto w-full min-w-0 max-w-5xl py-4 sm:py-6">
                     <BlogForm form={form} />
                 </div>
             </form>

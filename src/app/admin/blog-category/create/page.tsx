@@ -50,25 +50,31 @@ function BlogCategoryCreatePage() {
     }
 
     return (
-        <div>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+        <div className="min-w-0">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="min-w-0 space-y-4"
+            >
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                         <BackBtn />
-                        <h1 className="text-xl font-semibold">
+                        <h1 className="text-lg font-semibold sm:text-xl">
                             Thêm danh mục blog mới
                         </h1>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-4">
                         <Button
                             type="button"
-                            className="rounded-none"
+                            className="flex-1 rounded-none sm:flex-initial"
                             variant={"secondary"}
                             onClick={() => router.back()}
                         >
                             Hủy
                         </Button>
-                        <Button type="submit" className="rounded-none">
+                        <Button
+                            type="submit"
+                            className="flex-1 rounded-none sm:flex-initial"
+                        >
                             Lưu
                         </Button>
                     </div>

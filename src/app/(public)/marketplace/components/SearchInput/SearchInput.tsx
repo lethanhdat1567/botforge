@@ -38,7 +38,7 @@ function SearchInput({ value, onChange, isLoading = false }: Props) {
         <div className="mx-auto mt-6 w-full max-w-2xl">
             <InputGroup className="border-border/40 bg-background focus-within:ring-primary/10 h-10 transition-all focus-within:ring-1">
                 <InputGroupInput
-                    placeholder="Tìm kiếm kịch bản..."
+                    placeholder="Tìm kiếm luồng hội thoại..."
                     value={localValue}
                     onChange={(e) => setLocalValue(e.target.value)}
                     className="border-none text-xs font-medium focus-visible:ring-0"

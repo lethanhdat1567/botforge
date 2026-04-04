@@ -12,7 +12,7 @@ type Props = {
 
 function SearchInput({ searchValue, setSearchValue }: Props) {
     return (
-        <InputGroup>
+        <InputGroup className="w-full min-w-0">
             <InputGroupInput
                 placeholder="Tìm kiếm flow..."
                 value={searchValue}

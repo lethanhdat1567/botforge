@@ -34,9 +34,9 @@ function Pages() {
     const hasPages = pages.length > 0;
 
     return (
-        <div>
-            <div className="flex items-center justify-between">
-                <h1 className="text-foreground mb-6 text-2xl font-bold tracking-tight">
+        <div className="min-w-0">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+                <h1 className="text-foreground mb-4 text-xl font-bold tracking-tight sm:mb-6 sm:text-2xl">
                     Trang kết nối
                 </h1>
             </div>

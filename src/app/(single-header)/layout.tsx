@@ -3,9 +3,9 @@ import { ReactNode } from "react";
 
 function SingleHeaderLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="flex min-h-svh w-full min-w-0 flex-col bg-background text-foreground">
             <SingleHeader />
-            <div>{children}</div>
+            <div className="w-full min-w-0 flex-1">{children}</div>
         </div>
     );
 }

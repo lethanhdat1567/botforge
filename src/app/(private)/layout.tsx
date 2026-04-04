@@ -4,11 +4,13 @@ import PrivateHeader from "@/layouts/private/PrivateHeader/PrivateHeader";
 
 function PrivateLayout({ children }: { children: React.ReactNode }) {
     return (
-        <SidebarProvider>
+        <SidebarProvider className="min-w-0">
             <AppSidebar />
-            <SidebarInset className="min-h-0">
+            <SidebarInset className="min-h-0 min-w-0 overflow-hidden">
                 <PrivateHeader />
-                <div className="min-h-0 flex-1 overflow-auto p-4">{children}</div>
+                <div className="min-h-0 min-w-0 flex-1 overflow-auto p-3 sm:p-4 md:p-6">
+                    {children}
+                </div>
             </SidebarInset>
         </SidebarProvider>
     );

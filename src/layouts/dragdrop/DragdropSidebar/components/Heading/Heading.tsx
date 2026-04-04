@@ -14,8 +14,10 @@ function Heading({
     setExpand: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     return (
-        <div className="flex items-center justify-between border-b pb-2">
-            <PrivateLogo />
+        <div className="flex min-w-0 items-center justify-between gap-2 border-b pb-2">
+            <div className="min-w-0 flex-1">
+                <PrivateLogo />
+            </div>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button

@@ -2,7 +2,7 @@ import TimeoutSection from "@/app/(private)/bot/settings/components/TimeoutSecti
 
 function SettingsPage() {
     return (
-        <div className="mx-auto w-4xl">
+        <div className="mx-auto w-full min-w-0 max-w-4xl">
             <TimeoutSection />
         </div>
     );

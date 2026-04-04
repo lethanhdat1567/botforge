@@ -21,7 +21,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavUser } from "@/components/ui/nav-user";
 import PrivateLogo from "@/components/PrivateLogo";
 
 const data = {
@@ -79,7 +78,7 @@ const data = {
     navSecondary: [
         {
             title: "Hướng dẫn sử dụng",
-            url: "#",
+            url: "/blogs",
             icon: BookOpen,
         },
         {
@@ -106,9 +105,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavMain items={data.navMain} />
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
-            <SidebarFooter>
-                <NavUser />
-            </SidebarFooter>
         </Sidebar>
     );
 }

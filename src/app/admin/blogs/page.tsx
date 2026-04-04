@@ -76,30 +76,30 @@ function BlogPage() {
     });
 
     return (
-        <div className="p-4">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-semibold text-stone-800">
+        <div className="min-w-0">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                    <h1 className="text-xl font-semibold text-stone-800 sm:text-2xl">
                         Quản lý bài viết
                     </h1>
                     <p className="text-sm text-stone-500">
                         Danh sách các bài viết trên hệ thống
                     </p>
                 </div>
-                <Link href="/admin/blogs/create">
-                    <Button className="gap-2 rounded-none">
+                <Link href="/admin/blogs/create" className="shrink-0">
+                    <Button className="w-full gap-2 rounded-none sm:w-auto">
                         <Plus size={18} /> Viết bài mới
                     </Button>
                 </Link>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
                 <DataTable
                     data={posts}
                     columns={columns}
                     onSelectionChange={(ids) => setSelectedIds(ids)}
                     toolbar={
-                        <div className="flex items-center gap-4">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
                             <SearchInput
                                 onChange={(val) => setSearchValue(val)}
                                 placeholder="Tìm kiếm bài viết..."

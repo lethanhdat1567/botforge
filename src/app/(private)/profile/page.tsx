@@ -4,12 +4,14 @@ import { Separator } from "@/components/ui/separator";
 
 function Profile() {
     return (
-        <div>
-            <h1 className="text-2xl font-bold">Settings</h1>
+        <div className="min-w-0">
+            <h1 className="text-2xl font-bold tracking-tight">
+                Cài đặt tài khoản
+            </h1>
             <p className="text-muted-foreground text-sm font-medium">
-                Manage your account settings and set e-mail preferences.
+                Quản lý thông tin cá nhân và cấu hình nhận thông báo qua email.
             </p>
-            <div className="mt-4 w-[50vw]">
+            <div className="mt-4 w-full min-w-0 max-w-2xl">
                 <FormProfile />
                 <Separator className="my-4" />
                 <ChangePassword />

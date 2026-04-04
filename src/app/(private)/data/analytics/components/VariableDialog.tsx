@@ -29,13 +29,13 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                     className="border-border hover:bg-muted flex h-7 gap-2 rounded-none border px-2 text-[11px] font-normal tracking-tight uppercase"
                 >
                     <Database className="h-3 w-3" />
-                    Biến số
+                    Dữ liệu
                 </Button>
             </DialogTrigger>
             <DialogContent className="border-border max-w-md rounded-none p-0 shadow-lg">
                 <DialogHeader className="p-6 pb-2">
                     <DialogTitle className="text-foreground text-sm font-semibold tracking-widest uppercase">
-                        Variables Log
+                        Dữ liệu thu thập được
                     </DialogTitle>
                 </DialogHeader>
 
@@ -45,10 +45,10 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                             <TableHeader className="bg-muted/50">
                                 <TableRow className="hover:bg-transparent">
                                     <TableHead className="text-muted-foreground h-10 text-[10px] font-bold uppercase">
-                                        Key
+                                        Biến
                                     </TableHead>
                                     <TableHead className="text-muted-foreground h-10 text-[10px] font-bold uppercase">
-                                        Value
+                                        Giá trị
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -57,7 +57,7 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                                     variableEntries.map(([key, value]) => (
                                         <TableRow
                                             key={key}
-                                            className="border-border transition-none hover:bg-muted/50"
+                                            className="border-border hover:bg-muted/50 transition-none"
                                         >
                                             <TableCell className="text-foreground py-3 font-mono text-[11px] font-medium">
                                                 {key}
@@ -75,7 +75,7 @@ function VariableDialog({ variables }: { variables: Record<string, any> }) {
                                             colSpan={2}
                                             className="text-muted-foreground h-32 text-center text-[11px]"
                                         >
-                                            No data recorded.
+                                            Chưa có dữ liệu nào.
                                         </TableCell>
                                     </TableRow>
                                 )}

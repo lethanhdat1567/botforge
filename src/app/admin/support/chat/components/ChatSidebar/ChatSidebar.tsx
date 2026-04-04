@@ -21,7 +21,7 @@ export function ChatSidebar({
     loading,
 }: ChatSidebarProps) {
     return (
-        <aside className="bg-card flex h-full min-h-0 w-100 min-w-0 shrink-0 flex-col overflow-hidden border-r">
+        <aside className="bg-card flex max-h-[min(42vh,320px)] min-h-0 w-full min-w-0 shrink-0 flex-col overflow-hidden border-b border-border md:h-full md:max-h-none md:w-100 md:border-b-0 md:border-r">
             <div className="flex shrink-0 items-center justify-between gap-2 px-4 py-3">
                 <h1 className="text-foreground truncate text-lg font-semibold tracking-tight">
                     Chats

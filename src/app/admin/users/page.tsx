@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -17,7 +16,6 @@ import { PaginationMeta } from "@/types/data-table";
 import { getUserColumns } from "./userColumns";
 
 export default function AdminUserPage() {
-    const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
     const [searchValue, setSearchValue] = useState("");
     const [meta, setMeta] = useState<PaginationMeta | null>(null);
@@ -41,8 +39,6 @@ export default function AdminUserPage() {
         },
         [searchValue],
     );
-
-    console.log(users);
 
     useEffect(() => {
         fetchUsers();
@@ -76,31 +72,31 @@ export default function AdminUserPage() {
     });
 
     return (
-        <div className="min-h-screen flex-1 space-y-8 bg-neutral-50/30">
-            <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                    <h1 className="text-2xl font-bold tracking-tight text-stone-900">
+        <div className="min-h-0 w-full min-w-0 flex-1 space-y-6 bg-neutral-50/30 sm:space-y-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 space-y-1">
+                    <h1 className="text-xl font-bold tracking-tight text-stone-900 sm:text-2xl">
                         Quản lý người dùng
                     </h1>
                     <p className="text-xs font-medium text-stone-500 italic">
                         Danh sách và phân quyền người dùng trong hệ thống
                     </p>
                 </div>
-                <Link href={"/admin/users/new" as any}>
-                    <Button className="rounded-none bg-black text-white shadow-md transition-all hover:bg-stone-800 active:scale-95">
+                <Link href={"/admin/users/new" as any} className="shrink-0">
+                    <Button className="w-full rounded-none bg-black text-white shadow-md transition-all hover:bg-stone-800 active:scale-95 sm:w-auto">
                         <Plus className="mr-2 h-4 w-4" />
                         Tạo người dùng
                     </Button>
                 </Link>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
                 <DataTable
                     data={users}
                     columns={userColumns}
                     onSelectionChange={(ids) => setDestroySelect(ids)}
                     toolbar={
-                        <div className="flex items-center gap-4">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
                             <SearchInput
                                 onChange={(val) => setSearchValue(val)}
                                 placeholder="Tìm kiếm người dùng..."

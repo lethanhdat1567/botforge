@@ -12,13 +12,12 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAuthStore } from "@/store/authStore";
 import { authService } from "@/services/authService";
 
 type FormData = z.infer<typeof changePasswordSchema>;
 
 function ChangePassword() {
-    const [user, setUser] = useState<any>()
+    const [user, setUser] = useState<any>();
     const [showOld, setShowOld] = useState(false);
     const [showNew, setShowNew] = useState(false);
 
@@ -32,19 +31,20 @@ function ChangePassword() {
 
     const fetchUser = async () => {
         const user = await authService.me();
-        
+
         setUser(user);
-    }
+    };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchUser();
-    },[])
+    }, []);
 
     async function onSubmit(data: FormData) {
-        if(!user) return
+        if (!user) return;
         try {
             console.log(data);
-            
+
             await profileService.changePassword(user?.id, data);
         } catch (error: any) {
             const code = error?.response?.data?.code;
@@ -57,12 +57,13 @@ function ChangePassword() {
             }
 
             toast.error(
-                error.response?.data?.message ?? "Something went wrong",
+                error.response?.data?.message ??
+                    "Đã xảy ra lỗi, vui lòng thử lại",
             );
         }
     }
 
-    if(user?.isSocialAccount) return null;
+    if (user?.isSocialAccount) return null;
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -113,7 +114,7 @@ function ChangePassword() {
                 className="w-full rounded-none"
                 disabled={form.formState.isSubmitting}
             >
-                Update password
+                Cập nhật mật khẩu
             </Button>
         </form>
     );

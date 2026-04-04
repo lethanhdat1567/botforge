@@ -77,22 +77,27 @@ function StorePage() {
     });
 
     return (
-        <div>
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold">Quản lý mẫu chia sẻ</h1>
-                <Link href={"/community/store/new" as any}>
-                    <Button className="rounded-none">
+        <div className="min-w-0">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h1 className="text-xl font-semibold sm:text-2xl">
+                    Quản lý mẫu chia sẻ
+                </h1>
+                <Link
+                    href={"/community/store/new" as any}
+                    className="shrink-0 sm:ml-2"
+                >
+                    <Button className="w-full rounded-none sm:w-auto">
                         Chia sẻ mẫu <Plus />
                     </Button>
                 </Link>
             </div>
-            <div className="mt-10">
+            <div className="mt-6 sm:mt-10">
                 <DataTable
                     data={sharedTemplates}
                     columns={sharedColumns}
                     onSelectionChange={(ids) => setDestroySelect(ids)}
                     toolbar={
-                        <div className="flex items-center gap-4">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
                             <SearchInput
                                 onChange={(val) => setSearchValue(val)}
                                 placeholder="Tìm tên quy trình..."

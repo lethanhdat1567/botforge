@@ -59,11 +59,11 @@ export default function BlogsPage() {
     }, [searchQuery, selectedCategory, articles]);
 
     return (
-        <div className="bg-background flex min-h-screen">
+        <div className="bg-background flex min-h-0 w-full min-w-0 flex-1 flex-col md:flex-row">
             {/* Sidebar Categories */}
-            <aside className="border-border sticky top-20 hidden h-[calc(100vh-80px)] w-64 border-r p-6 md:block">
+            <aside className="border-border sticky top-16 hidden h-[calc(100svh-4rem)] w-64 shrink-0 border-r p-6 md:block">
                 <h3 className="text-muted-foreground mb-4 text-xs font-semibold uppercase">
-                    Categories
+                    Danh mục bài viết
                 </h3>
                 <div className="space-y-1">
                     {categories.map((cat) => (
@@ -83,18 +83,34 @@ export default function BlogsPage() {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1">
-                <div className="p-10">
+            <main className="min-w-0 flex-1">
+                <div className="px-4 py-6 sm:px-6 md:p-10">
                     <div className="space-y-8">
+                        <div className="flex gap-2 overflow-x-auto pb-1 md:hidden">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    type="button"
+                                    onClick={() => setSelectedCategory(cat)}
+                                    className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                                        selectedCategory === cat
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-muted text-muted-foreground hover:bg-muted/80"
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
                         <div>
-                            <h1 className="text-foreground mb-4 text-4xl font-bold">
-                                Botforge Resources
+                            <h1 className="text-foreground mb-4 text-2xl font-bold sm:text-3xl md:text-4xl">
+                                Bài viết của Botforge
                             </h1>
-                            <div className="relative max-w-md">
+                            <div className="relative max-w-md min-w-0">
                                 <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                                 <Input
-                                    placeholder="Search guides..."
-                                    className="rounded-none border-input pl-10"
+                                    placeholder="Tìm kiếm bài viết..."
+                                    className="border-input rounded-none pl-10"
                                     value={searchQuery}
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)

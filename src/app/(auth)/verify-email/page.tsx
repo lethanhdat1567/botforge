@@ -60,7 +60,7 @@ function VerifyEmail() {
         verify();
     }, [token]);
     return (
-        <div className="animate-in fade-in flex min-h-100 flex-col items-center justify-center gap-6 p-6 text-center duration-500">
+        <div className="animate-in fade-in flex min-h-svh w-full min-w-0 flex-col items-center justify-center gap-6 px-4 py-6 text-center duration-500 sm:px-6 md:px-10">
             {/* 1. TRẠNG THÁI ĐANG XÁC THỰC */}
             {status === "loading" && (
                 <div className="flex flex-col items-center gap-4">
@@ -68,11 +68,11 @@ function VerifyEmail() {
                         <Loader2 className="text-primary h-16 w-16 animate-spin" />
                         <MailQuestion className="text-primary absolute top-1/2 left-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2" />
                     </div>
-                    <div className="space-y-2">
-                        <h1 className="text-2xl font-bold">
+                    <div className="w-full max-w-md space-y-2">
+                        <h1 className="text-xl font-bold sm:text-2xl">
                             Đang xác thực Email
                         </h1>
-                        <p className="text-muted-foreground max-w-75 text-sm">
+                        <p className="text-muted-foreground text-sm text-balance">
                             Vui lòng đợi trong giây lát, chúng tôi đang kiểm tra
                             mã xác thực của bạn.
                         </p>
@@ -87,11 +87,11 @@ function VerifyEmail() {
                         <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400" />
                     </div>
 
-                    <div className="space-y-2 text-center">
-                        <h1 className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    <div className="w-full max-w-md space-y-2 text-center">
+                        <h1 className="text-xl font-bold text-green-600 sm:text-2xl dark:text-green-400">
                             Xác thực thành công!
                         </h1>
-                        <p className="text-muted-foreground mx-auto max-w-xs text-sm">
+                        <p className="text-muted-foreground mx-auto text-sm text-balance">
                             Email của bạn đã được xác minh. Bây giờ bạn có thể
                             trải nghiệm đầy đủ dịch vụ của chúng tôi.
                         </p>
@@ -120,11 +120,11 @@ function VerifyEmail() {
                     <div className="bg-destructive/10 flex h-20 w-20 items-center justify-center rounded-full">
                         <XCircle className="text-destructive h-12 w-12" />
                     </div>
-                    <div className="space-y-2">
-                        <h1 className="text-2xl font-bold">
+                    <div className="w-full max-w-md space-y-2">
+                        <h1 className="text-xl font-bold sm:text-2xl">
                             Xác thực thất bại
                         </h1>
-                        <p className="text-muted-foreground max-w-75 text-sm">
+                        <p className="text-muted-foreground text-sm text-balance">
                             Mã xác thực đã hết hạn hoặc không hợp lệ. Vui lòng
                             yêu cầu một mã mới.
                         </p>

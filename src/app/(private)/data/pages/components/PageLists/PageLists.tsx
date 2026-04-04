@@ -1,8 +1,7 @@
 import { FacebookResponse } from "@/services/facebookAuthService";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, ArrowRight, Facebook } from "lucide-react";
+import { Facebook } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 type Props = {
@@ -23,9 +22,9 @@ function PageLists({ pages }: Props) {
             <div className="flex flex-col">
                 {pages.map((page, index) => (
                     <div key={page.id}>
-                        <div className="hover:bg-muted/50 group flex items-center justify-between p-4 transition-colors">
+                        <div className="hover:bg-muted/50 group flex flex-col gap-3 p-4 transition-colors sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                             {/* Left: Info */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
                                 <div className="relative">
                                     <Avatar className="h-10 w-10 border">
                                         <AvatarImage
@@ -42,12 +41,12 @@ function PageLists({ pages }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col space-y-0.5">
-                                    <h3 className="cursor-pointer text-sm leading-none font-medium group-hover:underline">
+                                <div className="min-w-0 flex flex-col space-y-0.5">
+                                    <h3 className="cursor-pointer truncate text-sm leading-none font-medium group-hover:underline">
                                         {page.name}
                                     </h3>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-muted-foreground font-mono text-[12px]">
+                                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                        <span className="text-muted-foreground truncate font-mono text-[12px]">
                                             {page.id}
                                         </span>
                                         <Badge

@@ -15,7 +15,7 @@ async function MarketPlaceDetail({
     const res = await flowShareService.getDetail(id);
 
     return (
-        <div className="mx-auto w-7xl p-10">
+        <div className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6 sm:px-6 md:p-10">
             <HeadingBlock data={res} />
             <Separator className="my-4" />
             <div>

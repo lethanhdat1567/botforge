@@ -64,16 +64,16 @@ export function DataTable<TData, TValue>({
     }, [selectedIds, onSelectionChange]);
 
     return (
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
             {/* Toolbar Area */}
             {toolbar && (
-                <div className="flex items-center justify-between">
+                <div className="flex min-w-0 w-full items-start justify-stretch">
                     {toolbar}
                 </div>
             )}
 
             {/* Table Area */}
-            <div className="bg-card rounded-md border">
+            <div className="bg-card overflow-x-auto rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

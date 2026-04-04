@@ -13,28 +13,32 @@ const PLATFORMS = [
 
 function TemplatesPage() {
     return (
-        <div>
-            <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Danh sách mẫu kịck bản</h1>
-                <Link href={"/bot/flows" as any}>
-                    <Button className="rounded-none">
+        <div className="min-w-0">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h1 className="text-xl font-bold sm:text-2xl">
+                    Danh sách mẫu kịck bản
+                </h1>
+                <Link href={"/bot/flows" as any} className="shrink-0">
+                    <Button className="w-full rounded-none sm:w-auto">
                         Quản lý thư mục template <ArrowRight />
                     </Button>
                 </Link>
             </div>
 
-            <Tabs defaultValue="unconnected" className="w-full">
-                <TabsList className="rounded-none">
+            <Tabs defaultValue="unconnected" className="w-full min-w-0">
+                <div className="max-w-full overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
+                    <TabsList className="inline-flex w-max min-w-full rounded-none">
                     {PLATFORMS.map((p) => (
                         <TabsTrigger
                             key={p.key}
                             value={p.key}
-                            className="rounded-none"
+                            className="shrink-0 rounded-none"
                         >
                             {p.label}
                         </TabsTrigger>
                     ))}
-                </TabsList>
+                    </TabsList>
+                </div>
 
                 {PLATFORMS.map((p) => (
                     <TabsContent key={p.key} value={p.key}>

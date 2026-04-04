@@ -14,7 +14,11 @@ type ChatSidebarRowProps = {
     onSelect: () => void;
 };
 
-export function ChatSidebarRow({ item, isActive, onSelect }: ChatSidebarRowProps) {
+export function ChatSidebarRow({
+    item,
+    isActive,
+    onSelect,
+}: ChatSidebarRowProps) {
     const hasUnread = item.unread > 0;
     const showSentTick = item.lastMessageRole === "admin";
 
@@ -43,7 +47,7 @@ export function ChatSidebarRow({ item, isActive, onSelect }: ChatSidebarRowProps
     return (
         <li className="min-w-0">
             <button type="button" onClick={onSelect} className={rowClass}>
-                <div className="bg-muted relative size-11 shrink-0 overflow-hidden rounded-full ring-offset-background">
+                <div className="bg-muted ring-offset-background relative size-11 shrink-0 overflow-hidden rounded-full">
                     {hasUnread ? (
                         <span
                             className="border-background absolute right-0 bottom-0 z-10 size-3 rounded-full border-2 bg-[#0084ff] dark:bg-sky-400"

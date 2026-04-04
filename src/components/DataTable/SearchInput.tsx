@@ -32,7 +32,7 @@ export default function SearchInput({
     }, [debouncedValue, onChange]);
 
     return (
-        <InputGroup className="w-md">
+        <InputGroup className="w-full min-w-0 max-w-md">
             <InputGroupInput
                 placeholder={placeholder}
                 value={value}

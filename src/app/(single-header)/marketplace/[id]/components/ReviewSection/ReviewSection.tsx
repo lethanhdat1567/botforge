@@ -111,10 +111,10 @@ export default function ReviewSection({
                 </p>
             </div>
 
-            <div className="bg-background mx-auto w-5xl">
+            <div className="bg-background mx-auto w-full min-w-0 max-w-5xl">
                 <div className="flex flex-col">
-                    <div className="border-border bg-muted/20 flex items-start gap-4 p-5">
-                        <Avatar className="border-border h-9 w-9 border">
+                    <div className="border-border bg-muted/20 flex items-start gap-3 p-3 sm:gap-4 sm:p-5">
+                        <Avatar className="border-border h-9 w-9 shrink-0 border">
                             <AvatarImage
                                 src={resolveMediaSrc(me?.avatar) as string}
                             />
@@ -122,8 +122,8 @@ export default function ReviewSection({
                                 {me?.displayName?.charAt(0) || "U"}
                             </AvatarFallback>
                         </Avatar>
-                        <div className="flex-1">
-                            <div className="relative">
+                        <div className="min-w-0 flex-1">
+                            <div className="relative min-w-0">
                                 <Input
                                     value={commentInput}
                                     onKeyDown={handleKeyDown}

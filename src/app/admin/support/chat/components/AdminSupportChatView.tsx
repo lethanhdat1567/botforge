@@ -39,7 +39,7 @@ export function AdminSupportChatView() {
 
     return (
         <div
-            className="bg-background -m-4 flex h-full min-h-0 min-w-0 flex-1 overflow-hidden"
+            className="bg-background -mx-3 -mt-3 flex min-h-[min(70dvh,32rem)] min-w-0 flex-1 flex-col overflow-hidden sm:-mx-4 sm:-mt-4 md:h-full md:min-h-0 md:flex-row"
             data-slot="admin-support-chat"
         >
             <ChatSidebar
@@ -59,7 +59,7 @@ export function AdminSupportChatView() {
                     error={error}
                 />
             ) : (
-                <div className="text-muted-foreground flex min-h-0 min-w-0 flex-1 items-center justify-center text-sm">
+                <div className="text-muted-foreground flex min-h-[28vh] min-w-0 flex-1 items-center justify-center px-4 text-sm md:min-h-0">
                     Chọn một cuộc trò chuyện để trả lời.
                 </div>
             )}

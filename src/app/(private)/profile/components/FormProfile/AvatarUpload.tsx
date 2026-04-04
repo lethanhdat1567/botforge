@@ -8,13 +8,15 @@ import { uploadService } from "@/services/uploadService"; // Giả sử bạn c�
 import { resolveMediaSrc } from "@/lib/image";
 
 type Props = {
-    value?: string | null; 
-    onChange: (url: string) => void; 
+    value?: string | null;
+    onChange: (url: string) => void;
 };
 
 function AvatarUpload({ value, onChange }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [preview, setPreview] = useState<string | undefined>(value ?? undefined);
+    const [preview, setPreview] = useState<string | undefined>(
+        value ?? undefined,
+    );
     const [isUploading, setIsUploading] = useState(false);
 
     // Đồng bộ preview khi value từ props thay đổi (ví dụ khi load dữ liệu user)
@@ -27,14 +29,12 @@ function AvatarUpload({ value, onChange }: Props) {
 
         try {
             setIsUploading(true);
-            
 
-            const response = await uploadService.uploadFile(file); 
-            
+            const response = await uploadService.uploadFile(file);
+
             const uploadedUrl = response.path;
-            setPreview(uploadedUrl)
+            setPreview(uploadedUrl);
             onChange(uploadedUrl);
-            
         } catch (error) {
             console.error("Upload failed:", error);
             setPreview(value ?? undefined);
@@ -57,10 +57,10 @@ function AvatarUpload({ value, onChange }: Props) {
                 ) : (
                     <User className="text-muted-foreground" />
                 )}
-                
+
                 {isUploading && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                        <Loader2 className="text-primary h-6 w-6 animate-spin" />
                     </div>
                 )}
             </div>
@@ -81,7 +81,7 @@ function AvatarUpload({ value, onChange }: Props) {
                 onClick={() => inputRef.current?.click()}
                 disabled={isUploading}
             >
-                {isUploading ? "Uploading..." : "Change Avatar"}
+                {isUploading ? "Đang tải lên..." : "Thay đổi ảnh đại diện"}
             </Button>
         </div>
     );

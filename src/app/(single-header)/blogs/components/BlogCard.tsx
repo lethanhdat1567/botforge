@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge"; // Đảm bảo đã import Badge
 import { Calendar, User2, ArrowRight, Eye } from "lucide-react";
 import Image from "next/image";
 import { resolveMediaSrc } from "@/lib/image";
-import { formatDate } from "@/lib/format";
+import { timeAgo } from "@/lib/timer";
 
 interface BlogCardProps {
     title: string;
@@ -29,7 +29,7 @@ export function BlogCard({
     const readTime = Math.max(1, Math.ceil(content.split(/\s+/).length / 200));
 
     return (
-        <Card className="group border-border bg-card relative flex h-full max-w-sm flex-col gap-3 overflow-hidden py-0 transition-all duration-300 hover:border-border hover:shadow-lg">
+        <Card className="group border-border bg-card hover:border-border relative flex h-full max-w-sm flex-col gap-3 overflow-hidden py-0 transition-all duration-300 hover:shadow-lg">
             {/* Header Image Section */}
             <div className="border-border bg-muted relative aspect-21/10 w-full overflow-hidden border-b">
                 <Image
@@ -43,7 +43,7 @@ export function BlogCard({
 
                 {/* Overlay Read Time (Tuỳ chọn: nếu muốn chữ rõ hơn có thể để ở đây) */}
                 <div className="bg-foreground/85 text-background absolute right-2 bottom-2 rounded px-1.5 py-0.5 text-[9px] font-medium opacity-0 transition-opacity group-hover:opacity-100">
-                    {readTime} MIN READ
+                    {readTime} phút đọc
                 </div>
             </div>
 
@@ -53,18 +53,14 @@ export function BlogCard({
                 <div className="mb-3 flex items-center justify-between">
                     <Badge
                         variant="secondary"
-                        className="border-border bg-muted text-foreground rounded-none border px-2 py-0 text-[9px] font-bold tracking-tight uppercase hover:bg-muted"
+                        className="border-border bg-muted text-foreground hover:bg-muted rounded-none border px-2 py-0 text-[9px] font-bold tracking-tight uppercase"
                     >
                         {category}
                     </Badge>
                     <div className="text-muted-foreground flex items-center gap-2 text-[9px] font-semibold tracking-wider uppercase">
                         <span className="flex items-center gap-1">
                             <Calendar className="h-2.5 w-2.5 stroke-[2]" />
-                            {formatDate(createdAt)}
-                        </span>
-                        <span className="flex items-center gap-1">
-                            <Eye className="h-2.5 w-2.5 stroke-[2]" />
-                            {views}
+                            {timeAgo(createdAt)}
                         </span>
                     </div>
                 </div>
@@ -91,7 +87,7 @@ export function BlogCard({
                     </div>
 
                     <div className="text-foreground flex items-center gap-1 text-[10px] font-black opacity-0 transition-all duration-300 group-hover:opacity-100">
-                        READ MORE
+                        ĐỌC THÊM
                         <ArrowRight className="h-3 w-3" />
                     </div>
                 </div>

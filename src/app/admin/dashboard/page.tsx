@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
     }, [fetchStats]);
 
     return (
-        <div className="min-h-screen flex-1 space-y-8 bg-neutral-50/30 pb-10">
+        <div className="min-h-0 w-full min-w-0 flex-1 space-y-6 bg-neutral-50/30 pb-8 sm:space-y-8 sm:pb-10">
             <DashboardHeader date={date} setDate={setDate} />
             <div className="space-y-4">
                 <SummaryCards data={stats?.summary} isLoading={isLoading} />

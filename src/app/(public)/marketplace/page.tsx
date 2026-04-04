@@ -2,15 +2,15 @@ import ClientWrapper from "@/app/(public)/marketplace/ClientWrapper";
 
 function MarketPlace() {
     return (
-        <div className="mx-auto mt-40 min-h-screen w-7xl bg-muted pb-10">
-            <div className="mx-auto w-3xl">
-                <h1 className="text-center text-4xl font-bold">
-                    The Foundation for your Design System
+        <div className="mx-auto mt-32 min-h-screen w-full max-w-7xl px-4 pb-10 sm:mt-40 sm:px-6">
+            <div className="mx-auto w-full max-w-3xl">
+                <h1 className="text-center text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+                    Thư viện luồng hội thoại
                 </h1>
-                <p className="text-md text-muted-foreground mx-auto mt-5 w-xl text-center">
-                    A set of beautifully designed components that you can
-                    customize, extend, and build on. Start here then make it
-                    your own. Open Source. Open Code.
+                <p className="text-md text-muted-foreground mx-auto mt-5 w-full max-w-xl text-center">
+                    Khám phá bộ sưu tập các kịch bản chatbot được tối ưu sẵn. Sử
+                    dụng ngay, tùy chỉnh linh hoạt và xây dựng dấu ấn riêng của
+                    bạn.
                 </p>
             </div>
             <ClientWrapper />

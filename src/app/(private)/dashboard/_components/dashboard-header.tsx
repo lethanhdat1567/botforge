@@ -1,80 +1,86 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CalendarIcon, Download } from "lucide-react"
-import { format } from "date-fns"
-import { vi } from "date-fns/locale"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { CalendarIcon, Download } from "lucide-react";
+import { format } from "date-fns";
+import { vi } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface DashboardHeaderProps {
-  date: DateRange | undefined;
-  setDate: (date: DateRange | undefined) => void;
+    date: DateRange | undefined;
+    setDate: (date: DateRange | undefined) => void;
 }
 
 export function DashboardHeader({ date, setDate }: DashboardHeaderProps) {
-  return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div className="space-y-1">
-        <h1 className="text-foreground text-2xl font-bold tracking-tight">Bảng điều khiển</h1>
-        <p className="text-muted-foreground text-xs font-medium italic">Chào mừng bạn quay trở lại với BotForge</p>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className={cn("grid gap-2")}>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  "w-[260px] justify-start border-border bg-background text-left font-normal shadow-sm transition-colors hover:bg-muted",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="text-muted-foreground mr-2 h-4 w-4" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "dd 'thg' L, y", { locale: vi })} -{" "}
-                      {format(date.to, "dd 'thg' L, y", { locale: vi })}
-                    </>
-                  ) : (
-                    format(date.from, "dd 'thg' L, y", { locale: vi })
-                  )
-                ) : (
-                  <span>Chọn khoảng ngày</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-                locale={vi}
-              />
-            </PopoverContent>
-          </Popover>
+    return (
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-1">
+                <h1 className="text-foreground text-2xl font-bold tracking-tight">
+                    Bảng điều khiển
+                </h1>
+                <p className="text-muted-foreground text-xs font-medium italic">
+                    Chào mừng bạn quay trở lại với BotForge
+                </p>
+            </div>
+            <div className="flex w-full items-center gap-2 md:w-auto md:shrink-0">
+                <div className={cn("grid w-full gap-2 md:w-auto")}>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                id="date"
+                                variant={"outline"}
+                                className={cn(
+                                    "border-border bg-background hover:bg-muted w-full max-w-[260px] justify-start text-left font-normal shadow-sm transition-colors",
+                                    !date && "text-muted-foreground",
+                                )}
+                            >
+                                <CalendarIcon className="text-muted-foreground mr-2 h-4 w-4" />
+                                {date?.from ? (
+                                    date.to ? (
+                                        <>
+                                            {format(
+                                                date.from,
+                                                "dd 'thg' L, y",
+                                                { locale: vi },
+                                            )}{" "}
+                                            -{" "}
+                                            {format(date.to, "dd 'thg' L, y", {
+                                                locale: vi,
+                                            })}
+                                        </>
+                                    ) : (
+                                        format(date.from, "dd 'thg' L, y", {
+                                            locale: vi,
+                                        })
+                                    )
+                                ) : (
+                                    <span>Chọn khoảng ngày</span>
+                                )}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="end">
+                            <Calendar
+                                initialFocus
+                                mode="range"
+                                defaultMonth={date?.from}
+                                selected={date}
+                                onSelect={setDate}
+                                numberOfMonths={2}
+                                locale={vi}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                </div>
+            </div>
         </div>
-        <Button
-            variant="default"
-            className="flex items-center gap-2 px-4 shadow-md transition-all active:scale-95"
-        >
-          <Download className="h-4 w-4" />
-          Báo cáo
-        </Button>
-      </div>
-    </div>
-  )
+    );
 }

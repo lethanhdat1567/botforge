@@ -32,7 +32,7 @@ function Navbar() {
     ];
 
     return (
-        <div className="col-span-8 grid grid-cols-3 gap-8">
+        <div className="col-span-full grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3">
             {columns.map((col) => (
                 <div key={col.title}>
                     <h3 className="text-md mb-4 font-medium">{col.title}</h3>

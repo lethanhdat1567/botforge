@@ -91,7 +91,7 @@ export const getFlowRecordColumns = ({
     {
         id: "variables",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Biến số" />
+            <DataTableColumnHeader column={column} title="Dữ liệu thu thập" />
         ),
         cell: ({ row }) => (
             <VariableDialog variables={row.original.variables} />

@@ -88,7 +88,7 @@ function FlowCanvas() {
 
     if (status === "loading") {
         return (
-            <div className="flex h-screen items-center justify-center text-neutral-500">
+            <div className="flex h-svh min-h-[50dvh] w-full min-w-0 items-center justify-center px-4 text-neutral-500">
                 Đang tải flow...
             </div>
         );
@@ -105,7 +105,7 @@ function FlowCanvas() {
 
     return (
         <div
-            className="flow_canvas h-screen w-full"
+            className="flow_canvas h-svh min-h-0 w-full min-w-0 flex-1"
             onContextMenu={(e) => {
                 e.preventDefault();
                 openMenu(e.clientX, e.clientY);
@@ -145,7 +145,7 @@ function FlowCanvas() {
                 {/* Background */}
                 <Panel
                     position="bottom-right"
-                    className="flex items-center gap-2"
+                    className="m-2 flex max-w-[calc(100vw-1rem)] flex-wrap items-center justify-end gap-2 sm:m-0 sm:max-w-none"
                 >
                     <BackgroundAdjust />
                     <SortLayout />

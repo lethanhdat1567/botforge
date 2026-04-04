@@ -39,8 +39,10 @@ function AdminGuidePage() {
     }
 
     return (
-        <div className="mx-auto">
-            <h1 className="text-2xl font-bold">Danh sách hướng dẫn</h1>
+        <div className="mx-auto w-full min-w-0 max-w-6xl space-y-4">
+            <h1 className="text-xl font-bold sm:text-2xl">
+                Danh sách hướng dẫn
+            </h1>
             <DataTable
                 columns={guidesColumns(http)}
                 data={users}

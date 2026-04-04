@@ -19,12 +19,12 @@ function SearchSection({
 
     return (
         <form
-            className="flex flex-1 items-center gap-2"
+            className="flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-center"
             onSubmit={handleSubmit}
         >
             <Input
                 placeholder="Search notifications"
-                className="rounded-none"
+                className="min-w-0 rounded-none sm:flex-1"
                 value={searchValue}
                 onChange={(e) => {
                     const value = e.target.value;
@@ -35,7 +35,10 @@ function SearchSection({
                 }}
             />
 
-            <Button type="submit" className="rounded-none">
+            <Button
+                type="submit"
+                className="w-full shrink-0 rounded-none sm:w-auto"
+            >
                 Search <Search />
             </Button>
         </form>

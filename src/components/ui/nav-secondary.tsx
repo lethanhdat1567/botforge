@@ -11,6 +11,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { isNavPathActive } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export function NavSecondary({
     }[];
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
     const pathname = usePathname();
+    const { isMobile, setOpenMobile } = useSidebar();
 
     return (
         <SidebarGroup {...props}>
@@ -37,7 +39,12 @@ export function NavSecondary({
                                 size="sm"
                                 isActive={isNavPathActive(pathname, item.url)}
                             >
-                                <Link href={item.url}>
+                                <Link
+                                    href={item.url}
+                                    onClick={() =>
+                                        isMobile && setOpenMobile(false)
+                                    }
+                                >
                                     <item.icon />
                                     <span>{item.title}</span>
                                 </Link>

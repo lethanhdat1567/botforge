@@ -6,12 +6,12 @@ import PrivateHeader from "@/layouts/private/PrivateHeader/PrivateHeader";
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
-        <SidebarProvider>
+        <SidebarProvider className="min-w-0">
             <AppSidebar />
-            <SidebarInset className="h-dvh max-h-dvh min-h-0 overflow-hidden">
+            <SidebarInset className="h-dvh max-h-dvh min-h-0 min-w-0 overflow-hidden">
                 <PrivateHeader />
-                <Separator className="shrink-0" />
-                <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden p-4">
+                <Separator className="hidden shrink-0 md:block" />
+                <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden overflow-y-auto p-3 sm:p-4 md:p-6">
                     {children}
                 </div>
             </SidebarInset>

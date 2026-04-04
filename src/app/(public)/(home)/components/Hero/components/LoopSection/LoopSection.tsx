@@ -4,8 +4,13 @@ import LogoLoop from "@/components/LogoLoop";
 
 function LoopSection() {
     return (
-        <FadeContent blur={true} duration={1000} initialOpacity={0}>
-            <div className="mx-auto mt-14 w-[50vw]">
+        <FadeContent
+            blur={true}
+            duration={1000}
+            initialOpacity={0}
+            className="w-full min-w-0 max-w-full overflow-x-hidden"
+        >
+            <div className="mx-auto mt-10 w-full min-w-0 max-w-3xl overflow-x-hidden px-4 sm:mt-14 sm:px-0">
                 <div className="text-md mb-4 font-medium">
                     Xây dựng trên nền tảng công nghệ hiện đại
                 </div>
@@ -18,6 +23,7 @@ function LoopSection() {
                     gap={60}
                     fadeOut
                     ariaLabel="Technology partners"
+                    className="max-w-full"
                 />
             </div>
         </FadeContent>

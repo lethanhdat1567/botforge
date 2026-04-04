@@ -5,11 +5,13 @@ import ChatMessages from "@/app/admin/support/chat/components/ChatWindow/compone
 
 function ChatSection() {
     return (
-        <div>
-            <div className="h-[64vh] overflow-y-scroll">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
                 <ChatMessages />
             </div>
-            <ChatInput />
+            <div className="shrink-0 pt-2">
+                <ChatInput />
+            </div>
         </div>
     );
 }

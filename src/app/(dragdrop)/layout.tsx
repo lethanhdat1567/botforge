@@ -24,9 +24,11 @@ function DragdropLayout({ children }: { children: React.ReactNode }) {
     }, [setTheme]);
 
     return (
-        <div className="bg-background text-foreground flex min-h-svh w-full items-start">
+        <div className="bg-background text-foreground flex min-h-svh w-full min-w-0 items-stretch">
             <DragdropSidebar />
-            <div className="min-h-svh min-w-0 flex-1">{children}</div>
+            <div className="flex min-h-svh min-w-0 flex-1 flex-col overflow-hidden">
+                {children}
+            </div>
         </div>
     );
 }

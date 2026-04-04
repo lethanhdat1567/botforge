@@ -9,7 +9,6 @@ import SearchInput from "@/components/DataTable/SearchInput";
 import { Button } from "@/components/ui/button";
 import { FlowRecord, flowRecordService } from "@/services/flowRecordService";
 import { PaginationMeta } from "@/types/data-table";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -19,7 +18,7 @@ function AnalyshPage() {
     const [meta, setMeta] = useState<PaginationMeta | null>(null);
     const [destroySelect, setDestroySelect] = useState<string[]>([]);
     const [alertDestroy, setAlertDestroy] = useState(false);
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState("all");
 
     const fetchFlowRecord = async (page = 1) => {
         try {
@@ -65,18 +64,20 @@ function AnalyshPage() {
     };
 
     return (
-        <div>
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold">Thống kê hội thoại</h1>
+        <div className="min-w-0">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+                <h1 className="text-xl font-semibold sm:text-2xl">
+                    Thống kê hội thoại
+                </h1>
             </div>
-            <div className="mt-10">
+            <div className="mt-6 sm:mt-10">
                 <DataTable
                     data={flowRecords}
                     columns={getFlowRecordColumns({ onDelete: handleDelete })}
                     onSelectionChange={(ids) => setDestroySelect(ids)}
                     toolbar={
-                        <div className="flex w-full items-center justify-between gap-40">
-                            <div className="flex items-center gap-4">
+                        <div className="flex w-full min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
+                            <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
                                 <SearchInput
                                     onChange={(val) => setSearchValue(val)}
                                     placeholder="Tìm tên quy trình..."
@@ -90,10 +91,12 @@ function AnalyshPage() {
                                     </Button>
                                 )}
                             </div>
-                            <TabStatus
-                                onStatusChange={setStatus}
-                                value={status}
-                            />
+                            <div className="min-w-0 shrink-0 lg:max-w-[min(100%,36rem)]">
+                                <TabStatus
+                                    onStatusChange={setStatus}
+                                    value={status}
+                                />
+                            </div>
                         </div>
                     }
                     pagination={

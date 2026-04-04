@@ -106,11 +106,11 @@ export function LoginForm({ className }: { className?: string }) {
 
                 {/* Password */}
                 <Field>
-                    <div className="flex items-center">
+                    <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                         <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
                         <Link
                             href={{ pathname: "/forgot-password" }}
-                            className="ml-auto text-sm underline-offset-4 hover:underline"
+                            className="text-sm underline-offset-4 hover:underline"
                         >
                             Quên mật khẩu?
                         </Link>

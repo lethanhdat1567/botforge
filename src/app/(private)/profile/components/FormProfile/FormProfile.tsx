@@ -15,10 +15,10 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 export function FormProfile() {
-    const user = useAuthStore((state) => state.user)
+    const user = useAuthStore((state) => state.user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        
+
         defaultValues: {
             displayName: "",
             username: "",
@@ -27,7 +27,7 @@ export function FormProfile() {
         },
     });
 
-    const errors = form.formState.errors
+    const errors = form.formState.errors;
 
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
@@ -38,7 +38,7 @@ export function FormProfile() {
     const fetchUser = async () => {
         try {
             const res = await profileService.getProfile();
-                
+
             form.setValue("displayName", res.displayName || "");
             form.setValue("username", res.username || "");
             form.setValue("email", res.email || "");
@@ -53,7 +53,7 @@ export function FormProfile() {
     }, []);
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        if(!user) return
+        if (!user) return;
         try {
             await profileService.updateProfile(user?.id, {
                 displayName: data.displayName,
@@ -63,10 +63,10 @@ export function FormProfile() {
             });
 
             fetchUser();
-            toast.success("Updated successfully");
+            toast.success("Cập nhật thông tin thành công");
         } catch (error) {
             console.log(error);
-            toast.error("Something went wrong");
+            toast.error("Đã xảy ra lỗi, vui lòng thử lại");
         }
     }
 
@@ -89,14 +89,14 @@ export function FormProfile() {
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={field.name}>
-                                Display name
+                                Tên hiển thị
                             </FieldLabel>
                             <Input
                                 {...field}
                                 id={field.name}
                                 aria-invalid={fieldState.invalid}
                                 className="rounded-none font-medium"
-                                placeholder="Enter your display name"
+                                placeholder="Nhập tên hiển thị của bạn"
                             />
                             {fieldState.invalid && (
                                 <FieldError errors={[fieldState.error]} />
@@ -110,14 +110,14 @@ export function FormProfile() {
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={field.name}>
-                                Username
+                                Tên người dùng
                             </FieldLabel>
                             <Input
                                 {...field}
                                 id={field.name}
                                 aria-invalid={fieldState.invalid}
                                 className="rounded-none font-medium"
-                                placeholder="Enter your username"
+                                placeholder="Nhập tên đăng nhập"
                             />
                             {fieldState.invalid && (
                                 <FieldError errors={[fieldState.error]} />
@@ -131,13 +131,15 @@ export function FormProfile() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>
+                            Địa chỉ Email
+                        </FieldLabel>
                         <Input
                             {...field}
                             id={field.name}
                             aria-invalid={fieldState.invalid}
-                            className="rounded-none font-medium "
-                            placeholder="Enter your email"
+                            className="rounded-none font-medium"
+                            placeholder="Nhập địa chỉ email"
                         />
                         {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
@@ -146,7 +148,9 @@ export function FormProfile() {
                 )}
             />
             <div className="mt-6 flex items-center justify-end">
-                <Button className="rounded-none px-8 font-bold">Save</Button>
+                <Button className="rounded-none px-8 font-bold">
+                    Lưu thay đổi
+                </Button>
             </div>
         </form>
     );

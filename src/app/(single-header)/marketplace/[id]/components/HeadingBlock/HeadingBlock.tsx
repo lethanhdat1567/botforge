@@ -10,7 +10,7 @@ import { resolveMediaSrc } from "@/lib/image";
 
 function HeadingBlock({ data }: { data: FlowShare }) {
     return (
-        <div className="w-6xl">
+        <div className="w-full min-w-0 max-w-6xl">
             <div className="mb-3 flex items-center gap-2">
                 <Avatar className="border-border h-8 w-8 border">
                     <AvatarImage
@@ -26,10 +26,10 @@ function HeadingBlock({ data }: { data: FlowShare }) {
             </div>
 
             <div className="space-y-2">
-                <h1 className="text-foreground text-5xl font-bold tracking-tight">
+                <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
                     {data.name}
                 </h1>
-                <p className="text-muted-foreground mt-4 text-lg leading-relaxed">
+                <p className="text-muted-foreground mt-4 text-base leading-relaxed sm:text-lg">
                     {data.description}
                 </p>
             </div>
@@ -40,7 +40,7 @@ function HeadingBlock({ data }: { data: FlowShare }) {
                         Ngày đăng: {dateFormat(data.createdAt)}
                     </span>
                 </div>
-                <div className="text-muted-foreground mt-3 flex items-center gap-6 text-sm font-medium">
+                <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium">
                     <LikeBtn
                         count={data._count.flowShareLikes}
                         flowShareId={data.id}
@@ -60,7 +60,7 @@ function HeadingBlock({ data }: { data: FlowShare }) {
                 </div>
             </div>
             {/* 4. Action Buttons */}
-            <div className="mt-3 flex max-w-lg items-center gap-3">
+            <div className="mt-3 flex max-w-lg flex-wrap items-center gap-3">
                 <SaveBtn flowSharedId={data.id} />
                 <DownloadBtn flowShareId={data.id} />
             </div>

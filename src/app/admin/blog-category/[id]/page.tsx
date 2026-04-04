@@ -85,26 +85,32 @@ function BlogCategoryUpdatePage() {
         );
 
     return (
-        <div className="p-4">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="min-w-0 px-0 sm:px-2">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="min-w-0 space-y-4"
+            >
                 {/* Heading */}
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                         <BackBtn />
-                        <h1 className="text-xl font-semibold text-stone-800">
+                        <h1 className="text-lg font-semibold text-stone-800 sm:text-xl">
                             Chỉnh sửa danh mục
                         </h1>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-4">
                         <Button
                             type="button"
                             variant="secondary"
-                            className="rounded-none"
+                            className="flex-1 rounded-none sm:flex-initial"
                             onClick={() => router.back()}
                         >
                             Hủy bỏ
                         </Button>
-                        <Button type="submit" className="rounded-none">
+                        <Button
+                            type="submit"
+                            className="flex-1 rounded-none sm:flex-initial"
+                        >
                             Lưu thay đổi
                         </Button>
                     </div>

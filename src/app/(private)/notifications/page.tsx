@@ -44,10 +44,13 @@ function NotificationPage() {
     }
 
     return (
-        <div className="mx-auto max-w-3xl">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Notifications</h1>
-                <Button className="rounded-none" onClick={handleMarkAll}>
+        <div className="mx-auto w-full min-w-0 max-w-3xl">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h1 className="text-xl font-bold sm:text-2xl">Notifications</h1>
+                <Button
+                    className="w-full shrink-0 rounded-none sm:w-auto"
+                    onClick={handleMarkAll}
+                >
                     <CheckCheck /> Mark all as read
                 </Button>
             </div>

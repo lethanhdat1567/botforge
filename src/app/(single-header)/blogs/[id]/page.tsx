@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { blogService } from "@/services/blogService";
-import { formatDate } from "@/lib/format";
 import { resolveMediaSrc } from "@/lib/image";
 import { RenderContent } from "@/components/RenderEditorTextContent/RenderEditorTextContent";
+import { timeAgo } from "@/lib/timer";
 
 interface BlogDetailProps {
     params: Promise<{ id: string }>;
@@ -33,21 +33,21 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             : article.category;
 
     return (
-        <main className="bg-background min-h-screen">
-            <div className="mx-auto max-w-[720px] px-6 py-10 md:py-14">
+        <main className="bg-background min-h-svh w-full min-w-0">
+            <div className="mx-auto w-full min-w-0 max-w-[720px] px-4 py-8 sm:px-6 sm:py-10 md:py-14">
                 {/* Back */}
                 <Link
                     href="/blogs"
                     className="group text-muted-foreground hover:text-foreground mb-12 inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.14em] uppercase transition-colors"
                 >
                     <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" />
-                    Back to Library
+                    Quay lại
                 </Link>
 
                 <article>
                     <header className="mb-12">
                         {/* Category + read time */}
-                        <div className="mb-6 flex items-center gap-3">
+                        <div className="mb-6 flex flex-wrap items-center gap-3">
                             {categoryName && (
                                 <span className="border-border text-foreground rounded-sm border px-2.5 py-1 text-[10px] font-medium tracking-[0.18em] uppercase">
                                     {categoryName}
@@ -55,19 +55,19 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                             )}
                             <span className="bg-border h-[3px] w-[3px] rounded-full" />
                             <span className="text-muted-foreground text-[10px] font-normal tracking-[0.12em] uppercase">
-                                {readTime} min read
+                                {readTime} phút đọc
                             </span>
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-foreground mb-8 font-serif text-[2rem] leading-[1.08] font-normal tracking-[-0.02em] md:text-[3.25rem]">
+                        <h1 className="text-foreground mb-8 font-serif text-[1.625rem] leading-[1.12] font-normal tracking-[-0.02em] sm:text-[2rem] md:text-[3.25rem]">
                             {article.title}
                         </h1>
 
                         {/* Meta strip */}
-                        <div className="divide-border border-border flex flex-wrap items-stretch divide-x border-y">
+                        <div className="divide-border border-border flex flex-col divide-y border-y sm:flex-row sm:divide-x sm:divide-y-0">
                             {/* Author */}
-                            <div className="flex items-center gap-2.5 py-3.5 pr-5">
+                            <div className="flex items-center gap-2.5 py-3.5 sm:pr-5">
                                 <div className="border-border bg-muted h-6 w-6 shrink-0 overflow-hidden rounded-full border">
                                     {article.author?.avatar ? (
                                         <Image
@@ -91,10 +91,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                             </div>
 
                             {/* Date */}
-                            <div className="flex items-center gap-2 px-5 py-3.5">
+                            <div className="flex items-center gap-2 py-3.5 sm:px-5">
                                 <Calendar className="text-muted-foreground h-3.5 w-3.5 shrink-0 stroke-[1.5]" />
                                 <span className="text-muted-foreground text-[11px] tracking-[0.04em]">
-                                    {formatDate(article.createdAt)}
+                                    {timeAgo(article.createdAt)}
                                 </span>
                             </div>
                         </div>
@@ -104,9 +104,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                     <RenderContent html={article.content || ""} />
 
                     {/* Footer */}
-                    <footer className="border-border mt-20 flex items-center justify-between border-t pt-8">
-                        <p className="text-muted-foreground/70 text-[10px] font-normal tracking-[0.3em] uppercase">
-                            Botforge Knowledge Base — {new Date().getFullYear()}
+                    <footer className="border-border mt-20 flex flex-col gap-3 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-muted-foreground/70 text-[10px] font-normal tracking-[0.2em] uppercase sm:tracking-[0.3em]">
+                            Cơ sở kiến thức của Botforge —{" "}
+                            {new Date().getFullYear()}
                         </p>
                     </footer>
                 </article>
