@@ -5,16 +5,19 @@ export type FlowShareCategory = {
     id: string;
     name: string;
     slug: string;
-    description?: string;
     _count?: {
         flowShares: number;
     };
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
+};
+
+export type FlowShareCategoryPayload = {
+    name: string;
+    slug?: string;
 };
 
 export const flowShareCategoryService = {
-    // GET /api/categories
     list: async () => {
         const response = await http.get<baseResponse<FlowShareCategory[]>>(
             "/api/flow-share-categories",
@@ -22,20 +25,14 @@ export const flowShareCategoryService = {
         return response.data;
     },
 
-    // GET /api/categories/:slug
     detail: async (slug: string) => {
         const response = await http.get<baseResponse<FlowShareCategory>>(
-            `/categories/${slug}`,
+            `/api/flow-share-categories/${encodeURIComponent(slug)}`,
         );
         return response.data;
     },
 
-    // POST /api/categories
-    create: async (data: {
-        name: string;
-        description?: string;
-        slug?: string;
-    }) => {
+    create: async (data: FlowShareCategoryPayload) => {
         const response = await http.post<baseResponse<FlowShareCategory>>(
             "/api/flow-share-categories",
             data,
@@ -43,27 +40,26 @@ export const flowShareCategoryService = {
         return response.data;
     },
 
-    // PATCH /api/categories/:id
-    update: async (
-        id: string,
-        data: Partial<baseResponse<FlowShareCategory>>,
-    ) => {
+    update: async (id: string, data: Partial<FlowShareCategoryPayload>) => {
         const response = await http.patch<baseResponse<FlowShareCategory>>(
-            `"/api/flow-share-categories/${id}`,
+            `/api/flow-share-categories/${id}`,
             data,
         );
         return response.data;
     },
 
-    // DELETE /api/categories/:id
     remove: async (id: string) => {
-        const response = await http.delete(`/api/flow-share-categories/${id}`);
-        return response;
+        const response = await http.delete<baseResponse<null>>(
+            `/api/flow-share-categories/${id}`,
+        );
+        return response.data;
     },
 
-    // POST /api/categories/bulk-delete
     bulkDelete: async (ids: string[]) => {
-        const response = await http.post("/api/flow-share-categories", { ids });
-        return response;
+        const response = await http.post<baseResponse<{ count: number }>>(
+            "/api/flow-share-categories/bulk-delete",
+            { ids },
+        );
+        return response.data;
     },
 };

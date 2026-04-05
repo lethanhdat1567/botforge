@@ -33,7 +33,11 @@ const data = {
                     url: "/admin/users",
                 },
                 {
-                    title: "Mẫu Cộng đồng",
+                    title: "Danh mục mẫu cộng đồng",
+                    url: "/admin/flow-share-categories",
+                },
+                {
+                    title: "Mẫu cộng đồng",
                     url: "/admin/flow-shares",
                 },
                 {

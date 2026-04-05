@@ -19,16 +19,15 @@ function CreateSharedTemplatePage() {
     const form = useForm<FormSchemaType>({
         resolver: zodResolver(formSchema) as any,
         defaultValues: {
-            name: "My Awesome Automation Flow",
-            description:
-                "Đây là mô tả mẫu cho quy trình chia sẻ dữ liệu tự động, giúp tối ưu hóa công việc.",
+            name: "",
+            description: "",
             status: "active",
 
             thumbnail: undefined,
 
             flowId: "",
 
-            content: "Nội dung chi tiết của flow sẽ nằm ở đây...",
+            content: "",
             categories: [],
         },
     });

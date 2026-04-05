@@ -13,10 +13,10 @@ import {
 
 export default function BlogsPage() {
     const [articles, setArticles] = useState<Post[]>([]);
-    const [categories, setCategories] = useState<string[]>(["All Topics"]);
+    const [categories, setCategories] = useState<string[]>(["Tất cả"]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("All Topics");
+    const [selectedCategory, setSelectedCategory] = useState("Tất cả");
 
     // 1. Fetch Data
     const fetchData = async () => {
@@ -32,7 +32,7 @@ export default function BlogsPage() {
             const catNames = catsRes.postCategories.map(
                 (c: PostCategory) => c.name,
             );
-            setCategories(["All Topics", ...catNames]);
+            setCategories(["Tất cả", ...catNames]);
         } catch (error) {
             console.error("Failed to fetch blog data:", error);
         } finally {
@@ -51,7 +51,7 @@ export default function BlogsPage() {
                 .includes(searchQuery.toLowerCase());
 
             const matchesCategory =
-                selectedCategory === "All Topics" ||
+                selectedCategory === "Tất cả" ||
                 article.category?.name === selectedCategory;
 
             return matchesSearch && matchesCategory;

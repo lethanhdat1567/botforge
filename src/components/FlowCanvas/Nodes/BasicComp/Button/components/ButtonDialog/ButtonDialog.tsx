@@ -71,7 +71,7 @@ function ButtonDialog({ showTooltip, btn, onChange, variable }: Props) {
                 {selected === "postback" && btn?.type === "postback" && (
                     <ButtonSetVariable
                         onCommit={handlePostbackChange}
-                        variableBtnValue={variable || btn.payload.variable}
+                        variableBtnValue={variable || btn.payload.key}
                         postbackBtnValue={btn.payload.value}
                     />
                 )}

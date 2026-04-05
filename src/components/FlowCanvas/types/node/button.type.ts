@@ -1,5 +1,5 @@
 type PostbackPayload = {
-    variable: string;
+    key: string;
     value: string;
     next?: string;
 };

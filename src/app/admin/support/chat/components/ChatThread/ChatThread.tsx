@@ -6,6 +6,7 @@ import type { ChatThreadContact, MessageDto } from "@/types/live-chat";
 
 import { ThreadComposer } from "./components/ThreadComposer";
 import { ThreadMessages } from "./components/ThreadMessages";
+import { resolveMediaSrc } from "@/lib/image";
 
 type ChatThreadProps = {
     contact: ChatThreadContact;
@@ -32,7 +33,7 @@ export function ChatThread({
             <header className="flex shrink-0 items-center gap-2.5 border-b px-4 py-2.5">
                 <div className="bg-muted relative size-9 shrink-0 overflow-hidden rounded-full">
                     <Image
-                        src={contact.avatar}
+                        src={resolveMediaSrc(contact.avatar)}
                         alt=""
                         fill
                         className="object-cover"

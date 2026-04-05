@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export const PUBLIC_NAV_LINKS = [
     { title: "Trang chủ", link: "/" },
     { title: "Giới thiệu", link: "/about" },
-    { title: "Hướng dẫn", link: "/blogs" },
+    { title: "Bài viết", link: "/blogs" },
     { title: "Liên hệ", link: "/contact" },
 ] as const;
 

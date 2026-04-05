@@ -4,6 +4,7 @@ import { CheckCheck } from "lucide-react";
 import Image from "next/image";
 
 import type { LiveChatSidebarItem } from "@/types/live-chat";
+import { resolveMediaSrc } from "@/lib/image";
 
 const rowInteractive =
     "flex w-full min-w-0 gap-2.5 rounded-lg p-2.5 text-left transition-colors items-start overflow-hidden";
@@ -55,7 +56,7 @@ export function ChatSidebarRow({
                         />
                     ) : null}
                     <Image
-                        src={item.avatar}
+                        src={resolveMediaSrc(item.avatar)}
                         alt=""
                         fill
                         className="object-cover"

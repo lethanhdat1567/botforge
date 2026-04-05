@@ -17,7 +17,6 @@ function ButtonSetVariable({
 }: Props) {
     const [variableValue, setVariableValue] = useState(variableBtnValue || "");
     const [postbackValue, setPostbackValue] = useState(postbackBtnValue || "");
-
     // sync khi undo / redo / external update
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
