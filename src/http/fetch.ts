@@ -43,8 +43,6 @@ export const request = async <T>(
     // --- KHU VỰC SỬA ĐỔI CHÍNH ---
     const headers: any = {
         ...options?.headers,
-        // Luôn gửi header này để bypass trang cảnh báo của ngrok
-        "ngrok-skip-browser-warning": "true",
     };
 
     if (!isFormData) {
