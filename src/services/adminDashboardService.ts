@@ -1,4 +1,4 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
 export type AdminDashboardParams = {
     from?: Date | string;
@@ -11,7 +11,7 @@ export const adminDashboardService = {
      * GET /admin/dashboard/overview
      */
     overview: async (params?: AdminDashboardParams) => {
-        const res = await api.get("/admin-dashboard/overview", {
+        const res = await http.get("/api/admin-dashboard/overview", {
             params: params
                 ? {
                       from:
@@ -26,7 +26,7 @@ export const adminDashboardService = {
                 : undefined,
         });
 
-        return res.data;
+        return res;
     },
 
     /**
@@ -34,7 +34,7 @@ export const adminDashboardService = {
      * GET /admin/dashboard/chart
      */
     chart: async (params: { from: Date | string; to: Date | string }) => {
-        const res = await api.get("/admin-dashboard/chart", {
+        const res = await http.get("/api/admin-dashboard/chart", {
             params: {
                 from:
                     params.from instanceof Date
@@ -47,6 +47,6 @@ export const adminDashboardService = {
             },
         });
 
-        return res.data;
+        return res;
     },
 };

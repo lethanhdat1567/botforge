@@ -15,5 +15,9 @@ export function createEmptyRegistry<TType extends FlowNodeType>(): NodeRegistry<
         update(node) {
             return node;
         },
+
+        duplicate(node) {
+            return node;
+        },
     };
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import PlatformItem from "@/app/(private)/data/templates/components/PlatformContent/PlatformItem";
+import { FlowType } from "@/app/(private)/data/templates/type";
 import { flowService } from "@/services/flowService";
 import { useEffect, useState } from "react";
 
@@ -9,13 +10,13 @@ type Props = {
 };
 
 function PlatformContent({ platform }: Props) {
-    const [templates, setTemplates] = useState([]);
+    const [templates, setTemplates] = useState<FlowType[]>([]);
 
     const fetchTemplate = async () => {
         try {
             const res = await flowService.getFlows({ platform });
 
-            setTemplates(res.data);
+            setTemplates((res.flows as unknown as FlowType[]) ?? []);
         } catch (error) {
             console.log(error);
         }

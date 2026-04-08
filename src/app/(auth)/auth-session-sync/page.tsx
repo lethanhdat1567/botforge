@@ -3,7 +3,7 @@
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 function AuthSessionSync() {
     const router = useRouter();
@@ -44,4 +44,10 @@ function AuthSessionSync() {
     return null;
 }
 
-export default AuthSessionSync;
+export default function AuthSessionSyncPage() {
+    return (
+        <Suspense fallback={null}>
+            <AuthSessionSync />
+        </Suspense>
+    );
+}

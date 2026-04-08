@@ -1,6 +1,17 @@
-import { FlowShareType } from "./sharedFlowColumns";
+type MockFlowShareType = {
+    id: string;
+    flowId: string;
+    userId: string;
+    name: string;
+    status: "active" | "inactive";
+    description: string;
+    thumbnail?: string;
+    downloadCount: number;
+    createdAt: string;
+    updatedAt: string;
+};
 
-export const mockFlowSharedData: FlowShareType[] = [
+export const mockFlowSharedData: MockFlowShareType[] = [
     {
         id: "1",
         flowId: "flow_001",
@@ -10,8 +21,8 @@ export const mockFlowSharedData: FlowShareType[] = [
         description: "Tự động thu thập lead từ Facebook Messenger",
         thumbnail: "https://shadcnuikit.com/images/products/01.jpeg",
         downloadCount: 128,
-        createdAt: new Date("2025-01-10T08:30:00"),
-        updatedAt: new Date("2025-01-20T10:15:00"),
+        createdAt: "2025-01-10T08:30:00.000Z",
+        updatedAt: "2025-01-20T10:15:00.000Z",
     },
     {
         id: "2",
@@ -20,10 +31,10 @@ export const mockFlowSharedData: FlowShareType[] = [
         name: "Order Confirmation Bot",
         status: "inactive",
         description: "Xác nhận đơn hàng tự động qua chatbot",
-        thumbnail: null,
+        thumbnail: undefined,
         downloadCount: 54,
-        createdAt: new Date("2025-01-12T14:00:00"),
-        updatedAt: new Date("2025-01-18T09:45:00"),
+        createdAt: "2025-01-12T14:00:00.000Z",
+        updatedAt: "2025-01-18T09:45:00.000Z",
     },
     {
         id: "3",
@@ -31,11 +42,11 @@ export const mockFlowSharedData: FlowShareType[] = [
         userId: "user_003",
         name: "Customer Support FAQ",
         status: "active",
-        description: null,
+        description: "",
         thumbnail: "https://shadcnuikit.com/images/products/01.jpeg",
         downloadCount: 302,
-        createdAt: new Date("2025-01-05T09:20:00"),
-        updatedAt: new Date("2025-01-22T16:40:00"),
+        createdAt: "2025-01-05T09:20:00.000Z",
+        updatedAt: "2025-01-22T16:40:00.000Z",
     },
     {
         id: "4",
@@ -46,8 +57,8 @@ export const mockFlowSharedData: FlowShareType[] = [
         description: "Flow đặt lịch hẹn tự động cho spa / clinic",
         thumbnail: "https://shadcnuikit.com/images/products/01.jpeg",
         downloadCount: 87,
-        createdAt: new Date("2025-01-15T11:10:00"),
-        updatedAt: new Date("2025-01-21T13:05:00"),
+        createdAt: "2025-01-15T11:10:00.000Z",
+        updatedAt: "2025-01-21T13:05:00.000Z",
     },
     {
         id: "5",
@@ -56,9 +67,9 @@ export const mockFlowSharedData: FlowShareType[] = [
         name: "Event Registration Bot",
         status: "inactive",
         description: "Đăng ký sự kiện qua chatbot",
-        thumbnail: null,
+        thumbnail: undefined,
         downloadCount: 19,
-        createdAt: new Date("2025-01-18T17:30:00"),
-        updatedAt: new Date("2025-01-23T08:00:00"),
+        createdAt: "2025-01-18T17:30:00.000Z",
+        updatedAt: "2025-01-23T08:00:00.000Z",
     },
 ];

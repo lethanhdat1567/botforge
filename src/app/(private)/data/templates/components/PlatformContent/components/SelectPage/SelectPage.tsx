@@ -11,7 +11,7 @@ import { pageService } from "@/services/pageService";
 
 type Page = {
     id: string;
-    name: string;
+    name?: string;
 };
 
 type Props = {

@@ -10,9 +10,17 @@ export interface Page {
     id: string;
     flowId: string;
     pageUid: string;
+    name?: string;
 }
 
 export const pageService = {
+    async list(params?: Record<string, string | number | boolean | undefined>) {
+        const res: baseResponse<Page[]> = await http.get("/api/pages", {
+            params,
+        });
+        return res;
+    },
+
     async detail(flowId: string): Promise<Page> {
         const res: baseResponse<Page> = await http.get(`/api/pages/${flowId}`);
 

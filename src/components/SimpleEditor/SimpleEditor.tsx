@@ -129,7 +129,11 @@ export function SimpleEditor({ value, onChange, className }: Props) {
 
             // Chèn ảnh vào vị trí con trỏ chuột
             const url = resolveMediaSrc(res.path);
-            editor.chain().focus().setImage({ src: url }).run();
+            editor
+                .chain()
+                .focus()
+                .setImage({ src: String(url) })
+                .run();
 
             toast.success("Đã chèn ảnh");
         } catch (error) {

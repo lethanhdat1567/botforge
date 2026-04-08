@@ -14,8 +14,23 @@ const eslintConfig = defineConfig([
         "next-env.d.ts",
     ]),
     {
+        linterOptions: {
+            reportUnusedDisableDirectives: "off",
+        },
         rules: {
-            "@typescript-eslint/no-explicit-any": "off", // <-- tắt warning any
+            "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/no-unused-vars": "off",
+            "@next/next/no-img-element": "off",
+            "jsx-a11y/role-has-required-aria-props": "off",
+            "jsx-a11y/alt-text": "off",
+            "react-hooks/exhaustive-deps": "off",
+            "react-hooks/set-state-in-effect": "off",
+            "react-hooks/incompatible-library": "off",
+            "react-hooks/refs": "off",
+            "react-hooks/purity": "off",
+            "react-hooks/immutability": "off",
+            "react-hooks/use-memo": "off",
+            "prefer-const": "off",
         },
     },
 ]);

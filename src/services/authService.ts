@@ -50,9 +50,9 @@ export const authService = {
         return res.data;
     },
 
-    googleLogin: async (code: string): Promise<DataResponse> => {
+    googleLogin: async (idToken: string): Promise<DataResponse> => {
         const res: authResponse = await http.post(`${AUTH_BASE_URL}/google`, {
-            code,
+            idToken,
         });
 
         return res.data;

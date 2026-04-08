@@ -2,7 +2,7 @@
 
 import PasswordChecking from "@/app/(auth)/reset-password/components/PasswordChecking";
 import { ResetPasswordForm } from "@/app/(auth)/reset-password/components/ResetPasswordForm";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 export default function ResetPassword() {
     const [isValidToken, setIsValidToken] = useState(false);
@@ -12,12 +12,16 @@ export default function ResetPassword() {
         <div className="bg-background flex min-h-svh w-full min-w-0 flex-col items-center justify-center gap-6 px-4 py-6 sm:px-6 md:p-10">
             <div className="w-full min-w-0 max-w-sm">
                 {isValidToken && userId ? (
-                    <ResetPasswordForm userId={userId} />
+                    <Suspense fallback={null}>
+                        <ResetPasswordForm userId={userId} />
+                    </Suspense>
                 ) : (
-                    <PasswordChecking
-                        setIsValidToken={setIsValidToken}
-                        setUserId={setUserId}
-                    />
+                    <Suspense fallback={null}>
+                        <PasswordChecking
+                            setIsValidToken={setIsValidToken}
+                            setUserId={setUserId}
+                        />
+                    </Suspense>
                 )}
             </div>
         </div>

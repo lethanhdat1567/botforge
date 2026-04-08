@@ -11,6 +11,8 @@ import { resolveMediaSrc } from "@/lib/image";
 import StatusBadge from "@/components/DataTable/components/StatusBadge/StatusBadge";
 import Actions from "@/components/DataTable/components/Actions/Actions";
 
+export type FlowShareType = FlowShare;
+
 interface SharedFlowColumnProps {
     onEdit?: (id: string) => void;
     onDelete?: (id: string) => void;

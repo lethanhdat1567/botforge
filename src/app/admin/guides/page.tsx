@@ -1,13 +1,13 @@
 "use client";
 
 import { guidesColumns } from "@/app/admin/guides/columns";
-import { DataTable } from "@/components/data-table/data-table";
+import type { Guide } from "@/app/admin/guides/columns";
+import { DataTable } from "@/components/DataTable/DataTable";
 import { guideService } from "@/services/guideService";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
 
 function AdminGuidePage() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<Guide[]>([]);
 
     const http = useCallback(async () => {
         try {
@@ -24,20 +24,6 @@ function AdminGuidePage() {
         http();
     }, [http]);
 
-    async function handleDestroy(rows: any) {
-        const ids = rows.map((row: any) => row.original.id);
-
-        try {
-            await guideService.remove(ids);
-            toast.success("Deleted successfully");
-            http();
-        } catch (error) {
-            console.log(error);
-            toast.error("Failed to delete");
-        } finally {
-        }
-    }
-
     return (
         <div className="mx-auto w-full min-w-0 max-w-6xl space-y-4">
             <h1 className="text-xl font-bold sm:text-2xl">
@@ -46,10 +32,6 @@ function AdminGuidePage() {
             <DataTable
                 columns={guidesColumns(http)}
                 data={users}
-                options={{
-                    filterColumn: "title",
-                }}
-                onDestroy={handleDestroy}
             />
         </div>
     );

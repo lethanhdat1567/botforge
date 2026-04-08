@@ -3,51 +3,53 @@
 import { googleIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { getClientAuth } from "@/config/firebaseClient";
 
 function SocialLogin() {
     const router = useRouter();
     const setAuth = useAuthStore((state) => state.setAuth);
     const [isLoading, setIsLoading] = useState(false);
 
-    const loginWithGoogle = useGoogleLogin({
-        flow: "auth-code",
-        onSuccess: async (codeResponse) => {
-            setIsLoading(true);
-            try {
-                const res = await authService.googleLogin(codeResponse.code);
-                await authService.loginFromNextClientToNextServer({
-                    accessToken: res.accessToken,
-                    role: res.user.role,
-                    accessTokenExpiresIn: res.accessTokenExpiresIn,
-                    refreshToken: res.refreshToken,
-                });
-                setAuth({
-                    user: res.user,
-                    accessToken: res.accessToken,
-                    refreshToken: res.refreshToken,
-                    accessTokenExpiresIn: res.accessTokenExpiresIn,
-                });
-                toast.success("Đăng nhập thành công!");
-                router.push("/dashboard");
-            } catch (error) {
-                console.log(error);
+    const loginWithGoogle = async () => {
+        setIsLoading(true);
+        try {
+            const auth = getClientAuth();
+            const provider = new GoogleAuthProvider();
+            const credential = await signInWithPopup(auth, provider);
+            const idToken = await credential.user.getIdToken();
+            const res = await authService.googleLogin(idToken);
+            await authService.loginFromNextClientToNextServer({
+                accessToken: res.accessToken,
+                role: res.user.role,
+                accessTokenExpiresIn: res.accessTokenExpiresIn,
+                refreshToken: res.refreshToken,
+            });
+            setAuth({
+                user: res.user,
+                accessToken: res.accessToken,
+                refreshToken: res.refreshToken,
+                accessTokenExpiresIn: res.accessTokenExpiresIn,
+            });
+            toast.success("Đăng nhập thành công!");
+            router.push("/dashboard");
+        } catch (error) {
+            console.error(error);
+            if (error instanceof Error && error.message.includes("Thiếu biến môi trường")) {
+                toast.error(error.message);
+            } else {
                 toast.error("Đăng nhập thất bại.");
-            } finally {
-                setIsLoading(false);
             }
-        },
-        onError: () => {
-            toast.error("Kết nối Google thất bại");
+        } finally {
             setIsLoading(false);
-        },
-    });
+        }
+    };
 
     return (
         <Field className="flex flex-col gap-3">
@@ -55,7 +57,7 @@ function SocialLogin() {
                 variant="outline"
                 type="button"
                 className="w-full gap-2 transition-all active:scale-95"
-                onClick={() => loginWithGoogle()}
+                onClick={() => void loginWithGoogle()}
                 disabled={isLoading}
             >
                 {isLoading ? (

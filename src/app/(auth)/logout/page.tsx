@@ -6,24 +6,23 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 function Logout() {
-    const logout = useAuthStore((state) => state.logout);
-    const accessToken = localStorage.getItem("accessToken");
+    const clearAuth = useAuthStore((state) => state.clearAuth);
     const router = useRouter();
 
     useEffect(() => {
         const http = async () => {
             try {
-                await authService.logoutFromClientToServer(accessToken || "");
+                await authService.logoutFromNextClientToNextServer();
             } catch (error) {
                 console.log(error);
             } finally {
                 router.push(`/login` as any);
-                logout();
+                clearAuth();
             }
         };
 
-        http();
-    }, [accessToken]);
+        void http();
+    }, [clearAuth, router]);
 
     return null;
 }

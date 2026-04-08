@@ -15,7 +15,7 @@ type Props = {
 };
 
 function PlatformItem({ template, onRefresh }: Props) {
-    async function handleUpdateStatus(value: string) {
+    async function handleUpdateStatus(value: "draft" | "published") {
         try {
             await flowService.updateFlow(template.id, { status: value });
             toast.success("Status updated successfully");

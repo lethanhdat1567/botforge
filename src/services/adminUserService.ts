@@ -1,4 +1,4 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
 /* ================== TYPES ================== */
 
@@ -21,7 +21,7 @@ export const adminUserService = {
      * GET /users
      */
     list: async (params?: AdminUserListParams) => {
-        const res = await api.get("/users", {
+        const res = await http.get("/api/users", {
             params: params
                 ? {
                       page: params.page,
@@ -31,7 +31,7 @@ export const adminUserService = {
                 : undefined,
         });
 
-        return res.data;
+        return res;
     },
 
     /**
@@ -39,8 +39,8 @@ export const adminUserService = {
      * GET /users/:id
      */
     detail: async (id: string) => {
-        const res = await api.get(`/users/${id}`);
-        return res.data;
+        const res = await http.get(`/api/users/${id}`);
+        return res;
     },
 
     /**
@@ -48,8 +48,8 @@ export const adminUserService = {
      * PATCH /users/:id
      */
     update: async (id: string, payload: AdminUserUpdatePayload) => {
-        const res = await api.patch(`/users/${id}`, payload);
-        return res.data;
+        const res = await http.patch(`/api/users/${id}`, payload);
+        return res;
     },
 
     /**
@@ -57,7 +57,7 @@ export const adminUserService = {
      * DELETE /users/:id
      */
     remove: async (id: string) => {
-        const res = await api.delete(`/users/${id}`);
-        return res.data;
+        const res = await http.delete(`/api/users/${id}`);
+        return res;
     },
 };

@@ -1,4 +1,5 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
+import { baseResponse } from "@/types/response";
 
 export type TimeoutUnit = "second" | "minute" | "hour" | "day";
 
@@ -10,18 +11,24 @@ export interface FallbackPayload {
 
 export const fallbackService = {
     getFallback: async () => {
-        const response = await api.get("/fallback");
+        const response = await http.get<baseResponse<any>>("/api/fallback");
 
-        return response.data.data;
+        return response.data;
     },
 
     createFallback: async (payload: FallbackPayload) => {
-        const response = await api.post("/fallback", payload);
-        return response.data.data;
+        const response = await http.post<baseResponse<any>>(
+            "/api/fallback",
+            payload,
+        );
+        return response.data;
     },
 
     updateFallback: async (payload: FallbackPayload) => {
-        const response = await api.post("/fallback", payload);
-        return response.data.data;
+        const response = await http.post<baseResponse<any>>(
+            "/api/fallback",
+            payload,
+        );
+        return response.data;
     },
 };

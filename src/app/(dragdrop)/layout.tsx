@@ -2,7 +2,9 @@
 
 import DragdropSidebar from "@/layouts/dragdrop/DragdropSidebar/DragdropSidebar";
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
+
+export const dynamic = "force-dynamic";
 
 function DragdropLayout({ children }: { children: React.ReactNode }) {
     const { setTheme } = useTheme();
@@ -25,7 +27,9 @@ function DragdropLayout({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="bg-background text-foreground flex min-h-svh w-full min-w-0 items-stretch">
-            <DragdropSidebar />
+            <Suspense fallback={null}>
+                <DragdropSidebar />
+            </Suspense>
             <div className="flex min-h-svh min-w-0 flex-1 flex-col overflow-hidden">
                 {children}
             </div>

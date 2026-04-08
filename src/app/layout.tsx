@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import envConfig from "@/config/envConfig";
 import SliceSession from "@/components/SliceSession/SliceSession";
 
 const inter = Inter({
@@ -14,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "BotForge – Build Chatbots Faster",
+    title: "BotForge – Nền tảng Tạo Chatbot Miễn phí",
     description:
-        "BotForge is a free platform to build, manage, and share chatbot flows easily. Create templates, automate conversations, and scale your chatbot faster.",
+        "Xây dựng và quản lý kịch bản chatbot tự động dễ dàng với BotForge. Nền tảng miễn phí giúp tối ưu quy trình hội thoại và chăm sóc khách hàng.",
 };
 
 export default async function RootLayout({
@@ -27,18 +25,16 @@ export default async function RootLayout({
     return (
         <html lang="vi" suppressHydrationWarning>
             <body className={`${inter.className} antialiased`}>
-                <GoogleOAuthProvider clientId={envConfig.GOOGLE_CLIENT_ID}>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {children}
-                    </ThemeProvider>
-                    <Toaster />
-                    <SliceSession />
-                </GoogleOAuthProvider>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
+                <Toaster />
+                <SliceSession />
             </body>
         </html>
     );

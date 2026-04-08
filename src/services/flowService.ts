@@ -5,6 +5,7 @@ export type FlowStatus = "active" | "inactive";
 
 export interface ListQuery {
     status?: FlowStatus;
+    platform?: "facebook" | "instagram" | "zalo";
     q?: string;
     page?: string | number;
     limit?: string | number;
@@ -13,7 +14,7 @@ export interface ListQuery {
 export interface CreateFlowPayload {
     name: string;
     description?: string;
-    status?: FlowStatus;
+    status?: FlowStatus | "draft" | "published";
     logicJson?: any;
     layoutJson?: any;
     timeoutJson?: any;
@@ -93,6 +94,10 @@ export const flowService = {
      */
     removeFlow: (id: string) => {
         return http.delete<ApiResponse<any>>(`/api/flows/${id}`);
+    },
+
+    destroyFlow: (id: string) => {
+        return flowService.removeFlow(id);
     },
 
     /**

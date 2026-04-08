@@ -1,4 +1,4 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
 /* =======================
  * Types
@@ -36,22 +36,22 @@ export const flowCommentService = {
         comment: string;
         parentId?: string;
     }) => {
-        const response = await api.post("/flows/comment", data);
-        return response.data;
+        const response = await http.post("/api/flows/comment", data);
+        return response;
     },
 
     // GET /flows/comment/flow-share/:flowShareId
     getCommentsByFlowShare: async (flowShareId: string) => {
-        const response = await api.get(
-            `/flows/comment/flow-share/${flowShareId}`,
+        const response = await http.get(
+            `/api/flows/comment/flow-share/${flowShareId}`,
         );
-        return response.data;
+        return response;
     },
 
     // GET /flows/comment/:id
     getCommentById: async (id: string) => {
-        const response = await api.get(`/flows/comment/${id}`);
-        return response.data;
+        const response = await http.get(`/api/flows/comment/${id}`);
+        return response;
     },
 
     // PATCH /flows/comment/:id
@@ -62,13 +62,13 @@ export const flowCommentService = {
             parentId?: string | null;
         },
     ) => {
-        const response = await api.patch(`/flows/comment/${id}`, data);
-        return response.data;
+        const response = await http.patch(`/api/flows/comment/${id}`, data);
+        return response;
     },
 
     // DELETE /flows/comment/:id
     removeComment: async (id: string) => {
-        const response = await api.delete(`/flows/comment/${id}`);
-        return response.data;
+        const response = await http.delete(`/api/flows/comment/${id}`);
+        return response;
     },
 };

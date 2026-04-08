@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Loader2, CheckCircle2, XCircle, MailQuestion } from "lucide-react";
@@ -13,7 +13,7 @@ import { useAuthStore } from "@/store/authStore";
 
 type VerifyStatus = "loading" | "success" | "error";
 
-function VerifyEmail() {
+function VerifyEmailContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
@@ -140,4 +140,10 @@ function VerifyEmail() {
     );
 }
 
-export default VerifyEmail;
+export default function VerifyEmail() {
+    return (
+        <Suspense fallback={null}>
+            <VerifyEmailContent />
+        </Suspense>
+    );
+}

@@ -1,4 +1,4 @@
-import api from "@/config/axios";
+import { http } from "@/http/fetch";
 
 export const userFlowStateService = {
     /**
@@ -6,10 +6,10 @@ export const userFlowStateService = {
      * GET /user-flow-states?platformUserId=xxx
      */
     getByPlatformUser: async (platformUserId: string) => {
-        const response = await api.get("/flow-states", {
+        const response = await http.get("/api/flow-states", {
             params: { platformUserId },
         });
-        return response.data;
+        return response;
     },
 
     /**
@@ -17,8 +17,8 @@ export const userFlowStateService = {
      * GET /user-flow-states/owner
      */
     getByOwner: async () => {
-        const response = await api.get("/flow-states/owner");
-        return response.data;
+        const response = await http.get("/api/flow-states/owner");
+        return response;
     },
 
     /**
@@ -26,8 +26,8 @@ export const userFlowStateService = {
      * GET /user-flow-states/:id
      */
     getById: async (id: string) => {
-        const response = await api.get(`/flow-states/${id}`);
-        return response.data;
+        const response = await http.get(`/api/flow-states/${id}`);
+        return response;
     },
 
     /**
@@ -42,8 +42,8 @@ export const userFlowStateService = {
         variables?: any;
         status?: string;
     }) => {
-        const response = await api.post("/flow-states", data);
-        return response.data;
+        const response = await http.post("/api/flow-states", data);
+        return response;
     },
 
     /**
@@ -51,8 +51,8 @@ export const userFlowStateService = {
      * PATCH /user-flow-states/:id
      */
     update: async (id: string, data: any) => {
-        const response = await api.patch(`/flow-states/${id}`, data);
-        return response.data;
+        const response = await http.patch(`/api/flow-states/${id}`, data);
+        return response;
     },
 
     /**
@@ -64,8 +64,8 @@ export const userFlowStateService = {
         pageId: string;
         stepId: string;
     }) => {
-        const response = await api.patch("/flow-states/platform/step", data);
-        return response.data;
+        const response = await http.patch("/api/flow-states/platform/step", data);
+        return response;
     },
 
     /**
@@ -78,8 +78,8 @@ export const userFlowStateService = {
         pageId: string;
         data: any;
     }) => {
-        const response = await api.patch("/flow-states/platform/status", data);
-        return response.data;
+        const response = await http.patch("/api/flow-states/platform/status", data);
+        return response;
     },
 
     /**
@@ -87,7 +87,9 @@ export const userFlowStateService = {
      * DELETE /user-flow-states/:id
      */
     deleteMany: async (ids: string[]) => {
-        const response = await api.delete("/flow-states", { data: { ids } });
-        return response.data;
+        const response = await http.delete("/api/flow-states", {
+            body: { ids },
+        } as any);
+        return response;
     },
 };
