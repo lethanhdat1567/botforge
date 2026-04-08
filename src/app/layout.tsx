@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     title: "BotForge – Nền tảng Tạo Chatbot Miễn phí",
     description:
         "Xây dựng và quản lý kịch bản chatbot tự động dễ dàng với BotForge. Nền tảng miễn phí giúp tối ưu quy trình hội thoại và chăm sóc khách hàng.",
+    icons: {
+        icon: "/icon.png",
+        apple: "/icon.png",
+    },
 };
 
 export default async function RootLayout({
