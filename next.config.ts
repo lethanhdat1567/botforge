@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
                 hostname: "images.unsplash.com",
                 pathname: "/**",
             },
+            {
+                protocol: "https",
+                hostname: "api.botforge.io.vn",
+                pathname: "/uploads/**",
+            },
         ],
         unoptimized: true,
     },
