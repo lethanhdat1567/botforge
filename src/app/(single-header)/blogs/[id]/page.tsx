@@ -1,4 +1,5 @@
 import { ArrowLeft, User, Calendar } from "lucide-react";
+import { Lora } from "next/font/google";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -6,6 +7,11 @@ import { blogService } from "@/services/blogService";
 import { resolveMediaSrc } from "@/lib/image";
 import { RenderContent } from "@/components/RenderEditorTextContent/RenderEditorTextContent";
 import { timeAgo } from "@/lib/timer";
+
+const blogReading = Lora({
+    subsets: ["latin", "vietnamese"],
+    display: "swap",
+});
 
 interface BlogDetailProps {
     params: Promise<{ id: string }>;
@@ -33,8 +39,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             : article.category;
 
     return (
-        <main className="bg-background min-h-svh w-full min-w-0">
-            <div className="mx-auto w-full min-w-0 max-w-[720px] px-4 py-8 sm:px-6 sm:py-10 md:py-14">
+        <main
+            className={`${blogReading.className} bg-background min-h-svh w-full min-w-0`}
+        >
+            <div className="mx-auto w-full min-w-0 max-w-[900px] px-4 py-8 sm:px-8 sm:py-10 md:py-14 lg:max-w-[960px]">
                 {/* Back */}
                 <Link
                     href="/blogs"
@@ -44,7 +52,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                     Quay lại
                 </Link>
 
-                <article>
+                <article className="[&_.prose]:font-[inherit]">
                     <header className="mb-12">
                         {/* Category + read time */}
                         <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -60,7 +68,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-foreground mb-8 font-serif text-[1.625rem] leading-[1.12] font-normal tracking-[-0.02em] sm:text-[2rem] md:text-[3.25rem]">
+                        <h1 className="text-foreground mb-8 text-[1.625rem] leading-[1.12] font-semibold tracking-[-0.02em] sm:text-[2rem] md:text-[3.25rem]">
                             {article.title}
                         </h1>
 
@@ -77,7 +85,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                                             alt={authorName}
                                             width={24}
                                             height={24}
-                                            className="h-full w-full object-cover grayscale"
+                                            className="h-full w-full object-cover"
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center">
